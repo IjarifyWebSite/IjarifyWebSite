@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IjarifySystemDAL.Entities.Enums
+{
+    public enum PropertyListingType
+    {
+        Rent = 1,
+        Sale
+    }
+}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemDAL.Entities
 {
-    internal class User
+    public class User
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
@@ -14,6 +14,10 @@ namespace IjarifySystemDAL.Entities
         public string Password { get; set; } = null!;
         public string  Phone { get; set; } = null!;
         public string Role { get; set; } = null!;
+
+        public ICollection<Property>? Properties { get; set; }
+        public ICollection<Inquiry>? UserInquiries { get; set; }
+
 
     }
 }
