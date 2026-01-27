@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemDAL.Entities
 {
-    public class Location
+    public class Location:BaseEntity
     {
-        public int Id { get; set; }
         public string City { get; set; } = null!;
         public string Regoin { get; set; } = null!;
         public string Street { get; set; } = null!;

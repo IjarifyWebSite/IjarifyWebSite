@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemDAL.Entities
 {
-    public class Property
+    public class Property:BaseEntity
     {
         //CreatedAt
-        public int Id { get; set; }
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
@@ -29,6 +28,15 @@ namespace IjarifySystemDAL.Entities
         public ICollection<PropertyImages> PropertyImages { get; set; } = null!;
         public ICollection<Inquiry>? PropertyInquiries { get; set; }
         public ICollection<Offer>? PropertyOffers { get; set; }
+
+        public ICollection<Amenity>? amenities { get; set; } 
+
+        public ICollection<Booking>? Bookings { get; set; }
+
+        public ICollection<Favourite>? Favorites { get; set; }
+
+        public ICollection<Review>? Reviews { get; set; }
+
 
     }
 }

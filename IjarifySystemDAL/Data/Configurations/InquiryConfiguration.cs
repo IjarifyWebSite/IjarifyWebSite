@@ -20,7 +20,9 @@ namespace IjarifySystemDAL.Data.Configurations
 
             builder.HasOne(i => i.User)
                    .WithMany(u => u.UserInquiries)
-                   .HasForeignKey(i => i.UserId);
+                   .HasForeignKey(i => i.UserId)
+                   .OnDelete(DeleteBehavior.NoAction);
+
 
             builder.HasOne(i => i.Property)
                    .WithMany(p => p.PropertyInquiries)

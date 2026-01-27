@@ -22,6 +22,16 @@ namespace IjarifySystemDAL.Data.Configurations
                    .WithOne(pi => pi.Property)
                    .HasForeignKey(pi => pi.PropertyId)
                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(p => p.amenities)
+                .WithMany(p => p.properties);
+
+            builder.Property(p=>p.ListingType)
+              .HasConversion<string>();
+
+            builder.Property(p=>p.Type)
+              .HasConversion<string>();
+
         }
     }
 }

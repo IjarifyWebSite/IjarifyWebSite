@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemDAL.Entities
 {
-    public class PropertyImages
+    public class PropertyImages:BaseEntity
     {
-        public int Id { get; set; }
         public string ImageUrl { get; set; } = null!;
 
         public int PropertyId { get; set; }

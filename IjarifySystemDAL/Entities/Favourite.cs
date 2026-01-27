@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemDAL.Entities
 {
-    public class Offer:BaseEntity
+    public class Favourite:BaseEntity
     {
-        //CreateAt == StartDate
-        public string Title { get; set; } = null!;
-        public DateTime EndDate { get; set; }
-        public decimal DiscountPercentage { get; set; }
+        #region Favourite-Property
         public int PropertyId { get; set; }
         public Property Property { get; set; } = null!;
-
+        #endregion
+        #region Favourite-User
+        public int UserId { get; set; }
+        public User User { get; set; }=null!;
+        #endregion
     }
 }

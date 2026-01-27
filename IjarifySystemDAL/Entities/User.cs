@@ -6,17 +6,23 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemDAL.Entities
 {
-    public class User
+    public class User:BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string  Phone { get; set; } = null!;
         public string Role { get; set; } = null!;
+        public string? ImageUrl { get; set; }
 
         public ICollection<Property>? Properties { get; set; }
         public ICollection<Inquiry>? UserInquiries { get; set; }
+
+        public ICollection<Booking>? Bookings { get; set; }
+
+        public ICollection<Favourite>? Favorites { get; set; }
+
+        public ICollection<Review>? reviews { get;set; }
 
 
     }

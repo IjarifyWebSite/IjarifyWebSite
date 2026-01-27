@@ -26,5 +26,9 @@ namespace IjarifySystemDAL.Data.Context
         public DbSet<Inquiry> Inquiries { get; set; }
         public DbSet<Offer> Offers { get; set; }
         public DbSet<PropertyImages> PropertyImages { get; set; }
+        public DbSet<Amenity> amenities { get; set; }
+        public DbSet<Booking> bookings { get; set; }
+        public DbSet<Favourite> favourites { get; set; }
+        public DbSet<Review> reviews { get; set; }  
     }
 }
