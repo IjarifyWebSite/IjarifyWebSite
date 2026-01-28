@@ -3,47 +3,289 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - IjarifySystemPL</title>
+    <title>@ViewData["Title"] - Ijarify Real Estate</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/IjarifySystemPL.styles.css" asp-append-version="true" />
+    
+    <!-- Favicons -->
+    <link href="~/assets/img/favicon.png" rel="icon">
+    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="~/assets/css/main.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">IjarifySystemPL</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+            <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center me-auto me-xl-0">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <!-- <img src="~/assets/img/logo.webp" alt="Ijarify"> -->
+                <h1 class="sitename">Ijarify</h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <!-- Public Navigation -->
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-controller="Property" asp-action="Index">Properties</a></li>
+                    <li><a asp-controller="Property" asp-action="Search">Search</a></li>
+                    <li><a asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <!-- Authenticated User Menu -->
+                        <li class="dropdown">
+                            <a href="#"><span><i class="bi bi-person-circle"></i> My Account</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            <ul>
+                                <li><a asp-controller="Account" asp-action="Profile"><i class="bi bi-person"></i> My Profile</a></li>
+                                <li><a asp-controller="Booking" asp-action="MyBookings"><i class="bi bi-calendar-check"></i> My Bookings</a></li>
+                                <li><a asp-controller="Favourite" asp-action="MyFavorites"><i class="bi bi-heart"></i> My Favorites</a></li>
+                                <li><a asp-controller="Review" asp-action="MyReviews"><i class="bi bi-star"></i> My Reviews</a></li>
+                                <li><a asp-controller="Inquiry" asp-action="MyInquiries"><i class="bi bi-chat-dots"></i> My Inquiries</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form asp-controller="Account" asp-action="Logout" method="post" style="display: inline;">
+                                        <button type="submit" class="dropdown-item" style="background: none; border: none; cursor: pointer; text-align: left; width: 100%; padding: 0.5rem 1rem;">
+                                            <i class="bi bi-box-arrow-right"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+
+                        @if (User.IsInRole("Owner"))
+                        {
+                            <!-- Property Owner Menu -->
+                            <li class="dropdown">
+                                <a href="#"><span><i class="bi bi-building"></i> My Properties</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                                <ul>
+                                    <li><a asp-controller="Property" asp-action="MyProperties"><i class="bi bi-house"></i> View Properties</a></li>
+                                    <li><a asp-controller="Property" asp-action="Create"><i class="bi bi-plus-circle"></i> Add Property</a></li>
+                                    <li><a asp-controller="Inquiry" asp-action="ReceivedInquiries"><i class="bi bi-envelope"></i> Inquiries</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <!-- Admin Menu -->
+                            <li class="dropdown">
+                                <a href="#"><span><i class="bi bi-shield-lock"></i> Admin</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                                <ul>
+                                    <li><a asp-controller="Admin" asp-action="Dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                                    <li><a asp-controller="Admin" asp-action="ManageUsers"><i class="bi bi-people"></i> Manage Users</a></li>
+                                    <li><a asp-controller="Admin" asp-action="ManageProperties"><i class="bi bi-houses"></i> Manage Properties</a></li>
+                                </ul>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <!-- Guest User Actions -->
+                        <li><a asp-controller="Account" asp-action="Login"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+                        <li><a asp-controller="Account" asp-action="Register" class="btn-getstarted-nav">Sign Up</a></li>
+                    }
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                @if (User.IsInRole("Owner"))
+                {
+                    <a class="btn-getstarted" asp-controller="Property" asp-action="Create">
+                        <i class="bi bi-plus-circle"></i> List Property
+                    </a>
+                }
+                else
+                {
+                    <a class="btn-getstarted" asp-controller="Property" asp-action="Index">
+                        <i class="bi bi-search"></i> Browse Properties
+                    </a>
+                }
+            }
+            else
+            {
+                <a class="btn-getstarted" asp-controller="Account" asp-action="Register">Get Started</a>
+            }
+
+        </div>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer id="footer" class="footer position-relative">
+
         <div class="container">
-            &copy; 2026 - IjarifySystemPL - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row gy-5">
+
+                <div class="col-lg-4">
+                    <div class="footer-content">
+                        <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center mb-4">
+                            <span class="sitename">Ijarify</span>
+                        </a>
+                        <p class="mb-4">Your trusted partner in finding the perfect property. Whether you're looking to buy, rent, or list your property, we're here to help you every step of the way.</p>
+
+                        <div class="newsletter-form">
+                            <h5>Stay Updated</h5>
+                            <form action="forms/newsletter.php" method="post" class="php-email-form">
+                                <div class="input-group">
+                                    <input type="email" name="email" class="form-control" placeholder="Enter your email" required="">
+                                    <button type="submit" class="btn-subscribe">
+                                        <i class="bi bi-send"></i>
+                                    </button>
+                                </div>
+                                <div class="loading">Loading</div>
+                                <div class="error-message"></div>
+                                <div class="sent-message">Thank you for subscribing!</div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-links">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a asp-controller="Home" asp-action="Index"><i class="bi bi-chevron-right"></i> Home</a></li>
+                            <li><a asp-controller="Home" asp-action="About"><i class="bi bi-chevron-right"></i> About Us</a></li>
+                            <li><a asp-controller="Property" asp-action="Index"><i class="bi bi-chevron-right"></i> Properties</a></li>
+                            <li><a asp-controller="Property" asp-action="Search"><i class="bi bi-chevron-right"></i> Search</a></li>
+                            <li><a asp-controller="Home" asp-action="Contact"><i class="bi bi-chevron-right"></i> Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-links">
+                        <h4>For Users</h4>
+                        <ul>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li><a asp-controller="Account" asp-action="Profile"><i class="bi bi-chevron-right"></i> My Profile</a></li>
+                                <li><a asp-controller="Booking" asp-action="MyBookings"><i class="bi bi-chevron-right"></i> My Bookings</a></li>
+                                <li><a asp-controller="Favourite" asp-action="MyFavorites"><i class="bi bi-chevron-right"></i> Favorites</a></li>
+                                @if (User.IsInRole("Owner"))
+                                {
+                                    <li><a asp-controller="Property" asp-action="MyProperties"><i class="bi bi-chevron-right"></i> My Properties</a></li>
+                                }
+                            }
+                            else
+                            {
+                                <li><a asp-controller="Account" asp-action="Login"><i class="bi bi-chevron-right"></i> Login</a></li>
+                                <li><a asp-controller="Account" asp-action="Register"><i class="bi bi-chevron-right"></i> Register</a></li>
+                                <li><a href="#"><i class="bi bi-chevron-right"></i> How It Works</a></li>
+                                <li><a href="#"><i class="bi bi-chevron-right"></i> FAQ</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="footer-contact">
+                        <h4>Get in Touch</h4>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <div class="contact-info">
+                                <p>123 Real Estate Avenue<br>Cairo, Egypt<br>Egypt</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-telephone"></i>
+                            </div>
+                            <div class="contact-info">
+                                <p>+20 (2) 1234-5678</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-envelope"></i>
+                            </div>
+                            <div class="contact-info">
+                                <p>info@ijarify.com</p>
+                            </div>
+                        </div>
+
+                        <div class="social-links">
+                            <a href="#"><i class="bi bi-facebook"></i></a>
+                            <a href="#"><i class="bi bi-twitter-x"></i></a>
+                            <a href="#"><i class="bi bi-linkedin"></i></a>
+                            <a href="#"><i class="bi bi-instagram"></i></a>
+                            <a href="#"><i class="bi bi-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="copyright">
+                            <p>© <span>Copyright</span> <strong class="px-1 sitename">Ijarify</strong> <span>All Rights Reserved</span></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="footer-bottom-links">
+                            <a href="#">Privacy Policy</a>
+                            <a href="#">Terms of Service</a>
+                            <a href="#">Cookie Policy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/php-email-form/validate.js"></script>
+    <script src="~/assets/vendor/aos/aos.js"></script>
+    <script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/assets/vendor/drift-zoom/Drift.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="~/assets/js/main.js"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
