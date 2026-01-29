@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using IjarifySystemDAL.Data.Context;
+using IjarifySystemDAL.Repositories.Interfaces;
+using IjarifySystemDAL.Repositories.Classes;
 
 namespace IjarifySystemPL
 {
@@ -16,6 +18,7 @@ namespace IjarifySystemPL
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
             var app = builder.Build();
 
