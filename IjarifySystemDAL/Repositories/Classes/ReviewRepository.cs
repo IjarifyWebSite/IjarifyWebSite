@@ -24,17 +24,19 @@ namespace IjarifySystemDAL.Repositories.Classes
 
         public IEnumerable<Review> GetAllPropertyReviews(int propertyId)
         {
-            var propertyReviews = dbContext.reviews.Where(r => r.PropertyId == propertyId).ToList();
+            var propertyReviews = dbContext.reviews.Include(r => r.user).Where(r => r.PropertyId == propertyId).ToList();
             return propertyReviews;
         }
 
         public IEnumerable<Review> GetAllUserReviews(int userId)
         {
-            var userReviews = dbContext.reviews.Where(r => r.UserId == userId).ToList();
+            var userReviews = dbContext.reviews.Include(r => r.property).Where(r => r.UserId == userId).ToList();
             return userReviews;
         }
 
         public Review? GetReviewById(int Id) => dbContext.reviews.Find(Id);
+
+        public int SaveChanges() => dbContext.SaveChanges();
 
         public void Update(Review review) => dbContext.reviews.Update(review);
     }
