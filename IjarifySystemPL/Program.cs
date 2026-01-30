@@ -1,7 +1,9 @@
-using Microsoft.EntityFrameworkCore;
+using IjarifySystemBLL.Services.Classes;
+using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemDAL.Data.Context;
-using IjarifySystemDAL.Repositories.Interfaces;
 using IjarifySystemDAL.Repositories.Classes;
+using IjarifySystemDAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace IjarifySystemPL
 {
@@ -13,14 +15,15 @@ namespace IjarifySystemPL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IPropertyService,PropertyService>();
+            builder.Services.AddScoped<IPropertyRepository,PropertyRepository>();
 
             builder.Services.AddDbContext<IjarifyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-
             var app = builder.Build();
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
