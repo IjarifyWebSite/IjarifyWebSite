@@ -15,5 +15,6 @@ namespace IjarifySystemDAL.Repositories.Interfaces
         public void Add(Review review);
         public void Update(Review review);
         public void Delete(Review review);
+        public int SaveChanges();
     }
 }
