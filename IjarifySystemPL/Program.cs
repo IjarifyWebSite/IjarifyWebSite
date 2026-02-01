@@ -17,6 +17,7 @@ namespace IjarifySystemPL
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IPropertyService,PropertyService>();
             builder.Services.AddScoped<IPropertyRepository,PropertyRepository>();
+            //builder.Services.AddScoped<IReviewService,ReviewService>();
 
             builder.Services.AddDbContext<IjarifyDbContext>(options =>
             {
