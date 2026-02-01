@@ -15,9 +15,13 @@ namespace IjarifySystemPL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<IPropertyService,PropertyService>();
-            builder.Services.AddScoped<IPropertyRepository,PropertyRepository>();
-            //builder.Services.AddScoped<IReviewService,ReviewService>();
+            builder.Services.AddScoped<IPropertyService, PropertyService>();
+            builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IOfferRepository,OfferRepository>();
+            builder.Services.AddScoped<IOfferService,OfferService>();
+
 
             builder.Services.AddDbContext<IjarifyDbContext>(options =>
             {
