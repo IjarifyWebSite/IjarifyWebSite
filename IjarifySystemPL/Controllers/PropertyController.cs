@@ -20,7 +20,7 @@ namespace IjarifySystemPL.Controllers
         // GET: PropertyController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View("Details");
         }
 
         // GET: PropertyController/Create
