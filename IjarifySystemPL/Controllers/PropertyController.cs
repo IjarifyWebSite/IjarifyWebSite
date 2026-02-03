@@ -21,6 +21,7 @@ namespace IjarifySystemPL.Controllers
         public async Task<ActionResult> Details(int id)
         {
             var vmModel = await _propertyService.GetPropertyDetails(id);
+            
             return View("Details",vmModel);
         }
 
