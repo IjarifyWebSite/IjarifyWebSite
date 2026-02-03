@@ -26,7 +26,7 @@ namespace IjarifySystemDAL.Data.Configurations
 
             builder.HasOne(b => b.user)
                .WithMany(u => u.Bookings)
-               .HasForeignKey(b=>b.UsertID)
+               .HasForeignKey(b=>b.UserID)
                .OnDelete(DeleteBehavior.NoAction);
 
             builder.Property(b => b.Status)

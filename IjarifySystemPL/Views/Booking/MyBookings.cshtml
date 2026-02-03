@@ -1,0 +1,252 @@
+﻿
+@{
+    ViewData["Title"] = "MyBookings";
+}
+
+@model IjarifySystemBLL.ViewModels.Booking.MyBookingsViewModel
+
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<main class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="heading">
+            <div class="container">
+                <div class="row d-flex justify-content-center text-center">
+                    <div class="col-lg-8">
+                        <h1 class="heading-title">My Bookings</h1>
+                        <p class="mb-0">
+                            View and manage all your property bookings in one place.
+                            Track upcoming stays, pending requests, and booking history.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="breadcrumbs">
+            <div class="container">
+                <ol>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="current">My Bookings</li>
+                </ol>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Bookings Section -->
+    <section id="my-bookings" class="my-bookings section">
+        <div class="container" data-aos="fade-up">
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle"></i> @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- Booking Tabs -->
+            <div class="booking-tabs">
+                <ul class="nav nav-pills mb-4" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#upcoming" type="button" role="tab">
+                            <i class="bi bi-clock-history"></i>
+                            Upcoming <span class="badge">@Model.UpcomingBookings.Count</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pending" type="button" role="tab">
+                            <i class="bi bi-hourglass-split"></i>
+                            Pending <span class="badge">@Model.PendingBookings.Count</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#past" type="button" role="tab">
+                            <i class="bi bi-archive"></i>
+                            Past <span class="badge">@Model.PastBookings.Count</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#rejected" type="button" role="tab">
+                            <i class="bi bi-x-circle"></i>
+                            Rejected <span class="badge">@Model.RejectedBookings.Count</span>
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <!-- Upcoming Bookings -->
+                    <div class="tab-pane fade show active" id="upcoming" role="tabpanel">
+                        @if (Model.UpcomingBookings.Any())
+                        {
+                            <div class="row gy-4">
+                                @foreach (var booking in Model.UpcomingBookings)
+                                {
+                                    <div class="col-lg-6">
+                                        @await Html.PartialAsync("_BookingCard", booking)
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="empty-state">
+                                <i class="bi bi-calendar-x"></i>
+                                <h4>No Upcoming Bookings</h4>
+                                <p>You don't have any upcoming bookings at the moment.</p>
+                                <a asp-controller="Property" asp-action="Index" class="btn-getstarted">
+                                    <i class="bi bi-search"></i> Browse Properties
+                                </a>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Pending Bookings -->
+                    <div class="tab-pane fade" id="pending" role="tabpanel">
+                        @if (Model.PendingBookings.Any())
+                        {
+                            <div class="row gy-4">
+                                @foreach (var booking in Model.PendingBookings)
+                                {
+                                    <div class="col-lg-6">
+                                        @await Html.PartialAsync("_BookingCard", booking)
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="empty-state">
+                                <i class="bi bi-hourglass"></i>
+                                <h4>No Pending Bookings</h4>
+                                <p>You don't have any pending booking requests.</p>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Past Bookings -->
+                    <div class="tab-pane fade" id="past" role="tabpanel">
+                        @if (Model.PastBookings.Any())
+                        {
+                            <div class="row gy-4">
+                                @foreach (var booking in Model.PastBookings)
+                                {
+                                    <div class="col-lg-6">
+                                        @await Html.PartialAsync("_BookingCard", booking)
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="empty-state">
+                                <i class="bi bi-clock-history"></i>
+                                <h4>No Past Bookings</h4>
+                                <p>You haven't completed any bookings yet.</p>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Rejected Bookings -->
+                    <div class="tab-pane fade" id="rejected" role="tabpanel">
+                        @if (Model.RejectedBookings.Any())
+                        {
+                            <div class="row gy-4">
+                                @foreach (var booking in Model.RejectedBookings)
+                                {
+                                    <div class="col-lg-6">
+                                        @await Html.PartialAsync("_BookingCard", booking)
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="empty-state">
+                                <i class="bi bi-check-circle"></i>
+                                <h4>No Rejected Bookings</h4>
+                                <p>None of your bookings have been rejected.</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+@section Styles {
+    <style>
+        .booking-tabs .nav-pills {
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .booking-tabs .nav-link {
+            color: #6c757d;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin: 0 5px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+            .booking-tabs .nav-link i {
+                margin-right: 8px;
+            }
+
+            .booking-tabs .nav-link .badge {
+                background: #e9ecef;
+                color: #6c757d;
+                border-radius: 12px;
+                padding: 3px 8px;
+                font-size: 12px;
+                margin-left: 5px;
+            }
+
+            .booking-tabs .nav-link.active {
+                background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+                color: #fff;
+            }
+
+                .booking-tabs .nav-link.active .badge {
+                    background: rgba(255, 255, 255, 0.2);
+                    color: #fff;
+                }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+            .empty-state i {
+                font-size: 64px;
+                color: #dee2e6;
+                margin-bottom: 20px;
+            }
+
+            .empty-state h4 {
+                color: #495057;
+                margin-bottom: 10px;
+            }
+
+            .empty-state p {
+                color: #6c757d;
+                margin-bottom: 20px;
+            }
+    </style>
+}

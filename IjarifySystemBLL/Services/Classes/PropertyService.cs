@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemBLL.Services.Classes
 {
-    public class PropertyService(IPropertyRepository _repo) : IPropertyService
+    public class PropertyService(IPropertyRepository _repo):IPropertyService
     {
         public async Task<(List<PropertyIndexViewModel>?, int, int)> GetPagination(int pageSize, int page)
         {

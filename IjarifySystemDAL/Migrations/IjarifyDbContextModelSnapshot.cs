@@ -34,7 +34,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasIndex("propertiesId");
 
-                    b.ToTable("AmenityProperty");
+                    b.ToTable("AmenityProperty", (string)null);
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Amenity", b =>
@@ -67,7 +67,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("amenities");
+                    b.ToTable("amenities", (string)null);
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Booking", b =>
@@ -112,7 +112,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasIndex("UsertID");
 
-                    b.ToTable("bookings");
+                    b.ToTable("bookings", (string)null);
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Favourite", b =>
@@ -143,7 +143,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("favourites");
+                    b.ToTable("favourites", (string)null);
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Inquiry", b =>
@@ -350,7 +350,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("PropertyImages");
+                    b.ToTable("PropertyImages", (string)null);
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Review", b =>
@@ -389,7 +389,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("reviews", t =>
+                    b.ToTable("reviews", null, t =>
                         {
                             t.HasCheckConstraint("CK_Review_Rating_Range", "Rating Between 1 and 10");
                         });

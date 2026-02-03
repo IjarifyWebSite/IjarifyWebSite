@@ -9,6 +9,7 @@ namespace IjarifySystemDAL.Repositories.Interfaces
 {
     public interface IPropertyRepository
     {
+        Task GetByIdAsync(int propertyID);
         public Task<List<Property>?> GetForPagination(int need, int skip);
         public Task<int> PropertiesCount();
         public Task<Property?> GetByIdAsync(int id);
