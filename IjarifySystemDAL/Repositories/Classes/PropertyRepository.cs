@@ -35,10 +35,12 @@ namespace IjarifySystemDAL.Repositories.Classes
                 .Take(need)
                 .ToListAsync();
         }
+        
 
-        public Task<int> PropertiesCount()
+        public async Task<int> PropertiesCount()
         {
-            throw new NotImplementedException();
+            int count = await _context.Properties.CountAsync();
+           return count;
         }
     }
 }
