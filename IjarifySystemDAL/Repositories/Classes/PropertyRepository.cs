@@ -13,6 +13,11 @@ namespace IjarifySystemDAL.Repositories.Classes
 {
     public class PropertyRepository(IjarifyDbContext _context) : IPropertyRepository
     {
+        public Task GetByIdAsync(int propertyID)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<Property>?> GetForPagination(int need, int skip)
         {
             return await _context.Properties
@@ -23,12 +28,10 @@ namespace IjarifySystemDAL.Repositories.Classes
                 .Take(need)
                 .ToListAsync();
         }
-        
 
-        public async Task<int> PropertiesCount()
+        public Task<int> PropertiesCount()
         {
-            int count = await _context.Properties.CountAsync();
-           return count;
+            throw new NotImplementedException();
         }
     }
 }
