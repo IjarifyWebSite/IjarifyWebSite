@@ -18,9 +18,10 @@ namespace IjarifySystemPL.Controllers
         }
 
         // GET: PropertyController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View("Details");
+            var vmModel = await _propertyService.GetPropertyDetails(id);
+            return View("Details",vmModel);
         }
 
         // GET: PropertyController/Create

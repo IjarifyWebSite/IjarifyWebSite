@@ -13,6 +13,18 @@ namespace IjarifySystemDAL.Repositories.Classes
 {
     public class PropertyRepository(IjarifyDbContext _context) : IPropertyRepository
     {
+        public async Task<Property?> GetByIdAsync(int id)
+        {
+           
+            return await _context.Properties
+                .Include(p => p.User)
+                .Include(p => p.Location)
+                .Include(p => p.PropertyImages)
+                .Include(p => p.amenities)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+        
+
         public async Task<List<Property>?> GetForPagination(int need, int skip)
         {
             return await _context.Properties

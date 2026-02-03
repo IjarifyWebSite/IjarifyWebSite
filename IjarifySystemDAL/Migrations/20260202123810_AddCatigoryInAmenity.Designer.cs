@@ -4,6 +4,7 @@ using IjarifySystemDAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IjarifySystemDAL.Migrations
 {
     [DbContext(typeof(IjarifyDbContext))]
-    partial class IjarifyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260202123810_AddCatigoryInAmenity")]
+    partial class AddCatigoryInAmenity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
