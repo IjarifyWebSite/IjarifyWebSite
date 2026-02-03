@@ -20,6 +20,9 @@ namespace IjarifySystemDAL.Data.Configurations
             builder.Property(a => a.Icon)
                 .HasColumnType("varchar")
                 .HasMaxLength(50);
+            builder.Property(a => a.Catigory)
+                .HasConversion<string>()
+                .HasColumnType("nvarchar(12)");
 
         }
     }

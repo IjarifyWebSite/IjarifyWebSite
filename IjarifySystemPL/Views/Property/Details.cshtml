@@ -1,8 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IjarifySystemBLL.ViewModels.PropertyViewModels.PropertyDetailsViewModel
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Title;
 }
 <main class="main">
 
@@ -12,12 +10,9 @@
             <div class="container">
                 <div class="row d-flex justify-content-center text-center">
                     <div class="col-lg-8">
-                        <h1 class="heading-title">Property Details</h1>
+                        <h1 class="heading-title">@Model.Title</h1>
                         <p class="mb-0">
-                            Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo
-                            odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum
-                            debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat
-                            ipsum dolorem.
+                            @Model.PropertyType property in @Model.City, @Model.Region
                         </p>
                     </div>
                 </div>
@@ -26,8 +21,9 @@
         <nav class="breadcrumbs">
             <div class="container">
                 <ol>
-                    <li><a href="index.html">Home</a></li>
-                    <li class="current">Property Details</li>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-controller="Property" asp-action="Index">Properties</a></li>
+                    <li class="current">@Model.Title</li>
                 </ol>
             </div>
         </nav>
@@ -43,100 +39,108 @@
 
                     <!-- Property Gallery -->
                     <div class="property-gallery" data-aos="fade-up" data-aos-delay="200">
-                        <div class="main-image-container image-zoom-container">
-                            <img id="main-product-image" src="assets/img/real-estate/property-exterior-3.webp" alt="Property Exterior" class="img-fluid main-property-image" data-zoom="assets/img/real-estate/property-exterior-3.webp">
-                            <div class="image-nav-buttons">
-                                <button class="image-nav-btn prev-image" type="button">
-                                    <i class="bi bi-chevron-left"></i>
-                                </button>
-                                <button class="image-nav-btn next-image" type="button">
-                                    <i class="bi bi-chevron-right"></i>
-                                </button>
+                        @if (Model.Images != null && Model.Images.Any())
+                        {
+                            <div class="main-image-container image-zoom-container">
+                                <img id="main-product-image"
+                                     src="@Model.Images.First().ImageUrl"
+                                     alt="@Model.Images.First().AltText"
+                                     class="img-fluid main-property-image"
+                                     data-zoom="@Model.Images.First().ImageUrl">
+                                @if (Model.Images.Count > 1)
+                                {
+                                    <div class="image-nav-buttons">
+                                        <button class="image-nav-btn prev-image" type="button">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </button>
+                                        <button class="image-nav-btn next-image" type="button">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                }
                             </div>
-                        </div>
-                        <div class="thumbnail-gallery thumbnail-list">
-                            <div class="thumbnail-item active" data-image="assets/img/real-estate/property-exterior-3.webp">
-                                <img src="assets/img/real-estate/property-exterior-3.webp" alt="Property Exterior" class="img-fluid">
+                            <div class="thumbnail-gallery thumbnail-list">
+                                @foreach (var image in Model.Images)
+                                {
+                                    <div class="thumbnail-item @(image == Model.Images.First() ? "active" : "")"
+                                         data-image="@image.ImageUrl">
+                                        <img src="@image.ImageUrl" alt="@image.AltText" class="img-fluid">
+                                    </div>
+                                }
                             </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-interior-1.webp">
-                                <img src="assets/img/real-estate/property-interior-1.webp" alt="Living Room" class="img-fluid">
+                        }
+                        else
+                        {
+                            <div class="main-image-container">
+                                <img src="~/assets/img/real-estate/default-property.webp"
+                                     alt="@Model.Title"
+                                     class="img-fluid main-property-image">
                             </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-interior-2.webp">
-                                <img src="assets/img/real-estate/property-interior-2.webp" alt="Kitchen" class="img-fluid">
-                            </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-interior-3.webp">
-                                <img src="assets/img/real-estate/property-interior-3.webp" alt="Master Bedroom" class="img-fluid">
-                            </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-exterior-4.webp">
-                                <img src="assets/img/real-estate/property-exterior-4.webp" alt="Garden View" class="img-fluid">
-                            </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-interior-4.webp">
-                                <img src="assets/img/real-estate/property-interior-4.webp" alt="Bathroom" class="img-fluid">
-                            </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-interior-5.webp">
-                                <img src="assets/img/real-estate/property-interior-5.webp" alt="Dining Room" class="img-fluid">
-                            </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-exterior-5.webp">
-                                <img src="assets/img/real-estate/property-exterior-5.webp" alt="Front View" class="img-fluid">
-                            </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-interior-6.webp">
-                                <img src="assets/img/real-estate/property-interior-6.webp" alt="Guest Room" class="img-fluid">
-                            </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-interior-7.webp">
-                                <img src="assets/img/real-estate/property-interior-7.webp" alt="Office Space" class="img-fluid">
-                            </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-exterior-6.webp">
-                                <img src="assets/img/real-estate/property-exterior-6.webp" alt="Side View" class="img-fluid">
-                            </div>
-                            <div class="thumbnail-item" data-image="assets/img/real-estate/property-interior-8.webp">
-                                <img src="assets/img/real-estate/property-interior-8.webp" alt="Balcony" class="img-fluid">
-                            </div>
-                        </div>
+                        }
                     </div><!-- End Property Gallery -->
                     <!-- Property Description -->
                     <div class="property-description" data-aos="fade-up" data-aos-delay="300">
                         <h3>About This Property</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
-                        <p>Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
+                        <p>@Model.Description</p>
                     </div><!-- End Property Description -->
                     <!-- Amenities -->
-                    <div class="property-amenities" data-aos="fade-up" data-aos-delay="400">
-                        <h3>Amenities &amp; Features</h3>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Interior Features</h4>
-                                <ul class="features-list">
-                                    <li><i class="bi bi-check-circle"></i>Hardwood Floors</li>
-                                    <li><i class="bi bi-check-circle"></i>Updated Kitchen</li>
-                                    <li><i class="bi bi-check-circle"></i>Walk-in Closets</li>
-                                    <li><i class="bi bi-check-circle"></i>Central Air Conditioning</li>
-                                    <li><i class="bi bi-check-circle"></i>Fireplace</li>
-                                    <li><i class="bi bi-check-circle"></i>High Ceilings</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <h4>Exterior Features</h4>
-                                <ul class="features-list">
-                                    <li><i class="bi bi-check-circle"></i>2-Car Garage</li>
-                                    <li><i class="bi bi-check-circle"></i>Swimming Pool</li>
-                                    <li><i class="bi bi-check-circle"></i>Garden</li>
-                                    <li><i class="bi bi-check-circle"></i>Patio/Deck</li>
-                                    <li><i class="bi bi-check-circle"></i>Security System</li>
-                                    <li><i class="bi bi-check-circle"></i>Sprinkler System</li>
-                                </ul>
+                    @if (Model.Amenities != null && Model.Amenities.Any())
+                    {
+                        <div class="property-amenities" data-aos="fade-up" data-aos-delay="400">
+                            <h3>Amenities &amp; Features</h3>
+                            <div class="row">
+                                <!-- Interior Features -->
+                                @{
+                                    var interiorAmenities = Model.Amenities.Where(a => a.Category == "Interior").ToList();
+                                    var exteriorAmenities = Model.Amenities.Where(a => a.Category == "Exterior").ToList();
+                                }
+
+                                @if (interiorAmenities.Any())
+                                {
+                                    <div class="col-md-6">
+                                        <h4>Interior Features</h4>
+                                        <ul class="features-list">
+                                            @foreach (var amenity in interiorAmenities)
+                                            {
+                                                <li><i class="bi @amenity.Icon"></i> @amenity.Name</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+
+                                <!-- Exterior Features -->
+                                @if (exteriorAmenities.Any())
+                                {
+                                    <div class="col-md-6">
+                                        <h4>Exterior Features</h4>
+                                        <ul class="features-list">
+                                            @foreach (var amenity in exteriorAmenities)
+                                            {
+                                                <li><i class="bi @amenity.Icon"></i> @amenity.Name</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
                             </div>
                         </div>
-                    </div><!-- End Amenities -->
+                    
+                        <!-- End Amenities -->
+                    }
+
                     <!-- Map Section -->
                     <div class="property-map" data-aos="fade-up" data-aos-delay="500">
                         <h3>Location</h3>
                         <div class="map-container">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2965.0824050173574!2d-87.63000000000002!3d41.88844360000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2c3cd0f4cbed%3A0xafe0a6ad09c0c000!2sChicago%2C%20IL%2C%20USA!5e0!3m2!1sen!2sus!4v1234567890123" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2965.0824050173574!2d@Model.Longitude!3d@Model.Latitude!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM@Model.Latitude!5e0!3m2!1sen!2sus!4v1234567890123"
+                                    width="100%"
+                                    height="400"
+                                    style="border:0;"
+                                    allowfullscreen=""
+                                    loading="lazy"></iframe>
                         </div>
                         <div class="location-details">
                             <h4>Neighborhood Information</h4>
-                            <p>Located in the heart of downtown, this property offers easy access to shopping, dining, and entertainment. Public transportation and major highways are just minutes away.</p>
+                            <p>@Model.NeighborhoodInfo</p>
                         </div>
                     </div><!-- End Map Section -->
 
@@ -146,97 +150,102 @@
 
                     <!-- Property Overview -->
                     <div class="property-overview sticky-top" data-aos="fade-up" data-aos-delay="200">
-                        <div class="price-tag">$875,000</div>
-                        <div class="property-status">For Sale</div>
+                        <div class="price-tag">$@Model.Price.ToString("N0")</div>
+                        <div class="property-status">@Model.ListingType</div>
 
                         <div class="property-address">
-                            <h4>1234 Maple Street</h4>
-                            <p>Chicago, IL 60601</p>
+                            <h4>@Model.Street</h4>
+                            <p>@Model.City, @Model.Region</p>
                         </div>
 
                         <div class="property-stats">
                             <div class="stat-item">
                                 <i class="bi bi-house"></i>
                                 <div>
-                                    <span class="value">4</span>
-                                    <span class="label">Bedrooms</span>
+                                    <span class="value">@Model.BedRooms</span>
+                                    <span class="label">Bedroom@(Model.BedRooms != 1 ? "s" : "")</span>
                                 </div>
                             </div>
                             <div class="stat-item">
                                 <i class="bi bi-droplet"></i>
                                 <div>
-                                    <span class="value">3</span>
-                                    <span class="label">Bathrooms</span>
+                                    <span class="value">@Model.BathRooms</span>
+                                    <span class="label">Bathroom@(Model.BathRooms != 1 ? "s" : "")</span>
                                 </div>
                             </div>
                             <div class="stat-item">
                                 <i class="bi bi-rulers"></i>
                                 <div>
-                                    <span class="value">2,450</span>
+                                    <span class="value">@Model.Area.ToString("N0")</span>
                                     <span class="label">Sq Ft</span>
                                 </div>
                             </div>
-                            <div class="stat-item">
-                                <i class="bi bi-tree"></i>
-                                <div>
-                                    <span class="value">0.25</span>
-                                    <span class="label">Acre Lot</span>
+                            @if (Model.LotSize.HasValue)
+                            {
+                                <div class="stat-item">
+                                    <i class="bi bi-tree"></i>
+                                    <div>
+                                        <span class="value">@Model.LotSize.Value.ToString("N2")</span>
+                                        <span class="label">Acre Lot</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="stat-item">
-                                <i class="bi bi-calendar"></i>
-                                <div>
-                                    <span class="value">2018</span>
-                                    <span class="label">Year Built</span>
+                            }
+                            @if (Model.YearBuilt.HasValue)
+                            {
+                                <div class="stat-item">
+                                    <i class="bi bi-calendar"></i>
+                                    <div>
+                                        <span class="value">@Model.YearBuilt</span>
+                                        <span class="label">Year Built</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="stat-item">
-                                <i class="bi bi-car-front"></i>
-                                <div>
-                                    <span class="value">2</span>
-                                    <span class="label">Garage</span>
+                            }
+                            @if (Model.GarageSpaces.HasValue)
+                            {
+                                <div class="stat-item">
+                                    <i class="bi bi-car-front"></i>
+                                    <div>
+                                        <span class="value">@Model.GarageSpaces</span>
+                                        <span class="label">Garage</span>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
 
                         <!-- Agent Info -->
                         <div class="agent-info">
                             <div class="agent-avatar">
-                                <img src="assets/img/real-estate/agent-3.webp" alt="Sarah Johnson" class="img-fluid">
+                                <img src="@Model.AgentAvatar" alt="@Model.AgentName" class="img-fluid">
                             </div>
                             <div class="agent-details">
-                                <h4>Sarah Johnson</h4>
-                                <p class="agent-title">Licensed Real Estate Agent</p>
-                                <p class="agent-phone"><i class="bi bi-telephone"></i>+1 (555) 123-4567</p>
-                                <p class="agent-email"><i class="bi bi-envelope"></i>sarah@example.com</p>
+                                <h4>@Model.AgentName</h4>
+                                <p class="agent-title">@Model.AgentTitle</p>
+                                <p class="agent-phone"><i class="bi bi-telephone"></i> @Model.AgentPhone</p>
+                                <p class="agent-email"><i class="bi bi-envelope"></i> @Model.AgentEmail</p>
                             </div>
                         </div><!-- End Agent Info -->
                         <!-- Contact Form -->
                         <div class="contact-form">
                             <h4>Schedule a Tour</h4>
-                            <form action="forms/contact.php" method="post" class="php-email-form">
+                            <form asp-controller="Inquiry" asp-action="Create" method="post" class="php-email-form">
+                                <input type="hidden" name="PropertyId" value="@Model.Id" />
                                 <div class="row">
                                     <div class="col-12 form-group">
-                                        <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+                                        <input type="text" name="Name" class="form-control" placeholder="Your Name" required>
                                     </div>
                                     <div class="col-12 form-group">
-                                        <input type="email" name="email" class="form-control" placeholder="Your Email" required="">
+                                        <input type="email" name="Email" class="form-control" placeholder="Your Email" required>
                                     </div>
                                     <div class="col-12 form-group">
-                                        <input type="tel" name="phone" class="form-control" placeholder="Your Phone">
+                                        <input type="tel" name="Phone" class="form-control" placeholder="Your Phone">
                                     </div>
-
                                     <div class="col-12 form-group">
-                                        <input type="text" name="subject" class="form-control" placeholder="Schedule a Tour for date: " value="Schedule a Tour for date: ">
+                                        <input type="date" name="PreferredDate" class="form-control" placeholder="Preferred Tour Date">
                                     </div>
-
                                     <div class="col-12 form-group">
-                                        <textarea class="form-control" name="message" rows="4" placeholder="Your Message"></textarea>
+                                        <textarea class="form-control" name="Message" rows="4" placeholder="Your Message"></textarea>
                                     </div>
                                     <div class="col-12 text-center">
-                                        <div class="loading">Loading</div>
-                                        <div class="error-message"></div>
-                                        <div class="sent-message">Your message has been sent. Thank you!</div>
                                         <button type="submit" class="btn btn-primary">Schedule Tour</button>
                                     </div>
                                 </div>
@@ -246,11 +255,28 @@
                         <div class="social-share">
                             <h5>Share This Property</h5>
                             <div class="share-buttons">
-                                <a href="#" class="share-btn facebook"><i class="bi bi-facebook"></i></a>
-                                <a href="#" class="share-btn twitter"><i class="bi bi-twitter"></i></a>
-                                <a href="#" class="share-btn whatsapp"><i class="bi bi-whatsapp"></i></a>
-                                <a href="#" class="share-btn email"><i class="bi bi-envelope"></i></a>
-                                <a href="#" class="share-btn print"><i class="bi bi-printer"></i></a>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u=@Url.Action("Details", "Property", new { id = Model.Id }, Context.Request.Scheme)"
+                                   target="_blank"
+                                   class="share-btn facebook">
+                                    <i class="bi bi-facebook"></i>
+                                </a>
+                                <a href="https://twitter.com/intent/tweet?url=@Url.Action("Details", "Property", new { id = Model.Id }, Context.Request.Scheme)&text=@Model.Title"
+                                   target="_blank"
+                                   class="share-btn twitter">
+                                    <i class="bi bi-twitter"></i>
+                                </a>
+                                <a href="https://wa.me/?text=@Model.Title @Url.Action("Details", "Property", new { id = Model.Id }, Context.Request.Scheme)"
+                                   target="_blank"
+                                   class="share-btn whatsapp">
+                                    <i class="bi bi-whatsapp"></i>
+                                </a>
+                                <a href="mailto:?subject=@Model.Title&body=Check out this property: @Url.Action("Details", "Property", new { id = Model.Id }, Context.Request.Scheme)"
+                                   class="share-btn email">
+                                    <i class="bi bi-envelope"></i>
+                                </a>
+                                <a href="javascript:window.print()" class="share-btn print">
+                                    <i class="bi bi-printer"></i>
+                                </a>
                             </div>
                         </div><!-- End Social Share -->
 
