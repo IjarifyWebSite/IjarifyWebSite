@@ -139,7 +139,7 @@ namespace IjarifySystemDAL.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     PropertyID = table.Column<int>(type: "int", nullable: false),
-                    UsertID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -153,7 +153,7 @@ namespace IjarifySystemDAL.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_bookings_Users_UsertID",
-                        column: x => x.UsertID,
+                        column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });

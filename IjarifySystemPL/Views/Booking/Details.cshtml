@@ -1,0 +1,463 @@
+﻿
+@{
+    ViewData["Title"] = "Details";
+}
+
+@model IjarifySystemBLL.ViewModels.Booking.BookingDetailsViewModel
+
+@{
+    ViewData["Title"] = "Booking Details";
+}
+
+<main class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="heading">
+            <div class="container">
+                <div class="row d-flex justify-content-center text-center">
+                    <div class="col-lg-8">
+                        <h1 class="heading-title">Booking Details</h1>
+                        <p class="mb-0">
+                            Complete information about your booking reservation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="breadcrumbs">
+            <div class="container">
+                <ol>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-action="MyBookings">My Bookings</a></li>
+                    <li class="current">Booking Details</li>
+                </ol>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Booking Details Section -->
+    <section id="booking-details" class="booking-details section">
+        <div class="container" data-aos="fade-up">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+
+                    <!-- Booking Header Card -->
+                    <div class="details-header-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h3><i class="bi bi-receipt"></i> Booking #@Model.Id</h3>
+                                <p class="mb-0">
+                                    <i class="bi bi-calendar"></i>
+                                    Booked on @Model.CreatedAt.ToString("dd MMMM yyyy, hh:mm tt")
+                                </p>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <span class="status-badge @Model.StatusBadgeClass">
+                                    @Model.Status
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row gy-4">
+                        <!-- Left Column -->
+                        <div class="col-lg-8">
+
+                            <!-- Property Information -->
+                            <div class="details-card">
+                                <div class="card-header">
+                                    <h4><i class="bi bi-house-door"></i> Property Information</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="property-info-item">
+                                        <span class="info-label">Property Name:</span>
+                                        <span class="info-value">
+                                            <a asp-controller="Property" asp-action="Details" asp-route-id="@Model.PropertyID">
+                                                @Model.PropertyTitle
+                                            </a>
+                                        </span>
+                                    </div>
+                                    @if (Model.PropertyType.HasValue)
+                                    {
+                                        <div class="property-info-item">
+                                            <span class="info-label">Property Type:</span>
+                                            <span class="info-value">
+                                                <i class="@Model.PropertyTypeIcon"></i>
+                                                <span class="badge @Model.PropertyTypeBadgeClass ms-2">
+                                                    @Model.PropertyTypeDisplay
+                                                </span>
+                                            </span>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.PropertyAddress))
+                                    {
+                                        <div class="property-info-item">
+                                            <span class="info-label">Location:</span>
+                                            <span class="info-value">
+                                                <i class="bi bi-geo-alt text-danger"></i>
+                                                @Model.PropertyAddress
+                                            </span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Stay Details -->
+                            <div class="details-card">
+                                <div class="card-header">
+                                    <h4><i class="bi bi-calendar-range"></i> Stay Details</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="stay-dates">
+                                        <div class="date-box check-in">
+                                            <i class="bi bi-calendar-check"></i>
+                                            <div>
+                                                <small>Check-In</small>
+                                                <strong>@Model.Check_In.ToString("dd MMM yyyy")</strong>
+                                                <span class="time">After 2:00 PM</span>
+                                            </div>
+                                        </div>
+                                        <div class="duration-info">
+                                            <i class="bi bi-moon"></i>
+                                            <span>@Model.TotalNights nights</span>
+                                        </div>
+                                        <div class="date-box check-out">
+                                            <i class="bi bi-calendar-x"></i>
+                                            <div>
+                                                <small>Check-Out</small>
+                                                <strong>@Model.Check_Out.ToString("dd MMM yyyy")</strong>
+                                                <span class="time">Before 11:00 AM</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Guest Information -->
+                            <div class="details-card">
+                                <div class="card-header">
+                                    <h4><i class="bi bi-person"></i> Guest Information</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="property-info-item">
+                                        <span class="info-label">Name:</span>
+                                        <span class="info-value">@Model.UserName</span>
+                                    </div>
+                                    <div class="property-info-item">
+                                        <span class="info-label">Email:</span>
+                                        <span class="info-value">
+                                            <i class="bi bi-envelope"></i> @Model.UserEmail
+                                        </span>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(Model.UserPhone))
+                                    {
+                                        <div class="property-info-item">
+                                            <span class="info-label">Phone:</span>
+                                            <span class="info-value">
+                                                <i class="bi bi-telephone"></i> @Model.UserPhone
+                                            </span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-lg-4">
+
+                            <!-- Payment Summary -->
+                            <div class="details-card sticky-card">
+                                <div class="card-header">
+                                    <h4><i class="bi bi-cash-stack"></i> Payment Summary</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="price-breakdown">
+                                        <div class="price-item">
+                                            <span>@Model.TotalNights night(s)</span>
+                                            <span>@Model.TotalPrice.ToString("C")</span>
+                                        </div>
+                                        <div class="price-divider"></div>
+                                        <div class="price-item total">
+                                            <span>Total</span>
+                                            <span>@Model.TotalPrice.ToString("C")</span>
+                                        </div>
+                                    </div>
+
+                                    @if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Approved)
+                                    {
+                                        <div class="alert alert-success mt-3">
+                                            <i class="bi bi-check-circle"></i>
+                                            <strong>Confirmed!</strong>
+                                            <p class="mb-0 small">Your booking has been confirmed.</p>
+                                        </div>
+                                    }
+                                    else if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Pending)
+                                    {
+                                        <div class="alert alert-warning mt-3">
+                                            <i class="bi bi-clock"></i>
+                                            <strong>Pending Review</strong>
+                                            <p class="mb-0 small">Awaiting confirmation from property owner.</p>
+                                        </div>
+                                    }
+                                    else if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Rejected)
+                                    {
+                                        <div class="alert alert-danger mt-3">
+                                            <i class="bi bi-x-circle"></i>
+                                            <strong>Rejected</strong>
+                                            <p class="mb-0 small">This booking request was not approved.</p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="action-buttons">
+                                <a asp-action="MyBookings" class="btn btn-secondary btn-block">
+                                    <i class="bi bi-arrow-left"></i> Back to Bookings
+                                </a>
+
+                                @if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Pending)
+                                {
+                                    <form asp-action="Cancel" asp-route-id="@Model.Id" method="post"
+                                          onsubmit="return confirm('Are you sure you want to cancel this booking?');"
+                                          class="mt-2">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-danger btn-block">
+                                            <i class="bi bi-x-circle"></i> Cancel Booking
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+@section Styles {
+    <style>
+        .details-header-card {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 25px rgba(42, 82, 152, 0.2);
+        }
+
+            .details-header-card h3 {
+                margin-bottom: 10px;
+                font-weight: 700;
+            }
+
+            .details-header-card p {
+                opacity: 0.9;
+            }
+
+        .status-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .details-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+            .details-card .card-header {
+                background: #f8f9fa;
+                padding: 20px 25px;
+                border-bottom: 1px solid #dee2e6;
+            }
+
+                .details-card .card-header h4 {
+                    margin: 0;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #2a5298;
+                }
+
+                .details-card .card-header i {
+                    margin-right: 8px;
+                }
+
+            .details-card .card-body {
+                padding: 25px;
+            }
+
+        .property-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+            .property-info-item:last-child {
+                border-bottom: none;
+            }
+
+        .info-label {
+            font-weight: 600;
+            color: #6c757d;
+        }
+
+        .info-value {
+            color: #212529;
+        }
+
+            .info-value a {
+                color: #2a5298;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+                .info-value a:hover {
+                    text-decoration: underline;
+                }
+
+        .stay-dates {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .date-box {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+            .date-box i {
+                font-size: 32px;
+                color: #2a5298;
+            }
+
+            .date-box.check-in i {
+                color: #28a745;
+            }
+
+            .date-box.check-out i {
+                color: #dc3545;
+            }
+
+            .date-box small {
+                display: block;
+                color: #6c757d;
+                font-size: 11px;
+                margin-bottom: 3px;
+            }
+
+            .date-box strong {
+                display: block;
+                color: #212529;
+                font-size: 15px;
+                margin-bottom: 3px;
+            }
+
+            .date-box .time {
+                display: block;
+                color: #6c757d;
+                font-size: 12px;
+            }
+
+        .duration-info {
+            text-align: center;
+            color: #2a5298;
+            font-weight: 600;
+        }
+
+            .duration-info i {
+                display: block;
+                font-size: 24px;
+                margin-bottom: 5px;
+            }
+
+        .price-breakdown {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .price-divider {
+            height: 2px;
+            background: #dee2e6;
+            margin: 15px 0;
+        }
+
+        .price-item.total {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2a5298;
+            padding-top: 15px;
+        }
+
+        .sticky-card {
+            position: sticky;
+            top: 100px;
+        }
+
+        .action-buttons .btn-block {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            color: #fff;
+        }
+
+            .btn-secondary:hover {
+                background: #5a6268;
+                color: #fff;
+            }
+
+        .btn-danger {
+            background: #dc3545;
+            border: none;
+            color: #fff;
+        }
+
+            .btn-danger:hover {
+                background: #c82333;
+            }
+        @@media (max-width: 991px) {
+            .stay-dates
+
+        {
+            flex-direction: column;
+        }
+
+        .sticky-card {
+            position: relative;
+            top: 0;
+        }
+
+        }
+
+        
+    </style>
+}
+

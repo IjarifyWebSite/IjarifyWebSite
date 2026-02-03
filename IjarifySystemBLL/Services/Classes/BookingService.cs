@@ -70,7 +70,7 @@ namespace IjarifySystemBLL.Services.Classes
             var booking = new Booking
             {
                 PropertyID = dto.PropertyID,
-                UsertID = userId,
+                UserID = userId,
                 Check_In = dto.Check_In,
                 Check_Out = dto.Check_Out,
                 TotalPrice = dto.TotalPrice,
@@ -157,7 +157,7 @@ namespace IjarifySystemBLL.Services.Classes
                 PropertyTitle = booking.Property?.Title ?? string.Empty,
                 PropertyAddress = booking.Property?.Location?.City ?? string.Empty,
                 PropertyType = booking.Property?.Type,
-                UserID = booking.UsertID,
+                UserID = booking.UserID,
                 UserName = booking.user?.Name ?? string.Empty,
                 UserEmail = booking.user?.Email ?? string.Empty,
                 UserPhone = booking.user?.Phone ?? string.Empty

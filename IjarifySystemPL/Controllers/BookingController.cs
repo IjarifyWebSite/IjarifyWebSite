@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace IjarifySystemPL.Controllers
 {
-    [Authorize]
+
     public class BookingController : Controller
     {
         private readonly IBookingService _bookingService;
@@ -70,7 +70,9 @@ namespace IjarifySystemPL.Controllers
         [HttpGet]
         public async Task<IActionResult> MyBookings()
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            int userId = 1;
+            //    var userId = User.FindFirst(ClaimTypes.NameIdentifier) is null? 0
+            //                                                         : int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             var bookings = await _bookingService.GetUserBookingsAsync(userId);
 
             var viewModel = new MyBookingsViewModel

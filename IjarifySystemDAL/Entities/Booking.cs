@@ -34,7 +34,7 @@ namespace IjarifySystemDAL.Entities
         #endregion
 
         #region Booking-User
-        public int UsertID { get; set; }    
+        public int UserID { get; set; }    
         public User user { get; set; } = null!;
         #endregion
     }

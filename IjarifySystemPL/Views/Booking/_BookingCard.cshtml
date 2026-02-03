@@ -1,0 +1,209 @@
+﻿
+@{
+    ViewData["Title"] = "_BookingCard";
+}
+
+@model IjarifySystemBLL.ViewModels.Booking.BookingListViewModel
+
+<div class="booking-card">
+    <div class="booking-card-header">
+        <div class="booking-id">
+            <i class="bi bi-receipt"></i> Booking #@Model.Id
+        </div>
+        <div class="booking-status">
+            <span class="badge @Model.StatusBadgeClass">
+                @Model.StatusText
+            </span>
+        </div>
+    </div>
+
+    <div class="booking-card-body">
+        <h5 class="property-title">
+            <i class="bi bi-house-door"></i> @Model.PropertyTitle
+        </h5>
+
+        <div class="booking-dates">
+            <div class="date-item">
+                <i class="bi bi-calendar-check text-success"></i>
+                <div>
+                    <small>Check-In</small>
+                    <strong>@Model.Check_In.ToString("dd MMM yyyy")</strong>
+                </div>
+            </div>
+            <div class="date-separator">
+                <i class="bi bi-arrow-right"></i>
+            </div>
+            <div class="date-item">
+                <i class="bi bi-calendar-x text-danger"></i>
+                <div>
+                    <small>Check-Out</small>
+                    <strong>@Model.Check_Out.ToString("dd MMM yyyy")</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-info">
+            <div class="info-item">
+                <i class="bi bi-moon"></i>
+                <span>@Model.TotalNights night(s)</span>
+            </div>
+            <div class="info-item price">
+                <i class="bi bi-cash-stack"></i>
+                <span>@Model.TotalPrice.ToString("C")</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="booking-card-footer">
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-details">
+            <i class="bi bi-eye"></i> View Details
+        </a>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .booking-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+
+            .booking-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 35px rgba(0, 0, 0, 0.12);
+            }
+
+        .booking-card-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .booking-id {
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+        }
+
+            .booking-id i {
+                color: #2a5298;
+            }
+
+        .booking-status .badge {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 20px;
+        }
+
+        .booking-card-body {
+            padding: 20px;
+        }
+
+        .property-title {
+            color: #2a5298;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+            .property-title i {
+                margin-right: 8px;
+            }
+
+        .booking-dates {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .date-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .date-item i {
+                font-size: 24px;
+            }
+
+            .date-item small {
+                display: block;
+                color: #6c757d;
+                font-size: 11px;
+            }
+
+            .date-item strong {
+                display: block;
+                color: #212529;
+                font-size: 14px;
+            }
+
+        .date-separator {
+            color: #dee2e6;
+            font-size: 20px;
+        }
+
+        .booking-info {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6c757d;
+        }
+
+            .info-item i {
+                color: #2a5298;
+            }
+
+            .info-item.price {
+                color: #2a5298;
+                font-weight: 700;
+                font-size: 16px;
+            }
+
+        .booking-card-footer {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .btn-details {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+            .btn-details:hover {
+                opacity: 0.9;
+                color: #fff;
+            }
+
+            .btn-details i {
+                margin-right: 5px;
+            }
+    </style>
+}
+

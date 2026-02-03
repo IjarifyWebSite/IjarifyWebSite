@@ -41,7 +41,7 @@ namespace IjarifySystemDAL.Repositories.Classes
                 .Include(b => b.Property)
                     .ThenInclude(p => p.Location)
                 .Include(b => b.user)
-                .Where(b => b.UsertID == userId)
+                .Where(b => b.UserID == userId)
                 .OrderByDescending(b => b.CreatedAt)
                 .ToListAsync();
         }
