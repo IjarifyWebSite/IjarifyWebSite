@@ -1,5 +1,6 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
-using IjarifySystemBLL.ViewModels;
+using IjarifySystemBLL.ViewModels.AmenityViewModels;
+using IjarifySystemBLL.ViewModels.PropertyViewModels;
 using IjarifySystemDAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,68 @@ namespace IjarifySystemBLL.Services.Classes
             }).ToList();
 
             return (vmList, pages, page);
+        }
+        public async Task<PropertyDetailsViewModel?> GetPropertyDetails(int id)
+        {
+            var property = await _repo.GetByIdAsync(id);
+
+            if (property == null) return null;
+
+            var viewModel = new PropertyDetailsViewModel
+            {
+                Id = property.Id,
+                Title = property.Title,
+                Description = property.Description,
+                Price = property.Price,
+                ListingType = property.ListingType.ToString(),
+                PropertyType = property.Type.ToString(),
+
+                // Property Stats
+                BedRooms = property.BedRooms,
+                BathRooms = property.BathRooms,
+                Area = property.Area,
+                
+
+                // Location
+                Street = property.Location.Street,
+                City = property.Location.City,
+                Region = property.Location.Regoin,
+                FullAddress = $"{property.Location.Street}, {property.Location.City}, {property.Location.Regoin}",
+                Latitude = property.Location.Latitude,
+                Longitude = property.Location.Longitude,
+                NeighborhoodInfo = $"Located in {property.Location.Regoin}, this property offers convenient access to local amenities and attractions.",
+
+                // Images
+                Images = property.PropertyImages?.Select(img => new PropertyImageViewModel
+                {
+                    Id = img.Id,
+                    ImageUrl = img.ImageUrl,
+                    AltText = property.Title
+                }).ToList() ?? new List<PropertyImageViewModel>(),
+
+                // Amenities
+                Amenities = property.amenities?.Select(a => new AmenityViewModel
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Icon = a.Icon,
+                    Category = a.Catigory.ToString()
+                }).ToList() ?? new List<AmenityViewModel>(),
+
+                // Agent Info
+                AgentId = property.UserId,
+                AgentName = property.User.Name,
+                AgentTitle = "Licensed Real Estate Agent",
+                AgentPhone = property.User.Phone,
+                AgentEmail = property.User.Email,
+                AgentAvatar = property.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
+
+                // Additional
+                CreatedAt = property.CreatedAt,
+                IsNew = (DateTime.Now - property.CreatedAt).TotalDays <= 30
+            };
+
+            return viewModel;
         }
     }
 }
