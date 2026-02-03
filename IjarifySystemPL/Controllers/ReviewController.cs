@@ -13,22 +13,6 @@ namespace IjarifyWeb.Controllers
             this.reviewService = reviewService;
         }
 
-        [HttpGet]
-        public IActionResult PropertyReviews(int propertyId)
-        {
-            int fakeUserId = 1;
-            var reviewsViewModel = reviewService.GetReviewsByProperty(propertyId, fakeUserId);
-
-            return View(reviewsViewModel);
-        }
-
-        [HttpGet]
-        public IActionResult Create(int propertyId)
-        {
-            var review = new ReviewFormViewModel { PropertyId = propertyId };
-            return View(review);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(ReviewFormViewModel createReview)
@@ -48,16 +32,6 @@ namespace IjarifyWeb.Controllers
 
             ModelState.AddModelError("", "You have already reviewed this property.");
             return View(createReview);
-        }
-
-
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            var review = reviewService.GetReviewToUpdate(id);
-            if (review == null) return NotFound();
-
-            return View(review);
         }
 
         [HttpPost]
@@ -90,15 +64,6 @@ namespace IjarifyWeb.Controllers
             }
 
             return BadRequest("Delete failed.");
-        }
-
-
-        [HttpGet]
-        public IActionResult MyReviews()
-        {
-            int fakeUserId = 1;
-            var reviews = reviewService.GetReviewsByUser(fakeUserId);
-            return View(reviews);
         }
     }
 }
