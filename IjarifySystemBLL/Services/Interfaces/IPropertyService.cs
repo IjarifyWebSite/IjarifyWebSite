@@ -10,5 +10,6 @@ namespace IjarifySystemBLL.Services.Interfaces
     public interface IPropertyService
     {
         public  Task<(List<PropertyIndexViewModel>?, int, int)> GetPagination(int pageSize, int page);
+        Task GetPropertyByIdAsync(int propertyId);
     }
 }
