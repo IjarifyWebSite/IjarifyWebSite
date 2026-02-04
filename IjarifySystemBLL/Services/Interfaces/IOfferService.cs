@@ -11,7 +11,7 @@ namespace IjarifySystemBLL.Services.Interfaces
     public interface IOfferService
     {
         IEnumerable<OfferViewModel> GetAllOffers();
-        IEnumerable<OfferViewModel> GetAllOffersByLocation(int locationId);
+        IEnumerable<OfferViewModel> GetAllOffersByLocation(string LocationName);
         OfferViewModel? GetOfferById(int id);
         bool CreateOffer(CreateOfferViewModel offerViewModel);
         UpdateOfferViewModel? GetOfferForUpdate(int id);
