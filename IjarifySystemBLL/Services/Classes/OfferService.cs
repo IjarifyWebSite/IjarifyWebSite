@@ -60,9 +60,9 @@ namespace IjarifySystemBLL.Services.Classes
             return memberViewModels;
         }
 
-        public IEnumerable<OfferViewModel> GetAllOffersByLocation(int locationId)
+        public IEnumerable<OfferViewModel> GetAllOffersByLocation(string city)
         {
-            var Offers= _offerRepository.GetAllForLocation(locationId,o=>o.CreatedAt<o.EndDate);
+            var Offers= _offerRepository.GetAllForLocation(city,o=>o.CreatedAt<o.EndDate);
             if (Offers == null || !Offers.Any())
             {
                 return Enumerable.Empty<OfferViewModel>();
