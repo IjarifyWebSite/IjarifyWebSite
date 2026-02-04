@@ -19,51 +19,64 @@ namespace IjarifyWeb.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(createReview);
-            }
-
-            int fakeUserId = 1;
-            bool IsCreated = reviewService.CreateReview(createReview, fakeUserId);
-
-            if (IsCreated)
-            {
                 return RedirectToAction("Details", "Property", new { id = createReview.PropertyId });
             }
 
-            ModelState.AddModelError("", "You have already reviewed this property.");
-            return View(createReview);
+            int fakeUserId = 3;
+            bool isCreated = reviewService.CreateReview(createReview, fakeUserId);
+
+            if (isCreated)
+            {
+                TempData["SuccessMessage"] = "Review posted successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "You have already reviewed this property.";
+            }
+
+            return RedirectToAction("Details", "Property", new { id = createReview.PropertyId });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(ReviewFormViewModel updateReview)
         {
-            if (!ModelState.IsValid) return View(updateReview);
-
-            int fakeUserId = 1;
-            bool IsUpdated = reviewService.UpdateReview(updateReview, fakeUserId, updateReview.ReviewId ?? 0);
-
-            if (IsUpdated)
+            if (!ModelState.IsValid)
             {
                 return RedirectToAction("Details", "Property", new { id = updateReview.PropertyId });
             }
 
-            ModelState.AddModelError("", "Unable to update review. Make sure you are the owner of review.");
-            return View(updateReview);
+            int fakeUserId = 3;
+            bool isUpdated = reviewService.UpdateReview(updateReview, fakeUserId, updateReview.ReviewId ?? 0);
+
+            if (isUpdated)
+            {
+                TempData["SuccessMessage"] = "Review updated successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Oops! Something went wrong while updating.";
+            }
+
+            return RedirectToAction("Details", "Property", new { id = updateReview.PropertyId });
         }
 
         [HttpPost]
         public IActionResult Delete(int id, int propertyId)
         {
-            int fakeUserId = 1;
-            bool IsDeleted = reviewService.DeleteReview(id, fakeUserId);
+            int fakeUserId = 3;
+            bool isDeleted = reviewService.DeleteReview(id, fakeUserId);
 
-            if (IsDeleted)
+            if (isDeleted)
             {
-                return RedirectToAction("Details", "Property", new { id = propertyId });
+                TempData["SuccessMessage"] = "Your review has been deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Oops! Something went wrong while deleting. Please try again.";
             }
 
-            return BadRequest("Delete failed.");
+            return RedirectToAction("Details", "Property", new { id = propertyId });
         }
     }
 }
