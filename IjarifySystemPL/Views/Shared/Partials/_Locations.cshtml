@@ -1,0 +1,22 @@
+﻿@using IjarifySystemBLL.ViewModels.LocationsViewModel
+@model List<LocationViewModel>
+
+@{
+    ViewData["Title"] = "_Locations";
+}
+
+@foreach (var location in Model)
+{
+   
+          <div class="col-lg-3 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="100">
+            <a href="city-offers.html?city=new-cairo" class="city-card-link">
+              <div class="area-card">
+                <div class="area-image-wrapper">
+                  <img src="@location.ImageUrl" alt="New Cairo" class="area-image">
+                </div>
+                <h5 class="area-name">@location.City</h5>
+              </div>
+            </a>
+          </div>
+}
+</ul>
