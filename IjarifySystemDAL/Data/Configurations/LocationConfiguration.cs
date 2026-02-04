@@ -18,6 +18,7 @@ namespace IjarifySystemDAL.Data.Configurations
             builder.Property(l => l.City).HasColumnType("varchar").HasMaxLength(50);
             builder.Property(l => l.Regoin).HasColumnType("varchar").HasMaxLength(50);
             builder.Property(l => l.Street).HasColumnType("varchar").HasMaxLength(50);
+            builder.Property(l => l.ImageUrl).HasColumnType("varchar").HasMaxLength(500);
 
             builder.HasMany(l => l.Properties)
                    .WithOne(p => p.Location)
