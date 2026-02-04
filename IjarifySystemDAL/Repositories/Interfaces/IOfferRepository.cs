@@ -11,7 +11,7 @@ namespace IjarifySystemDAL.Repositories.Interfaces
     public interface IOfferRepository
     {
         IEnumerable<Offer> GetAll(Expression< Func<Offer,bool>>? Condition=null);
-        IEnumerable<Offer> GetAllForLocation(int locationId, Expression<Func<Offer, bool>>? Condition = null);
+        IEnumerable<Offer> GetAllForLocation(string LocationName, Expression<Func<Offer, bool>>? Condition = null);
         Offer? GetById(int id);
         void Add(Offer offer);
         void Update(Offer offer);

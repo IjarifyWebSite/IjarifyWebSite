@@ -41,9 +41,9 @@ namespace IjarifySystemDAL.Repositories.Classes
             return _Dbcontext.SaveChanges();
         }
 
-        public IEnumerable<Offer> GetAllForLocation(int locationId, Expression<Func<Offer, bool>>? Condition = null)
+        public IEnumerable<Offer> GetAllForLocation(string LocationName, Expression<Func<Offer, bool>>? Condition = null)
         {
-            var query = _Dbcontext.Offers.AsNoTracking().Where(o => o.Property.LocationId == locationId);
+            var query = _Dbcontext.Offers.AsNoTracking().Include(o=>o.Property).ThenInclude(o=>o.Location).Where(o => o.Property.Location.City == LocationName);
             if (Condition == null)
             {
                 return query.ToList();
