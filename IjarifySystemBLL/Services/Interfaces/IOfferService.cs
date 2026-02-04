@@ -1,4 +1,5 @@
-﻿using IjarifySystemBLL.ViewModels.OfferViewModels;
+﻿using IjarifySystemBLL.ViewModels.LocationsViewModel;
+using IjarifySystemBLL.ViewModels.OfferViewModels;
 using IjarifySystemDAL.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace IjarifySystemBLL.Services.Interfaces
     public interface IOfferService
     {
         IEnumerable<OfferViewModel> GetAllOffers();
-        IEnumerable<OfferViewModel> GetAllOffersByLocation(string LocationName);
+        LocationOffersPageViewModel? GetAllOffersByLocation(string LocationName);
         OfferViewModel? GetOfferById(int id);
         bool CreateOffer(CreateOfferViewModel offerViewModel);
         UpdateOfferViewModel? GetOfferForUpdate(int id);
