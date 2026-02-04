@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IjarifySystemDAL.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class InitailCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,6 +19,7 @@ namespace IjarifySystemDAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Icon = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(12)", maxLength: 30, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -152,7 +153,7 @@ namespace IjarifySystemDAL.Migrations
                         principalTable: "Properties",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_bookings_Users_UsertID",
+                        name: "FK_bookings_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -299,9 +300,9 @@ namespace IjarifySystemDAL.Migrations
                 column: "PropertyID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_bookings_UsertID",
+                name: "IX_bookings_UserID",
                 table: "bookings",
-                column: "UsertID");
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_favourites_PropertyId",

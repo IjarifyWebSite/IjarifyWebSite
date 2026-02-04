@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IjarifySystemDAL.Migrations
 {
     [DbContext(typeof(IjarifyDbContext))]
-    [Migration("20260201174936_init")]
-    partial class init
+    [Migration("20260204144346_InitailCreate")]
+    partial class InitailCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,11 @@ namespace IjarifySystemDAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -102,14 +107,14 @@ namespace IjarifySystemDAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UsertID")
+                    b.Property<int>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyID");
 
-                    b.HasIndex("UsertID");
+                    b.HasIndex("UserID");
 
                     b.ToTable("bookings");
                 });
@@ -477,7 +482,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasOne("IjarifySystemDAL.Entities.User", "user")
                         .WithMany("Bookings")
-                        .HasForeignKey("UsertID")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

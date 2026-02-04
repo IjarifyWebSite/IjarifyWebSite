@@ -9,9 +9,11 @@ namespace IjarifySystemBLL.ViewModels.ReviewsViewModels
     public class ReviewItemViewModel
     {
         public int ReviewId { get; set; }
+        public int PropertyId { get; set; }
         public int Rating { get; set; }
         public string Comment { get; set; } = null!;
         public string UserName { get; set; } = null!;
+        public string? UserImage { get; set; }
         public string PropertyName { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public bool IsOwner { get; set; } // For Enable Update | Delete
