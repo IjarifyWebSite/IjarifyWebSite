@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IjarifySystemBLL.ViewModels
+namespace IjarifySystemBLL.ViewModels.PropertyViewModels
 {
     public class PropertyIndexViewModel
     {
