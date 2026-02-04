@@ -1,0 +1,20 @@
+﻿@using IjarifySystemBLL.ViewModels.LocationsViewModel
+@model LocationOffersPageViewModel
+@{
+    ViewData["Title"] = "Offers";
+}
+
+
+@foreach(var item in Model.Offers)
+{
+    <div class="col-md-6 col-lg-3">
+    <div class="offer-card">
+        <div class="discount-percent">@((int)item.DiscountPercentage)%</div>
+        <div class="discount-label">Discount</div>
+        <p class="offer-details">Valid from @item.StartDate to @item.EndDate</p>
+        <div class="project-name">@item.PropertyTitle</div>
+        <div class="developer-name">@item.LocationName</div>
+        <button class="get-offer-btn">Get Offer</button>
+    </div>
+</div>
+}
