@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "FiltereOffers";
+}
+
+@section Styles{    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <link rel="stylesheet" href="/assets/css/FilterOffers.css">
+}
+
+<div class="page-title">
+<div class="container">
+    <h2 class="section-title">Real Estate Offers</h2>
+
+    <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" class="main-search" placeholder="Area, Compound, Real Estate Developer">
+    </div>
+
+    <div class="filter-bar">
+        <div class="filter-item">
+            <div class="filter-trigger" onclick="toggleDropdown('offer-menu')">
+                Offer Types <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div id="offer-menu" class="dropdown-menu">
+                <div class="inner-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search Offers" onkeyup="filterList(this)">
+                </div>
+                <div id="offer-tags" class="tags-area"></div>
+                <div class="checkbox-list">
+                    <label class="check-row"><input type="checkbox" value="Resale" onchange="handleCheck(this, 'offer-tags')"> Resale</label>
+                    <label class="check-row"><input type="checkbox" value="Primary" onchange="handleCheck(this, 'offer-tags')"> Primary</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-item">
+            <div class="filter-trigger" onclick="toggleDropdown('area-menu')">
+                Areas <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div id="area-menu" class="dropdown-menu">
+                <div class="inner-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search Areas" onkeyup="filterList(this)">
+                </div>
+                <div id="area-tags" class="tags-area"></div>
+                <div class="checkbox-list">
+                    <label class="check-row"><input type="checkbox" value="New Cairo" onchange="handleCheck(this, 'area-tags')"> New Cairo</label>
+                    <label class="check-row"><input type="checkbox" value="Sheikh Zayed" onchange="handleCheck(this, 'area-tags')"> Sheikh Zayed</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-item">
+            <div class="filter-trigger" onclick="toggleDropdown('dev-menu')">
+                Developers <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div id="dev-menu" class="dropdown-menu">
+                <div class="inner-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search Developers" onkeyup="filterList(this)">
+                </div>
+                <div id="dev-tags" class="tags-area"></div>
+                <div class="checkbox-list">
+                    <label class="check-row"><input type="checkbox" value="Mountain View" onchange="handleCheck(this, 'dev-tags')"> Mountain View</label>
+                    <label class="check-row"><input type="checkbox" value="Sodic" onchange="handleCheck(this, 'dev-tags')"> Sodic</label>
+                    <label class="check-row"><input type="checkbox" value="Ora" onchange="handleCheck(this, 'dev-tags')"> Ora</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-item">
+            <div class="filter-trigger" onclick="toggleDropdown('comp-menu')">
+                Compounds <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div id="comp-menu" class="dropdown-menu">
+                <div class="inner-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search Compounds" onkeyup="filterList(this)">
+                </div>
+                <div id="comp-tags" class="tags-area"></div>
+                <div class="checkbox-list">
+                    <label class="check-row"><input type="checkbox" value="Telal East" onchange="handleCheck(this, 'comp-tags')"> Telal East</label>
+                    <label class="check-row"><input type="checkbox" value="The Med" onchange="handleCheck(this, 'comp-tags')"> The Med</label>
+                    <label class="check-row"><input type="checkbox" value="Zed" onchange="handleCheck(this, 'comp-tags')"> Zed</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="property-grid">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80" class="card-img">
+            <div class="card-body">
+                <div class="card-header">
+                    <div><h4 class="card-title">Selection - Telal East</h4><p class="card-location">New Cairo</p></div>
+                    <div class="contact-btns">
+                        <a href="#" class="icon-btn btn-phone"><i class="fa-solid fa-phone"></i></a>
+                        <a href="#" class="icon-btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="offer-text"><span>5%</span> Down Payment, <span>14</span> Years</div>
+                <div class="card-footer">1 More Offer <i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@section Scripts{
+    <script src="/assets/js/FilterOffers.js"></script>
+}
+
