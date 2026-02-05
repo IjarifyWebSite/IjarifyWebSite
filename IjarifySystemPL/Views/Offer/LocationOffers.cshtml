@@ -4,23 +4,20 @@
     ViewData["Title"] = "LocationOffers";
 }
 
-<div class="page-title-section py-4 bg-light text-center">
+
+    @section Styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/LocationOffers.css">
+    }
+
+    <div class="page-title">
+    <div class="page-title-section py-4 bg-light text-center">
     <div class="container">
         <h1 class="display-5 fw-bold">Current Offers</h1>
         <p class="text-muted">Check out our latest exclusive deals</p>
     </div>
 </div>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@Model.City Offers</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/LocationOffers.css">
-</head>
-<body>
+</div>
 
 <div class="container mt-4">
     <div class="header-section d-flex justify-content-between align-items-center rounded">
@@ -42,7 +39,3 @@
          <partial name="Partials/_Offers" model="Model" />
      </div>
 </div>
-
-
-</body>
-</html>
