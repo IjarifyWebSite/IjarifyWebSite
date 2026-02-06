@@ -152,7 +152,7 @@ namespace IjarifySystemDAL.Migrations
                         principalTable: "Properties",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_bookings_Users_UsertID",
+                        name: "FK_bookings_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -299,9 +299,9 @@ namespace IjarifySystemDAL.Migrations
                 column: "PropertyID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_bookings_UsertID",
+                name: "IX_bookings_UserID",
                 table: "bookings",
-                column: "UsertID");
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_favourites_PropertyId",
