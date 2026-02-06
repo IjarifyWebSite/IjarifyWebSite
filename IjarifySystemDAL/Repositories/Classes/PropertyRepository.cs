@@ -21,6 +21,7 @@ namespace IjarifySystemDAL.Repositories.Classes
                 .Include(p => p.Location)
                 .Include(p => p.PropertyImages)
                 .Include(p => p.amenities)
+                .Include(p => p.Reviews!).ThenInclude(r => r.user)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
         

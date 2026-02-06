@@ -1,4 +1,5 @@
 ﻿using IjarifySystemBLL.ViewModels.AmenityViewModels;
+using IjarifySystemBLL.ViewModels.ReviewsViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,9 +52,11 @@ namespace IjarifySystemBLL.ViewModels.PropertyViewModels
         // Additional Info
         public DateTime CreatedAt { get; set; }
         public bool IsNew { get; set; }
-    }
 
-    
+        // Reviews
+        public List<ReviewItemViewModel> Reviews { get; set; } = new List<ReviewItemViewModel>();
 
-    
+        //User Info
+        public string? CurrentUserImage { get; set; }
+    } 
 }

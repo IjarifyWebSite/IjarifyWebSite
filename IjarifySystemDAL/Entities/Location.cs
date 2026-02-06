@@ -13,6 +13,7 @@ namespace IjarifySystemDAL.Entities
         public string Street { get; set; } = null!;
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
+        public string ImageUrl { get; set; } = null!;
 
         public ICollection<Property>? Properties { get; set; }
 

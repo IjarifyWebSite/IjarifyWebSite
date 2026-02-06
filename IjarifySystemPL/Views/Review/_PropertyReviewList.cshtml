@@ -1,0 +1,517 @@
+﻿@using IjarifySystemBLL.ViewModels.ReviewsViewModels
+@model IEnumerable<ReviewItemViewModel>
+
+@{
+    bool hasUserReviewed = Model != null && Model.Any(r => r.IsOwner);
+}
+
+<!-- Reviews Section -->
+<div class="property-reviews-section">
+    <!-- Success/Error Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success auto-hide">
+            <i class="bi bi-check-circle me-2"></i>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger auto-hide">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <h4 class="reviews-title fancy-title">
+        <i class="bi bi-chat-left-text me-2"></i>
+        Reviews (@(Model?.Count() ?? 0))
+    </h4>
+
+    @if (!hasUserReviewed)
+    {
+        <div class="add-review">
+            <img src="~/assets/img/real-estate/agent-1.webp" alt="User" class="user-avatar">
+            <form asp-controller="Review" asp-action="Create" method="post" class="review-form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="PropertyId" value="@ViewData["TargetPropertyId"]" />
+
+                <textarea name="Comment"
+                          placeholder="Write a review..."
+                          rows="2"
+                          required
+                          onfocus="expandForm(this)"></textarea>
+
+                <div class="form-actions" style="display: none;">
+                    <div class="rating-select">
+                        <label>Rating:</label>
+                        <div class="stars-input">
+                            <input type="radio" name="Rating" value="5" id="r5" checked>
+                            <label for="r5"><i class="bi bi-star-fill"></i></label>
+                            <input type="radio" name="Rating" value="4" id="r4">
+                            <label for="r4"><i class="bi bi-star-fill"></i></label>
+                            <input type="radio" name="Rating" value="3" id="r3">
+                            <label for="r3"><i class="bi bi-star-fill"></i></label>
+                            <input type="radio" name="Rating" value="2" id="r2">
+                            <label for="r2"><i class="bi bi-star-fill"></i></label>
+                            <input type="radio" name="Rating" value="1" id="r1">
+                            <label for="r1"><i class="bi bi-star-fill"></i></label>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="button" class="btn-cancel" onclick="collapseForm(this)">Cancel</button>
+                        <button type="submit" class="btn-post">
+                            <i class="bi bi-send me-1"></i> Post
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info border-0 shadow-sm mb-4" style="background-color: #e6fffa; color: #2c7a7b; display: flex; align-items: center; border-radius: 12px; padding: 15px;">
+            <i class="bi bi-info-circle-fill me-3" style="font-size: 1.2rem;"></i>
+            <span>You have already reviewed this property. You can edit or delete your review below.</span>
+        </div>
+    }
+
+    <!-- Reviews List -->
+    <div class="reviews-list">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var review in Model)
+            {
+                <div class="review-item" id="review-@review.ReviewId">
+                    <img src="@(string.IsNullOrEmpty(review.UserImage) ? "/assets/img/real-estate/default-agent.webp" : review.UserImage)"
+                         alt="@review.UserName" class="user-avatar">
+
+                    <div class="review-body">
+                        <div class="review-header">
+                            <div>
+                                <strong>@review.UserName</strong>
+                                <div class="review-meta">
+                                    <span class="stars">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <i class="bi bi-star-fill @(i <= review.Rating ? "" : "empty")"></i>
+                                        }
+                                    </span>
+                                    <span class="date">· @review.CreatedAt.ToString("MMM dd, yyyy")</span>
+                                </div>
+                            </div>
+
+                            @if (review.IsOwner)
+                            {
+                                <div class="review-options">
+                                    <button class="btn-icon" onclick="editReview(@review.ReviewId)" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <form asp-controller="Review" asp-action="Delete" method="post" style="display: inline;"
+                                          onsubmit="return confirm('Delete this review?')">
+                                        <input type="hidden" name="id" value="@review.ReviewId" />
+                                        <input type="hidden" name="propertyId" value="@review.PropertyId" />
+                                        <button type="submit" class="btn-icon" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="review-content" id="content-@review.ReviewId">
+                            <p>@review.Comment</p>
+                        </div>
+
+                        @if (review.IsOwner)
+                        {
+                            <div class="review-edit" id="edit-@review.ReviewId" style="display: none;">
+                                <form asp-controller="Review" asp-action="Edit" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="ReviewId" value="@review.ReviewId" />
+                                    <input type="hidden" name="PropertyId" value="@review.PropertyId" />
+
+                                    <textarea name="Comment" rows="3" required>@review.Comment</textarea>
+
+                                    <div class="edit-actions">
+                                        <div class="stars-input">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                <input type="radio" name="Rating" value="@i" id="e@(review.ReviewId)-@i" @(i == review.Rating ? "checked" : "")>
+                                                <label for="e@(review.ReviewId)-@i"><i class="bi bi-star-fill"></i></label>
+                                            }
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn-cancel" onclick="cancelEdit(@review.ReviewId)">Cancel</button>
+                                            <button type="submit" class="btn-post">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="no-reviews">
+                <i class="bi bi-chat-dots"></i>
+                <p>No reviews yet</p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .property-reviews-section {
+        margin-top: 40px;
+        padding-top: 40px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .alert {
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .alert.auto-hide {
+        animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s forwards;
+    }
+
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes slideOut {
+        to {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+    }
+
+    .reviews-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .fancy-title {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: .3px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #2c7a7b;
+    }
+
+    .fancy-title i {
+        font-size: 22px;
+        color: #38b2ac;
+    }
+
+    .add-review {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .review-form {
+        flex: 1;
+    }
+
+    .review-form textarea {
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        padding: 10px 15px;
+        font-size: 14px;
+        resize: none;
+        transition: all 0.2s;
+    }
+
+    .review-form textarea:focus {
+        outline: none;
+        border-color: #38b2ac;
+        border-radius: 12px;
+    }
+
+    .form-actions {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .rating-select {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .rating-select label {
+        font-size: 13px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .stars-input {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 2px;
+    }
+
+    .stars-input input {
+        display: none;
+    }
+
+    .stars-input label {
+        cursor: pointer;
+        color: #ddd;
+        font-size: 18px;
+        transition: color 0.2s;
+    }
+
+    .stars-input input:checked ~ label,
+    .stars-input label:hover,
+    .stars-input label:hover ~ label {
+        color: #ffc107;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-cancel {
+        background: #f1f5f5;
+        color: #2c7a7b;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+
+    .btn-cancel:hover {
+        background: #e9ecef;
+    }
+
+    .btn-post {
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .3s ease;
+    }
+
+    .btn-post:hover {
+        box-shadow: 0 6px 16px rgba(44, 122, 123, 0.35);
+        transform: translateY(-2px);
+    }
+
+    .reviews-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .review-item {
+        display: flex;
+        gap: 12px;
+    }
+
+    .review-body {
+        flex: 1;
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 8px;
+    }
+
+    .review-header strong {
+        font-size: 15px;
+        color: #333;
+    }
+
+    .review-meta {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 2px;
+    }
+
+    .stars {
+        display: flex;
+        gap: 1px;
+    }
+
+    .stars i {
+        font-size: 12px;
+        color: #ffc107;
+    }
+
+    .stars i.empty {
+        color: #ddd;
+    }
+
+    .date {
+        color: #65676b;
+        font-size: 13px;
+    }
+
+    .review-options {
+        display: flex;
+        gap: 4px;
+    }
+
+    .btn-icon {
+        background: none;
+        border: none;
+        color: #65676b;
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+    }
+
+    .btn-icon:hover {
+        background: #f0f2f5;
+    }
+
+    .review-content p {
+        color: #333;
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .review-edit textarea {
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .review-edit textarea:focus{
+        outline: none;
+        border-color: #38b2ac;
+        border-radius: 12px;
+    }
+
+    .edit-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .edit-actions > div {
+        display: flex;
+        gap: 8px;
+    }
+
+    .no-reviews {
+        text-align: center;
+        padding: 40px 20px;
+        color: #65676b;
+    }
+
+    .no-reviews i {
+        font-size: 48px;
+        color: #ddd;
+        margin-bottom: 10px;
+    }
+
+    .no-reviews p {
+        margin: 0;
+        font-size: 15px;
+    }
+
+    @@media (max-width: 768px) {
+        .review-form textarea {
+            font-size: 16px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .action-buttons {
+            justify-content: flex-end;
+        }
+    }
+</style>
+
+<script>
+    function expandForm(textarea) {
+        textarea.rows = 3;
+        textarea.parentElement.querySelector('.form-actions').style.display = 'flex';
+    }
+
+    function collapseForm(btn) {
+        var form = btn.closest('form');
+        var textarea = form.querySelector('textarea');
+        textarea.value = '';
+        textarea.rows = 2;
+        form.querySelector('.form-actions').style.display = 'none';
+        textarea.blur();
+    }
+
+    function editReview(id) {
+        document.getElementById('content-' + id).style.display = 'none';
+        document.getElementById('edit-' + id).style.display = 'block';
+    }
+
+    function cancelEdit(id) {
+        document.getElementById('content-' + id).style.display = 'block';
+        document.getElementById('edit-' + id).style.display = 'none';
+    }
+
+    // Auto-hide alerts safely
+    setTimeout(function() {
+        var alerts = document.querySelectorAll('.alert.auto-hide');
+        alerts.forEach(function(alert) {
+            alert.style.transition = "opacity 0.6s ease";
+            alert.style.opacity = "0";
+            setTimeout(function() { alert.remove(); }, 600);
+        });
+    }, 10000); 
+</script>

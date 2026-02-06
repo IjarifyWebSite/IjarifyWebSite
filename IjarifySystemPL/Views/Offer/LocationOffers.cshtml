@@ -1,0 +1,41 @@
+﻿@using IjarifySystemBLL.ViewModels.LocationsViewModel
+@model LocationOffersPageViewModel
+@{
+    ViewData["Title"] = "LocationOffers";
+}
+
+
+    @section Styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/LocationOffers.css">
+    }
+
+    <div class="page-title">
+    <div class="page-title-section py-4 bg-light text-center">
+    <div class="container">
+        <h1 class="display-5 fw-bold">Current Offers</h1>
+        <p class="text-muted">Check out our latest exclusive deals</p>
+    </div>
+</div>
+</div>
+
+<div class="container mt-4">
+    <div class="header-section d-flex justify-content-between align-items-center rounded">
+        <div class="d-flex align-items-center">
+            <img src="@Model.LocationImageUrl" alt="Profile" class="profile-img me-3">
+            <div>
+                <h5 class="mb-0 fw-bold">@Model.City <span class="super-area-badge">Super Area</span></h5>
+                <small class="text-muted">undefined Properties Available</small>
+            </div>
+        </div>
+        <button class="call-us-btn">
+            <i class="fas fa-phone-alt"></i> Call Us
+        </button>
+    </div>
+
+    <h4 class="offers-title">Offers</h4>
+
+    <div class="row g-4">
+         <partial name="Partials/_Offers" model="Model" />
+     </div>
+</div>

@@ -4,6 +4,7 @@ using IjarifySystemDAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IjarifySystemDAL.Migrations
 {
     [DbContext(typeof(IjarifyDbContext))]
-    partial class IjarifyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260204002305_AddImageToLocation")]
+    partial class AddImageToLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,11 +47,6 @@ namespace IjarifySystemDAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -104,14 +102,14 @@ namespace IjarifySystemDAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserID")
+                    b.Property<int>("UsertID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UsertID");
 
                     b.ToTable("bookings");
                 });
@@ -484,7 +482,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasOne("IjarifySystemDAL.Entities.User", "user")
                         .WithMany("Bookings")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UsertID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

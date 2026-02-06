@@ -5,15 +5,16 @@
 namespace IjarifySystemDAL.Migrations
 {
     /// <inheritdoc />
-    public partial class AddCatigoryInAmenity : Migration
+    public partial class AddImageToLocation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Catigory",
-                table: "amenities",
-                type: "nvarchar(12)",
+                name: "ImageUrl",
+                table: "Locations",
+                type: "varchar(500)",
+                maxLength: 500,
                 nullable: false,
                 defaultValue: "");
         }
@@ -22,8 +23,8 @@ namespace IjarifySystemDAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Catigory",
-                table: "amenities");
+                name: "ImageUrl",
+                table: "Locations");
         }
     }
 }

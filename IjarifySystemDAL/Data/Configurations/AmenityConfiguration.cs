@@ -13,6 +13,7 @@ namespace IjarifySystemDAL.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Amenity> builder)
         {
+            builder.Property(c => c.Category).HasColumnType("varchar").HasMaxLength(30);
             builder.Property(a => a.Name)
                 .HasColumnType("varchar")
                 .HasMaxLength(100);
@@ -20,9 +21,9 @@ namespace IjarifySystemDAL.Data.Configurations
             builder.Property(a => a.Icon)
                 .HasColumnType("varchar")
                 .HasMaxLength(50);
-            builder.Property(a => a.Catigory)
+            builder.Property(a => a.Category)
                 .HasConversion<string>()
-                .HasColumnType("nvarchar(12)");
+                .HasColumnType("varchar");
 
         }
     }
