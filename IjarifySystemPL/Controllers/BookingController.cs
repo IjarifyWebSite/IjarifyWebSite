@@ -17,7 +17,13 @@ namespace IjarifySystemPL.Controllers
         {
             _bookingService = bookingService;
         }
-
+        // 🔹 TEMP USER (بديل Identity)
+        // ===============================
+        private int GetCurrentUserId()
+        {
+            // TODO: Replace with Identity later
+            return 4; // user وهمي للتجربة
+        }
         // GET: Booking/Create/5
         [HttpGet]
         public IActionResult Create(int propertyId)
@@ -44,8 +50,9 @@ namespace IjarifySystemPL.Controllers
 
             try
             {
-                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
+                //int userId = 4;
+                //var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                int userId = GetCurrentUserId();
                 var createDto = new BookingCreateDto
                 {
                     PropertyID = viewModel.PropertyID,
@@ -70,7 +77,8 @@ namespace IjarifySystemPL.Controllers
         [HttpGet]
         public async Task<IActionResult> MyBookings()
         {
-            int userId = 1;
+            int userId = GetCurrentUserId();
+            //int userId = 4;
             //    var userId = User.FindFirst(ClaimTypes.NameIdentifier) is null? 0
             //                                                         : int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             var bookings = await _bookingService.GetUserBookingsAsync(userId);
@@ -111,8 +119,8 @@ namespace IjarifySystemPL.Controllers
                 TempData["Error"] = "Booking not found";
                 return RedirectToAction(nameof(MyBookings));
             }
-
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            int userId = GetCurrentUserId();
+            //var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             if (booking.UserID != userId)
             {
                 TempData["Error"] = "You don't have permission to view this booking";
@@ -134,8 +142,8 @@ namespace IjarifySystemPL.Controllers
                 TempData["Error"] = "Booking not found";
                 return RedirectToAction(nameof(MyBookings));
             }
-
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            int userId = GetCurrentUserId();
+            //var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             if (booking.UserID != userId)
             {
                 TempData["Error"] = "You don't have permission to cancel this booking";
