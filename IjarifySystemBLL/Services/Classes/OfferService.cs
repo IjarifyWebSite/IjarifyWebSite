@@ -63,6 +63,7 @@ namespace IjarifySystemBLL.Services.Classes
             return memberViewModels;
         }
 
+      
         public LocationOffersPageViewModel? GetAllOffersByLocation(string city)
         {
             var Offers= _offerRepository.GetAllForLocation(city,o=>o.CreatedAt<o.EndDate);
@@ -171,5 +172,56 @@ namespace IjarifySystemBLL.Services.Classes
             return false;
         }
 
+        public OfferFilterViewModel GetFilterPageIntialData()
+        {
+            var offers = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate);
+            var areas = offers.Select(o => o.Property.Location.City).Distinct().ToList();
+            var Compounds= offers.Select(o => o.Property.Title).Distinct().ToList();
+            var filterData = new OfferFilterViewModel
+            {
+                Areas = areas,
+                Compounds = Compounds,
+                
+                Offers = offers.Select(o => new OfferViewModel
+                {
+                    Title = o.Title,
+                    StartDateRaw = o.CreatedAt,
+                    EndDateRaw = o.EndDate,
+                    DiscountPercentage = o.DiscountPercentage,
+                    PropertyImageUrl= o.Property.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "assets/img/real-estate/property-interior-7",
+                    PropertyTitle = o.Property.Title,
+                    LocationName = $"{o.Property.Location.City}-{o.Property.Location.Street}-{o.Property.Location.Regoin}"
+                }).ToList()
+
+            };
+            return filterData;
+
+        }
+        public OfferFilterViewModel GetFilteredOffers(OfferFilterRequestViewModel? Request = null)
+        {
+            var FilteredOffers = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate,Request?.SearchTerm,Request?.Areas,Request?.Compounds,Request?.MinimumDiscount);
+            var filterData = new OfferFilterViewModel
+            {
+                Offers = FilteredOffers.Select(o => new OfferViewModel
+                {
+                    Title = o.Title,
+                    StartDateRaw = o.CreatedAt,
+                    EndDateRaw = o.EndDate,
+                    DiscountPercentage = o.DiscountPercentage,
+                    PropertyImageUrl = o.Property.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "assets/img/real-estate/property-interior-7",
+                    PropertyTitle = o.Property.Title,
+                    LocationName = $"{o.Property.Location.City}-{o.Property.Location.Street}-{o.Property.Location.Regoin}"
+                }).ToList(),
+                SelectedAreas = Request?.Areas ?? new List<string>(),
+                SelectedCompounds = Request?.Compounds ?? new List<string>(),
+                SelectedDiscounts = Request?.MinimumDiscount ?? new List<decimal>(),
+                Areas = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate).Select(o => o.Property.Location.City).Distinct().ToList(),
+                Compounds = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate).Select(o => o.Property.Title).Distinct()
+
+
+                .ToList()
+            };
+            return filterData;
+        }
     }
 }
