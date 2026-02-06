@@ -14,11 +14,21 @@ namespace IjarifySystemBLL.ViewModels.OfferViewModels
         public DateTime EndDateRaw { get; set; } 
         public decimal DiscountPercentage { get; set; }
         public string PropertyTitle { get; set; } = null!;
+        public string? PropertyImageUrl { get; set; }  //for property offer filter
         public string LocationName { get; set; } = null!;
 
         #region Computed
         public string StartDate => StartDateRaw.ToString("yyyy-MM-dd");
         public string EndDate => EndDateRaw.ToString("yyyy-MM-dd");
+
+        public int DurationInMonths
+        {
+            get
+            {
+                var Months= ((EndDateRaw.Year - StartDateRaw.Year) * 12) + EndDateRaw.Month - StartDateRaw.Month;
+                return Months <= 0 ? 1 : Months;
+            }
+        }
         #endregion
     }
 }

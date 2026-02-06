@@ -1,4 +1,7 @@
-﻿@{
+﻿@using IjarifySystemBLL.ViewModels
+@model HomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
  <main class="main">
@@ -124,7 +127,7 @@
                 <div class="main-image">
                   <img src="assets/img/real-estate/property-exterior-3.webp" alt="Luxury Property" class="img-fluid">
                   <div class="property-tag">
-                    <span class="price">$850,000</span>
+                    <span class="price">hamada</span>
                     <span class="type">Featured</span>
                   </div>
                 </div>
@@ -265,199 +268,19 @@
 
     </section><!-- /Home About Section -->
 
-    <!-- Featured Properties Section -->
-    <section id="featured-properties" class="featured-properties section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Featured Properties</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="grid-featured" data-aos="zoom-in" data-aos-delay="150">
-
-          <article class="highlight-card">
-            <div class="media">
-              <div class="badge-set">
-                <span class="flag featured">Featured</span>
-                <span class="flag premium">Premium</span>
-              </div>
-              <a href="property-details.html" class="image-link">
-                <img src="assets/img/real-estate/property-exterior-6.webp" alt="Showcase Villa" class="img-fluid">
-              </a>
-              <div class="quick-specs">
-                <span><i class="bi bi-door-open"></i> 5 Beds</span>
-                <span><i class="bi bi-droplet"></i> 4 Baths</span>
-                <span><i class="bi bi-aspect-ratio"></i> 4,900 sq ft</span>
-              </div>
-            </div>
-            <div class="content">
-              <div class="top">
-                <div>
-                  <h3><a href="property-details.html">Seaside Villa with Infinity Pool</a></h3>
-                  <div class="loc"><i class="bi bi-geo-alt-fill"></i> Coronado, CA 92118</div>
-                </div>
-                <div class="price">$3,760,000</div>
-              </div>
-              <p class="excerpt">Praesent commodo cursus magna, fusce dapibus tellus ac cursus commodo, vestibulum id ligula porta felis euismod semper.</p>
-              <div class="cta">
-                <a href="property-details.html" class="btn-main">Arrange Visit</a>
-                <a href="property-details.html" class="btn-soft">More Photos</a>
-                <div class="meta">
-                  <span class="status for-sale">For Sale</span>
-                  <span class="listed">Listed 2 days ago</span>
-                </div>
-              </div>
-            </div>
-          </article><!-- End Highlight Card -->
-
-          <div class="mini-list">
-
-            <article class="mini-card" data-aos="fade-up" data-aos-delay="200">
-              <a href="property-details.html" class="thumb">
-                <img src="assets/img/real-estate/property-interior-2.webp" alt="Loft Haven" class="img-fluid" loading="lazy">
-                <span class="label hot"><i class="bi bi-lightning-charge-fill"></i> Hot</span>
-              </a>
-              <div class="mini-body">
-                <h4><a href="property-details.html">Urban Loft with Skyline Views</a></h4>
-                <div class="mini-loc"><i class="bi bi-geo"></i> Denver, CO 80203</div>
-                <div class="mini-specs">
-                  <span><i class="bi bi-door-open"></i> 2</span>
-                  <span><i class="bi bi-droplet"></i> 2</span>
-                  <span><i class="bi bi-rulers"></i> 1,450 sq ft</span>
-                </div>
-                <div class="mini-foot">
-                  <div class="mini-price">$689,000</div>
-                  <a href="property-details.html" class="mini-btn">Details</a>
-                </div>
-              </div>
-            </article><!-- End Mini Card -->
-
-            <article class="mini-card" data-aos="fade-up" data-aos-delay="250">
-              <a href="property-details.html" class="thumb">
-                <img src="assets/img/real-estate/property-exterior-3.webp" alt="Suburban Home" class="img-fluid" loading="lazy">
-                <span class="label new"><i class="bi bi-star-fill"></i> New</span>
-              </a>
-              <div class="mini-body">
-                <h4><a href="property-details.html">Charming Suburban Retreat</a></h4>
-                <div class="mini-loc"><i class="bi bi-geo"></i> Austin, TX 78745</div>
-                <div class="mini-specs">
-                  <span><i class="bi bi-door-open"></i> 4</span>
-                  <span><i class="bi bi-droplet"></i> 3</span>
-                  <span><i class="bi bi-rulers"></i> 2,350 sq ft</span>
-                </div>
-                <div class="mini-foot">
-                  <div class="mini-price">$545,000</div>
-                  <a href="property-details.html" class="mini-btn">Details</a>
-                </div>
-              </div>
-            </article><!-- End Mini Card -->
-
-            <article class="mini-card" data-aos="fade-up" data-aos-delay="300">
-              <a href="property-details.html" class="thumb">
-                <img src="assets/img/real-estate/property-interior-7.webp" alt="Penthouse" class="img-fluid" loading="lazy">
-                <span class="label featured"><i class="bi bi-gem"></i> Featured</span>
-              </a>
-              <div class="mini-body">
-                <h4><a href="property-details.html">Glass-Roof Penthouse Suite</a></h4>
-                <div class="mini-loc"><i class="bi bi-geo"></i> Miami, FL 33131</div>
-                <div class="mini-specs">
-                  <span><i class="bi bi-door-open"></i> 3</span>
-                  <span><i class="bi bi-droplet"></i> 3</span>
-                  <span><i class="bi bi-rulers"></i> 2,120 sq ft</span>
-                </div>
-                <div class="mini-foot">
-                  <div class="mini-price">$1,290,000</div>
-                  <a href="property-details.html" class="mini-btn">Details</a>
-                </div>
-              </div>
-            </article><!-- End Mini Card -->
-
-          </div><!-- End Mini List -->
-
+    <!-- Top Areas Section -->
+    <section class="top-areas-section section py-5">
+      <div class="container">
+        <div class="section-header mb-4" data-aos="fade-up">
+          <h2 class="section-title">Top Areas</h2>
+          <p class="section-subtitle">46 Results Available</p>
         </div>
 
-        <div class="row gy-4 mt-4">
+        <div class="row gy-4">
+            <partial name="Partials/_Locations" model="Model.TopLocations" />
 
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
-            <article class="stack-card">
-              <figure class="stack-media">
-                <img src="assets/img/real-estate/property-exterior-8.webp" alt="Modern Facade" class="img-fluid" loading="lazy">
-                <figcaption>
-                  <span class="chip exclusive">Exclusive</span>
-                </figcaption>
-              </figure>
-              <div class="stack-body">
-                <h5><a href="property-details.html">Modern Courtyard Residence</a></h5>
-                <div class="stack-loc"><i class="bi bi-geo-alt"></i> Scottsdale, AZ 85251</div>
-                <ul class="stack-specs">
-                  <li><i class="bi bi-door-open"></i> 4</li>
-                  <li><i class="bi bi-droplet"></i> 3</li>
-                  <li><i class="bi bi-aspect-ratio"></i> 2,980 sq ft</li>
-                </ul>
-                <div class="stack-foot">
-                  <span class="stack-price">$1,025,000</span>
-                  <a href="property-details.html" class="stack-link">View</a>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="350">
-            <article class="stack-card">
-              <figure class="stack-media">
-                <img src="assets/img/real-estate/property-interior-10.webp" alt="Cozy Interior" class="img-fluid" loading="lazy">
-                <figcaption>
-                  <span class="chip hot">Hot</span>
-                </figcaption>
-              </figure>
-              <div class="stack-body">
-                <h5><a href="property-details.html">Cozy Lakeview Townhouse</a></h5>
-                <div class="stack-loc"><i class="bi bi-geo-alt"></i> Madison, WI 53703</div>
-                <ul class="stack-specs">
-                  <li><i class="bi bi-door-open"></i> 3</li>
-                  <li><i class="bi bi-droplet"></i> 2</li>
-                  <li><i class="bi bi-aspect-ratio"></i> 1,780 sq ft</li>
-                </ul>
-                <div class="stack-foot">
-                  <span class="stack-price">$429,000</span>
-                  <a href="property-details.html" class="stack-link">View</a>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
-            <article class="stack-card">
-              <figure class="stack-media">
-                <img src="assets/img/real-estate/property-exterior-10.webp" alt="Garden Home" class="img-fluid" loading="lazy">
-                <figcaption>
-                  <span class="chip new">New</span>
-                </figcaption>
-              </figure>
-              <div class="stack-body">
-                <h5><a href="property-details.html">Garden Home Near Downtown</a></h5>
-                <div class="stack-loc"><i class="bi bi-geo-alt"></i> Raleigh, NC 27601</div>
-                <ul class="stack-specs">
-                  <li><i class="bi bi-door-open"></i> 3</li>
-                  <li><i class="bi bi-droplet"></i> 2</li>
-                  <li><i class="bi bi-aspect-ratio"></i> 1,920 sq ft</li>
-                </ul>
-                <div class="stack-foot">
-                  <span class="stack-price">$512,000</span>
-                  <a href="property-details.html" class="stack-link">View</a>
-                </div>
-              </div>
-            </article>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- /Featured Properties Section -->
+          
+    </section><!-- /Top Areas Section -->
 
     <!-- Featured Services Section -->
     <section id="featured-services" class="featured-services section">
@@ -1198,3 +1021,122 @@
     </section><!-- /Call To Action Section -->
 
   </main>
+
+<style>
+/* Top Areas Section */
+.top-areas-section {
+  background: #f8f9fa;
+}
+
+.section-header {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Area Card */
+.city-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.area-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.area-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-color: #dee2e6;
+}
+
+/* Circular Image */
+.area-image-wrapper {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.area-card:hover .area-image-wrapper {
+  transform: scale(1.05);
+}
+
+.area-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Area Name */
+.area-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Responsive adjustments */
+@@media (max-width: 992px) {
+  .section-title {
+    font-size: 28px;
+  }
+  
+  .area-image-wrapper {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .area-card {
+    min-height: 250px;
+  }
+}
+
+@@media (max-width: 576px) {
+  .section-title {
+    font-size: 24px;
+  }
+  
+  .area-image-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .area-name {
+    font-size: 16px;
+  }
+  
+  .area-card {
+    min-height: 220px;
+    padding: 20px 15px;
+  }
+}
+</style>

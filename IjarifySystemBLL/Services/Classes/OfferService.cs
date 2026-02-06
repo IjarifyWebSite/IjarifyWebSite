@@ -1,4 +1,5 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
+using IjarifySystemBLL.ViewModels.LocationsViewModel;
 using IjarifySystemBLL.ViewModels.OfferViewModels;
 using IjarifySystemDAL.Entities;
 using IjarifySystemDAL.Repositories.Interfaces;
@@ -13,10 +14,12 @@ namespace IjarifySystemBLL.Services.Classes
     public class OfferService : IOfferService
     {
         private readonly IOfferRepository _offerRepository;
+        private readonly ILocationRepository _locationRepository;
 
-        public OfferService(IOfferRepository offerRepository)
+        public OfferService(IOfferRepository offerRepository,ILocationRepository locationRepository)
         {
             _offerRepository = offerRepository;
+            _locationRepository = locationRepository;
         }
         public bool CreateOffer(CreateOfferViewModel offerViewModel)
         {
@@ -60,24 +63,32 @@ namespace IjarifySystemBLL.Services.Classes
             return memberViewModels;
         }
 
-        public IEnumerable<OfferViewModel> GetAllOffersByLocation(int locationId)
+      
+        public LocationOffersPageViewModel? GetAllOffersByLocation(string city)
         {
-            var Offers= _offerRepository.GetAllForLocation(locationId,o=>o.CreatedAt<o.EndDate);
-            if (Offers == null || !Offers.Any())
+            var Offers= _offerRepository.GetAllForLocation(city,o=>o.CreatedAt<o.EndDate);
+            var location = _locationRepository.GetByCity(city);
+            if(location == null)
             {
-                return Enumerable.Empty<OfferViewModel>();
+                return null;
             }
-            var memberViewModels = Offers.Select(o => new OfferViewModel
+            var model = new LocationOffersPageViewModel
             {
-                Id = o.Id,
-                Title = o.Title,
-                StartDateRaw = o.CreatedAt,
-                EndDateRaw = o.EndDate,
-                DiscountPercentage = o.DiscountPercentage,
-                PropertyTitle = o.Property.Title,
-                LocationName = $"{o.Property.Location.City}-{o.Property.Location.Street}-{o.Property.Location.Regoin}"
-            });
-            return memberViewModels;
+                City = city,
+                LocationImageUrl =location.ImageUrl ,
+                Offers = Offers.Select(o => new OfferViewModel
+                {
+                    Id = o.Id,
+                    Title = o.Title,
+                    StartDateRaw = o.CreatedAt,
+                    EndDateRaw = o.EndDate,
+                    DiscountPercentage = o.DiscountPercentage,
+                    PropertyTitle = o.Property.Title,
+                    LocationName = $"{o.Property.Location.City}-{o.Property.Location.Street}-{o.Property.Location.Regoin}"
+                }).ToList()
+            };
+
+            return model;
         }
 
         public OfferViewModel? GetOfferById(int id)
@@ -161,5 +172,56 @@ namespace IjarifySystemBLL.Services.Classes
             return false;
         }
 
+        public OfferFilterViewModel GetFilterPageIntialData()
+        {
+            var offers = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate);
+            var areas = offers.Select(o => o.Property.Location.City).Distinct().ToList();
+            var Compounds= offers.Select(o => o.Property.Title).Distinct().ToList();
+            var filterData = new OfferFilterViewModel
+            {
+                Areas = areas,
+                Compounds = Compounds,
+                
+                Offers = offers.Select(o => new OfferViewModel
+                {
+                    Title = o.Title,
+                    StartDateRaw = o.CreatedAt,
+                    EndDateRaw = o.EndDate,
+                    DiscountPercentage = o.DiscountPercentage,
+                    PropertyImageUrl= o.Property.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "assets/img/real-estate/property-interior-7",
+                    PropertyTitle = o.Property.Title,
+                    LocationName = $"{o.Property.Location.City}-{o.Property.Location.Street}-{o.Property.Location.Regoin}"
+                }).ToList()
+
+            };
+            return filterData;
+
+        }
+        public OfferFilterViewModel GetFilteredOffers(OfferFilterRequestViewModel? Request = null)
+        {
+            var FilteredOffers = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate,Request?.SearchTerm,Request?.Areas,Request?.Compounds,Request?.MinimumDiscount);
+            var filterData = new OfferFilterViewModel
+            {
+                Offers = FilteredOffers.Select(o => new OfferViewModel
+                {
+                    Title = o.Title,
+                    StartDateRaw = o.CreatedAt,
+                    EndDateRaw = o.EndDate,
+                    DiscountPercentage = o.DiscountPercentage,
+                    PropertyImageUrl = o.Property.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "assets/img/real-estate/property-interior-7",
+                    PropertyTitle = o.Property.Title,
+                    LocationName = $"{o.Property.Location.City}-{o.Property.Location.Street}-{o.Property.Location.Regoin}"
+                }).ToList(),
+                SelectedAreas = Request?.Areas ?? new List<string>(),
+                SelectedCompounds = Request?.Compounds ?? new List<string>(),
+                SelectedDiscounts = Request?.MinimumDiscount ?? new List<decimal>(),
+                Areas = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate).Select(o => o.Property.Location.City).Distinct().ToList(),
+                Compounds = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate).Select(o => o.Property.Title).Distinct()
+
+
+                .ToList()
+            };
+            return filterData;
+        }
     }
 }
