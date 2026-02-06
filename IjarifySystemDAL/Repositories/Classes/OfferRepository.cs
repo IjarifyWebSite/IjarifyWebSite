@@ -43,7 +43,7 @@ namespace IjarifySystemDAL.Repositories.Classes
 
         public IEnumerable<Offer> GetAllForLocation(string LocationName, Expression<Func<Offer, bool>>? Condition = null)
         {
-            var query = _Dbcontext.Offers.AsNoTracking().Include(o=>o.Property).ThenInclude(o=>o.Location).Where(o => o.Property.Location.City == LocationName);
+            var query = _Dbcontext.Offers.AsNoTracking().Include(o => o.Property).ThenInclude(o => o.Location).Where(o => o.Property.Location.City == LocationName);
             if (Condition == null)
             {
                 return query.ToList();
@@ -51,5 +51,31 @@ namespace IjarifySystemDAL.Repositories.Classes
             return query.Where(Condition).ToList();
         }
 
+        public IEnumerable<Offer> GetOffersWithPropertyAndLocation(Expression<Func<Offer, bool>>? Condition = null, string? Search = null, List<string>? Areas = null, List<string>? Compounds = null, List<decimal>? HotOffers = null)
+        { 
+            var query = _Dbcontext.Offers.AsNoTracking().Include(o => o.Property).ThenInclude(p => p.Location).Include(l => l.Property).ThenInclude(p => p.PropertyImages).AsNoTracking().AsQueryable();
+            if (Condition != null)
+            {
+                query = query.Where(Condition);
+            }
+            if (Search != null)
+            {
+              query = query.Where( o=>o.Property.Title.Contains(Search) || o.Property.Location.City.Contains(Search));
+
+            }
+            if (Areas != null && Areas.Any())
+            {
+                query = query.Where(o => Areas.Contains(o.Property.Location.City));
+            }
+            if (Compounds != null && Compounds.Any())
+            {
+                query = query.Where(o => Compounds.Contains(o.Property.Title));
+            }
+            if (HotOffers != null && HotOffers.Any())
+            {
+                query = query.Where(o => HotOffers.Contains((int)(o.DiscountPercentage)));
+            }
+            return query.ToList();
+        }
     }
 }
