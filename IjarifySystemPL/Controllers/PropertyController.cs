@@ -1,20 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using IjarifySystemBLL.Services.Interfaces;
+using IjarifySystemBLL.ViewModels.PropertyViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using IjarifySystemBLL.Services.Interfaces;
 
 namespace IjarifySystemPL.Controllers
 {
     public class PropertyController(IPropertyService _propertyService) : Controller
     {
         // GET: PropertyController
-        public async Task<ActionResult> Index(int page=1)
+        public async Task<ActionResult> Index(PropertyFilterViewModel filter, int page = 1)
         {
-            var (vmList, totalPages, currentPage) = await _propertyService.GetPagination(4, page);
-            ViewBag.CurrentPage = currentPage-1;
-            ViewBag.TotalPages = totalPages;
+            var pageViewModel = await _propertyService.GetPagination(4, page, filter);
 
+            ViewBag.CurrentPage = pageViewModel.CurrentPage;
+            ViewBag.TotalPages = pageViewModel.TotalPages;
 
-            return View(vmList);
+            return View(pageViewModel);
         }
 
         // GET: PropertyController/Details/5

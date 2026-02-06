@@ -1,6 +1,7 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.AmenityViewModels;
 using IjarifySystemBLL.ViewModels.PropertyViewModels;
+using IjarifySystemDAL.Entities.Enums;
 using IjarifySystemDAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,77 @@ namespace IjarifySystemBLL.Services.Classes
 {
     public class PropertyService(IPropertyRepository _repo):IPropertyService
     {
-        public async Task<(List<PropertyIndexViewModel>?, int, int)> GetPagination(int pageSize, int page)
+        public async Task<PropertyIndexPageViewModel> GetPagination(int pageSize, int page, PropertyFilterViewModel filter)
         {
-            var properties = await _repo.GetForPagination(pageSize, (page - 1) * pageSize);
-            int pages = (int)Math.Ceiling(await _repo.PropertiesCount() / (double)pageSize);
-            page = Math.Max(1, Math.Min(page, pages));
+            // Build query with filters
+            var query = _repo.GetQueryable()
+                .Include(p => p.User)
+                .Include(p => p.Location)
+                .Include(p => p.PropertyImages)
+                .Include(p => p.amenities)
+                .AsQueryable();
 
-            var vmList = properties.Select(p => new PropertyIndexViewModel
+            // Apply filters
+            if (!string.IsNullOrEmpty(filter?.PropertyType) && Enum.TryParse<PropertyType>(filter.PropertyType, out var propType))
+            {
+                query = query.Where(p => p.Type == propType);
+            }
+
+            if (!string.IsNullOrEmpty(filter?.ListingType) && Enum.TryParse<PropertyListingType>(filter.ListingType, out var listType))
+            {
+                query = query.Where(p => p.ListingType == listType);
+            }
+
+            if (filter?.MinPrice.HasValue == true)
+            {
+                query = query.Where(p => p.Price >= filter.MinPrice.Value);
+            }
+
+            if (filter?.MaxPrice.HasValue == true)
+            {
+                query = query.Where(p => p.Price <= filter.MaxPrice.Value);
+            }
+
+            if (filter?.MinBedrooms.HasValue == true)
+            {
+                query = query.Where(p => p.BedRooms >= filter.MinBedrooms.Value);
+            }
+
+            if (filter?.MinBathrooms.HasValue == true)
+            {
+                query = query.Where(p => p.BathRooms >= filter.MinBathrooms.Value);
+            }
+
+            if (!string.IsNullOrEmpty(filter?.City))
+            {
+                query = query.Where(p => p.Location.City == filter.City);
+            }
+
+            if (!string.IsNullOrEmpty(filter?.Region))
+            {
+                query = query.Where(p => p.Location.Regoin == filter.Region);
+            }
+
+            if (filter?.AmenityIds != null && filter.AmenityIds.Any())
+            {
+                query = query.Where(p => p.amenities.Any(a => filter.AmenityIds.Contains(a.Id)));
+            }
+
+            // Get total count for pagination
+            int totalProperties = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalProperties / (double)pageSize);
+            totalPages = Math.Max(1, totalPages); // At least 1 page
+            int currentPage = Math.Max(1, Math.Min(page, totalPages)); // Clamp page number
+
+            // Get paginated results
+            var properties = await query
+                .OrderByDescending(p => p.CreatedAt) // Sort by newest first
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Map to ViewModels
+            var propertyViewModels = properties.Select(p => new PropertyIndexViewModel
             {
                 Id = p.Id,
                 Name = p.Title,
@@ -37,7 +102,26 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp"
             }).ToList();
 
-            return (vmList, pages, page);
+            // Get filter dropdown data
+            var amenities = await _repo.GetAllAmenities();
+            var cities = await _repo.GetAllCities();
+            var regions = await _repo.GetAllRegions();
+
+            // Build and return the complete page view model
+            var pageViewModel = new PropertyIndexPageViewModel
+            {
+                Properties = propertyViewModels,
+                Filter = filter ?? new PropertyFilterViewModel(),
+                PropertyTypes = Enum.GetNames(typeof(PropertyType)).ToList(),
+                ListingTypes = Enum.GetNames(typeof(PropertyListingType)).ToList(),
+                Amenities = amenities,
+                Cities = cities,
+                Regions = regions,
+                CurrentPage = currentPage,
+                TotalPages = totalPages
+            };
+
+            return pageViewModel;
         }
         public async Task<PropertyDetailsViewModel?> GetPropertyDetails(int id)
         {
