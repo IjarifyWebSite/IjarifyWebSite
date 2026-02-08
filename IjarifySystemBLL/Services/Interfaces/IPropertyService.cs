@@ -10,6 +10,8 @@ namespace IjarifySystemBLL.Services.Interfaces
     public interface IPropertyService
     {
         Task<(List<PropertyIndexViewModel>?, int, int)> GetPagination(int pageSize, int page);
+        Task<PropertyIndexPageViewModel> GetPagination(int pageSize, int page, PropertyFilterViewModel filter);
+        Task<PropertyDetailsViewModel?> GetPropertyDetails(int id);
         Task<PropertyDetailsViewModel?> GetPropertyDetails(int id , int? currentUserId = null);
     }
 }
