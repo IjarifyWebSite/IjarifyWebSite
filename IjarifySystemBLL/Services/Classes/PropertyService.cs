@@ -13,7 +13,7 @@ namespace IjarifySystemBLL.Services.Classes
 {
     public class PropertyService(IPropertyRepository _repo) : IPropertyService
     {
-        // ✅ IMPLEMENT THE FIRST OVERLOAD (without filter)
+        
         public async Task<(List<PropertyIndexViewModel>?, int, int)> GetPagination(int pageSize, int page)
         {
             int totalProperties = await _repo.PropertiesCount();
@@ -45,7 +45,7 @@ namespace IjarifySystemBLL.Services.Classes
             return (propertyViewModels, currentPage, totalPages);
         }
 
-        // ✅ SECOND OVERLOAD (with filter) - CORRECTED
+        
         public async Task<PropertyIndexPageViewModel> GetPagination(int pageSize, int page, PropertyFilterViewModel filter)
         {
             // Build query with filters
@@ -135,7 +135,7 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp"
             }).ToList();
 
-            // ✅ FIX: Map amenities from Entity to ViewModel
+           
             var amenitiesEntities = await _repo.GetAllAmenities();
             var amenitiesViewModels = amenitiesEntities.Select(a => new AmenityViewModel
             {
@@ -155,7 +155,7 @@ namespace IjarifySystemBLL.Services.Classes
                 Filter = filter ?? new PropertyFilterViewModel(),
                 PropertyTypes = Enum.GetNames(typeof(PropertyType)).ToList(),
                 ListingTypes = Enum.GetNames(typeof(PropertyListingType)).ToList(),
-                Amenities = amenitiesViewModels, // ✅ Use mapped ViewModels
+                Amenities = amenitiesViewModels, 
                 Cities = cities,
                 Regions = regions,
                 CurrentPage = currentPage,
@@ -180,7 +180,7 @@ namespace IjarifySystemBLL.Services.Classes
                 ListingType = property.ListingType.ToString(),
                 PropertyType = property.Type.ToString(),
 
-                // Property Stats
+               
                 BedRooms = property.BedRooms,
                 BathRooms = property.BathRooms,
                 Area = property.Area,

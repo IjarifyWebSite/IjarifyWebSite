@@ -34,7 +34,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasIndex("propertiesId");
 
-                    b.ToTable("AmenityProperty", (string)null);
+                    b.ToTable("AmenityProperty");
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Amenity", b =>
@@ -67,7 +67,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("amenities", (string)null);
+                    b.ToTable("amenities");
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Booking", b =>
@@ -103,16 +103,16 @@ namespace IjarifySystemDAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UsertID")
+                    b.Property<int>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyID");
 
-                    b.HasIndex("UsertID");
+                    b.HasIndex("UserID");
 
-                    b.ToTable("bookings", (string)null);
+                    b.ToTable("bookings");
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Favourite", b =>
@@ -143,7 +143,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("favourites", (string)null);
+                    b.ToTable("favourites");
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Inquiry", b =>
@@ -350,7 +350,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("PropertyImages", (string)null);
+                    b.ToTable("PropertyImages");
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Review", b =>
@@ -389,7 +389,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("reviews", null, t =>
+                    b.ToTable("reviews", t =>
                         {
                             t.HasCheckConstraint("CK_Review_Rating_Range", "Rating Between 1 and 10");
                         });
@@ -478,7 +478,7 @@ namespace IjarifySystemDAL.Migrations
 
                     b.HasOne("IjarifySystemDAL.Entities.User", "user")
                         .WithMany("Bookings")
-                        .HasForeignKey("UsertID")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
