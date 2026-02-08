@@ -2,6 +2,7 @@
 using IjarifySystemBLL.ViewModels.AmenityViewModels;
 using IjarifySystemBLL.ViewModels.PropertyViewModels;
 using IjarifySystemDAL.Entities.Enums;
+using IjarifySystemBLL.ViewModels.ReviewsViewModels;
 using IjarifySystemDAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -166,6 +167,7 @@ namespace IjarifySystemBLL.Services.Classes
         }
 
         public async Task<PropertyDetailsViewModel?> GetPropertyDetails(int id)
+        public async Task<PropertyDetailsViewModel?> GetPropertyDetails(int id , int? currentUserId = null)
         {
             var property = await _repo.GetByIdAsync(id);
 
@@ -184,6 +186,7 @@ namespace IjarifySystemBLL.Services.Classes
                 BedRooms = property.BedRooms,
                 BathRooms = property.BathRooms,
                 Area = property.Area,
+
 
                 // Location
                 Street = property.Location.Street,
@@ -208,7 +211,7 @@ namespace IjarifySystemBLL.Services.Classes
                     Id = a.Id,
                     Name = a.Name,
                     Icon = a.Icon,
-                    Category = a.Catigory.ToString()
+                    Category = a.Category.ToString()
                 }).ToList() ?? new List<AmenityViewModel>(),
 
                 // Agent Info
@@ -221,7 +224,20 @@ namespace IjarifySystemBLL.Services.Classes
 
                 // Additional
                 CreatedAt = property.CreatedAt,
-                IsNew = (DateTime.Now - property.CreatedAt).TotalDays <= 30
+                IsNew = (DateTime.Now - property.CreatedAt).TotalDays <= 30,
+
+                //Reviews
+                Reviews = property.Reviews?.Select(r => new ReviewItemViewModel
+                {
+                    ReviewId = r.Id,
+                    Comment = r.Comment,
+                    Rating = r.Rating,
+                    UserName = r.user.Name,
+                    UserImage = r.user.ImageUrl,
+                    CreatedAt = r.CreatedAt,
+                    PropertyId = r.PropertyId,
+                    IsOwner = r.UserId == currentUserId
+                }).ToList() ?? new List<ReviewItemViewModel>()
             };
 
             return viewModel;

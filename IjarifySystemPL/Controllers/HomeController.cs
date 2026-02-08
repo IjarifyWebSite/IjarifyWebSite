@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using IjarifySystemBLL.Services.Interfaces;
+using IjarifySystemBLL.ViewModels;
 using IjarifySystemPL.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,16 +8,23 @@ namespace IjarifySystemPL.Controllers
 {
     public class HomeController : Controller
     {
+        
         private readonly ILogger<HomeController> _logger;
+        private readonly IHomeService _HomeService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IHomeService homeService)
         {
             _logger = logger;
+            _HomeService = homeService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var model = new HomeViewModel
+            {
+               TopLocations=_HomeService.GetTopLocations().ToList()
+            };
+            return View(model);
         }
 
         public IActionResult Privacy()

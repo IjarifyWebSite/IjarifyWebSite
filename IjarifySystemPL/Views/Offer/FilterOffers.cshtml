@@ -1,0 +1,110 @@
+﻿@using IjarifySystemBLL.ViewModels.OfferViewModels
+@model OfferFilterViewModel
+
+@{
+    ViewData["Title"] = "FiltereOffers";
+}
+
+@section Styles{    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <link rel="stylesheet" href="/assets/css/FilterOffers.css">
+}
+
+<div class="page-title">
+<div class="container">
+    <h2 class="section-title">Real Estate Offers</h2>
+
+    <form asp-controller="Offer" asp-action="FilterOffers" method="Get">
+    <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input asp-for="SearchTerm" class="main-search" placeholder="Area, Compound, Real Estate Developer">
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-item">
+        <div class="filter-trigger" onclick="toggleDropdown('hot-menu')">
+            <i class="fa-solid fa-fire" style="color: #ff4d4d; margin-right: 5px;"></i> 
+            Hot Offers 
+            <i class="fa-solid fa-chevron-down"></i> </div>
+        <div id="hot-menu" class="dropdown-menu">
+            <div id="hot-tags" class="tags-area"></div>
+            <div class="checkbox-list">
+                        @foreach (var item in Model.HotOffers)
+                        {
+                            <label class="check-row"><input type="checkbox"name="MinimumDiscount" value="@item" onchange="handleCheck(this, 'hot-tags')"> Discounts >@item</label>
+                        }
+                    </div>
+        </div>
+    </div>
+
+        <div class="filter-item">
+            <div class="filter-trigger" onclick="toggleDropdown('area-menu')">
+                Areas <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div id="area-menu" class="dropdown-menu">
+                <div class="inner-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search Areas" onkeyup="filterList(this)">
+                </div>
+                <div id="area-tags" class="tags-area"></div>
+                <div class="checkbox-list">
+                    @foreach(var item in Model.Areas)
+                    {
+                    <label class="check-row"><input type="checkbox" name="Areas" value="@item" onchange="handleCheck(this, 'area-tags')"> @item</label>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-item">
+            <div class="filter-trigger" onclick="toggleDropdown('comp-menu')">
+                Compounds <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div id="comp-menu" class="dropdown-menu">
+                <div class="inner-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search Compounds" onkeyup="filterList(this)">
+                </div>
+                <div id="comp-tags" class="tags-area"></div>
+                <div class="checkbox-list">
+                        @foreach (var item in Model.Compounds)
+                        {
+                            <label class="check-row"><input type="checkbox" name="Compounds" value="@item" onchange="this.form.submit()" > @item</label>
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="property-grid">
+                        @foreach (var item in Model.Offers)
+                        {
+        <div class="card">
+
+                
+                    <img src="@item.PropertyImageUrl" class="card-img">
+                    <div class="card-body">
+                        <div class="card-header">
+                    <div><h4 class="card-title">@item.PropertyTitle</h4><p class="card-location">@item.LocationName</p></div>
+                    <div class="contact-btns">
+                        <a href="#" class="icon-btn btn-phone"><i class="fa-solid fa-phone"></i></a>
+                        <a href="#" class="icon-btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="offer-text"><span>@((int)item.DiscountPercentage)%</span> Down Payment, <span>@item.DurationInMonths</span> Months</div>
+                <div class="card-footer">1 More Offer <i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+           
+        </div>
+        }
+        <button type="submit" style="display:none;">Search</button>
+        </form>
+    </div>
+</div>
+</div>
+
+@section Scripts{
+    <script src="/assets/js/FilterOffers.js"></script>
+}
+

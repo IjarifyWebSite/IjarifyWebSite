@@ -1,6 +1,7 @@
 ﻿using IjarifySystemDAL.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace IjarifySystemDAL.Entities
     {
         public string Name { get; set; } = null!;
         public string Icon { get; set; } = null!;
-        public AminityCatigory Catigory { get; set; }
+        public AminityCategory Category { get; set; }
 
         #region Amenity-Property
         public ICollection<Property> properties { get; set; } = null!;

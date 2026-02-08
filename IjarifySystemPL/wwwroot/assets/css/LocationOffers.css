@@ -1,0 +1,134 @@
+﻿body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header-section {
+    background-color: #fff;
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.super-area-badge {
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-left: 10px;
+}
+
+.call-us-btn {
+    background-color: #e9ecef;
+    color: #212529;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+    .call-us-btn i {
+        margin-right: 8px;
+    }
+
+.offers-title {
+    font-weight: 700;
+    color: #2c7a7b;
+    margin: 20px 0;
+}
+
+.offer-card {
+    background-color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+    .offer-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 40px;
+        border-top: 2px solid #2c7a7b;
+        border-left: 2px solid #2c7a7b;
+        margin: 15px;
+    }
+
+.discount-percent {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c7a7b;
+}
+
+.discount-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.offer-details {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    text-align: center;
+    min-height: 30px; /* fix the height */
+    max-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    overflow: hidden;
+}
+
+.project-name {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 1.05rem;
+    text-align: center;
+    /* FIXED HEIGHT */
+    min-height: 40px; /* ensures all titles take at least 40px */
+    max-height: 40px; /* truncates longer titles */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* hides extra text */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.developer-name {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+}
+
+.get-offer-btn {
+    border: 2px solid #2c7a7b;
+    color: #2c7a7b;
+    background: none;
+    padding: 8px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+    .get-offer-btn:hover {
+        background-color: #2c7a7b;
+        color: #2c7a7b;
+    }

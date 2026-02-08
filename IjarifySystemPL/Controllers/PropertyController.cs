@@ -3,6 +3,8 @@ using IjarifySystemBLL.ViewModels.PropertyViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using IjarifySystemBLL.Services.Interfaces;
+using IjarifySystemBLL.Services.Classes;
 
 namespace IjarifySystemPL.Controllers
 {
@@ -22,8 +24,9 @@ namespace IjarifySystemPL.Controllers
         // GET: PropertyController/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var vmModel = await _propertyService.GetPropertyDetails(id);
-            
+            int fakeUserId = 3;
+            var vmModel = await _propertyService.GetPropertyDetails(id , fakeUserId);
+
             return View("Details",vmModel);
         }
 

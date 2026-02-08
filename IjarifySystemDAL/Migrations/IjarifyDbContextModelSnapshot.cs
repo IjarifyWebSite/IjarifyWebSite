@@ -45,9 +45,10 @@ namespace IjarifySystemDAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Catigory")
+                    b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("nvarchar(12)");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -113,6 +114,52 @@ namespace IjarifySystemDAL.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("bookings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Check_In = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Check_Out = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 15, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            PropertyID = 1,
+                            Status = "Approved",
+                            TotalPrice = 15000m,
+                            UserID = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Check_In = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Check_Out = new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 3, 10, 14, 30, 0, 0, DateTimeKind.Unspecified),
+                            PropertyID = 2,
+                            Status = "Approved",
+                            TotalPrice = 25000m,
+                            UserID = 4
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Check_In = new DateTime(2024, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Check_Out = new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 3, 5, 9, 15, 0, 0, DateTimeKind.Unspecified),
+                            PropertyID = 3,
+                            Status = "Pending",
+                            TotalPrice = 8000m,
+                            UserID = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Check_In = new DateTime(2024, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Check_Out = new DateTime(2024, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 10, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            PropertyID = 5,
+                            Status = "Rejected",
+                            TotalPrice = 8000m,
+                            UserID = 4
+                        });
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Favourite", b =>
@@ -180,6 +227,40 @@ namespace IjarifySystemDAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Inquiries", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 2, 1, 10, 30, 0, 0, DateTimeKind.Unspecified),
+                            Message = "Is the apartment still available for rent starting next month? Also, are pets allowed?",
+                            PropertyId = 1,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified),
+                            Message = "I'm interested in renting the villa for the summer. Can we schedule a viewing?",
+                            PropertyId = 2,
+                            UserId = 4
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 2, 15, 11, 45, 0, 0, DateTimeKind.Unspecified),
+                            Message = "Does the rent include utilities? Also, is there parking available?",
+                            PropertyId = 3,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2024, 2, 22, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Message = "What is the minimum lease period for the office space?",
+                            PropertyId = 7,
+                            UserId = 4
+                        });
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Location", b =>
@@ -197,6 +278,11 @@ namespace IjarifySystemDAL.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar");
 
                     b.Property<decimal>("Latitude")
                         .HasColumnType("decimal(18,2)");
@@ -220,6 +306,63 @@ namespace IjarifySystemDAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Locations", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "Cairo",
+                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1549144511-f099e773c147?w=800",
+                            Latitude = 30.0444m,
+                            Longitude = 31.2357m,
+                            Regoin = "Nasr City",
+                            Street = "Makram Ebeid"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            City = "Alexandria",
+                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800",
+                            Latitude = 31.2001m,
+                            Longitude = 29.9187m,
+                            Regoin = "Smouha",
+                            Street = "Mostafa Kamel"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            City = "Cairo",
+                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800",
+                            Latitude = 30.0626m,
+                            Longitude = 31.2197m,
+                            Regoin = "Zamalek",
+                            Street = "26th July"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            City = "Giza",
+                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1568084680786-a84f91d1153c?w=800",
+                            Latitude = 29.9668m,
+                            Longitude = 30.9329m,
+                            Regoin = "6th October",
+                            Street = "Central Axis"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            City = "Cairo",
+                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
+                            Latitude = 30.0330m,
+                            Longitude = 31.4913m,
+                            Regoin = "New Cairo",
+                            Street = "90th Street"
+                        });
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Offer", b =>
@@ -262,6 +405,48 @@ namespace IjarifySystemDAL.Migrations
                     b.HasIndex("PropertyId");
 
                     b.ToTable("Offers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DiscountPercentage = 10m,
+                            EndDate = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 1,
+                            Title = "Spring Special - 10% Off First Month"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DiscountPercentage = 15m,
+                            EndDate = new DateTime(2024, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 2,
+                            Title = "Summer Vacation Deal - 15% Off"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DiscountPercentage = 5m,
+                            EndDate = new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 6,
+                            Title = "New Tenant Bonus - 5% Off"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DiscountPercentage = 20m,
+                            EndDate = new DateTime(2024, 5, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 8,
+                            Title = "Limited Time - 20% Off Sale Price"
+                        });
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Property", b =>
@@ -323,6 +508,128 @@ namespace IjarifySystemDAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Properties", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Area = 150m,
+                            BathRooms = 2,
+                            BedRooms = 3,
+                            CreatedAt = new DateTime(2024, 1, 20, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Spacious 3-bedroom apartment with modern amenities and stunning city views. Perfect for families looking for comfort and convenience in the heart of Nasr City.",
+                            ListingType = "Rent",
+                            LocationId = 1,
+                            Price = 15000m,
+                            Title = "Luxury Apartment in Nasr City",
+                            Type = "Apartment",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Area = 350m,
+                            BathRooms = 4,
+                            BedRooms = 5,
+                            CreatedAt = new DateTime(2024, 1, 25, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Beautiful villa with private beach access, pool, and garden. Ideal for vacation rentals or permanent residence. Enjoy the Mediterranean lifestyle.",
+                            ListingType = "Rent",
+                            LocationId = 2,
+                            Price = 50000m,
+                            Title = "Beachfront Villa in Alexandria",
+                            Type = "Villa",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Area = 60m,
+                            BathRooms = 1,
+                            BedRooms = 1,
+                            CreatedAt = new DateTime(2024, 2, 1, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Cozy studio apartment in the heart of Zamalek, close to cafes, restaurants, and shops. Perfect for young professionals.",
+                            ListingType = "Rent",
+                            LocationId = 3,
+                            Price = 8000m,
+                            Title = "Modern Studio in Zamalek",
+                            Type = "Studio",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Area = 280m,
+                            BathRooms = 3,
+                            BedRooms = 4,
+                            CreatedAt = new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Spacious family townhouse with garden, 4 bedrooms, and modern kitchen. Located in a quiet compound with 24/7 security.",
+                            ListingType = "Rent",
+                            LocationId = 4,
+                            Price = 25000m,
+                            Title = "Family Townhouse in 6th October",
+                            Type = "Townhouse",
+                            UserId = 5
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Area = 250m,
+                            BathRooms = 3,
+                            BedRooms = 4,
+                            CreatedAt = new DateTime(2024, 2, 15, 12, 45, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Luxurious penthouse with panoramic views, private terrace, and premium finishes. Features include smart home system and private parking.",
+                            ListingType = "Rent",
+                            LocationId = 5,
+                            Price = 35000m,
+                            Title = "Penthouse Apartment in New Cairo",
+                            Type = "Apartment",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Area = 100m,
+                            BathRooms = 1,
+                            BedRooms = 2,
+                            CreatedAt = new DateTime(2024, 3, 1, 10, 30, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Well-maintained 2-bedroom apartment, perfect for small families or couples. Close to schools and shopping centers.",
+                            ListingType = "Rent",
+                            LocationId = 1,
+                            Price = 10000m,
+                            Title = "Affordable Apartment in Nasr City",
+                            Type = "Apartment",
+                            UserId = 5
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Area = 200m,
+                            BathRooms = 2,
+                            BedRooms = 0,
+                            CreatedAt = new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Prime office location in downtown Cairo with modern facilities and easy access to public transportation.",
+                            ListingType = "Rent",
+                            LocationId = 3,
+                            Price = 40000m,
+                            Title = "Commercial Office Space in Downtown Cairo",
+                            Type = "Office",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Area = 180m,
+                            BathRooms = 3,
+                            BedRooms = 0,
+                            CreatedAt = new DateTime(2024, 2, 25, 13, 30, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Fully equipped medical clinic with modern equipment and established patient base. Great investment opportunity.",
+                            ListingType = "Sale",
+                            LocationId = 1,
+                            Price = 2500000m,
+                            Title = "Medical Clinic for Sale in Nasr City",
+                            Type = "Clinic",
+                            UserId = 3
+                        });
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.PropertyImages", b =>
@@ -393,6 +700,53 @@ namespace IjarifySystemDAL.Migrations
                         {
                             t.HasCheckConstraint("CK_Review_Rating_Range", "Rating Between 1 and 10");
                         });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Comment = "Amazing apartment! Very spacious and clean. The location is perfect and the landlord is very responsive.",
+                            CreatedAt = new DateTime(2024, 2, 5, 15, 30, 0, 0, DateTimeKind.Unspecified),
+                            PropertyId = 1,
+                            Rating = 9,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Comment = "Dream villa! The beach access is incredible and the kids love the pool. Highly recommended!",
+                            CreatedAt = new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            PropertyId = 2,
+                            Rating = 10,
+                            UserId = 4
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Comment = "Nice studio in a great location. Perfect for my needs as a single professional.",
+                            CreatedAt = new DateTime(2024, 2, 25, 14, 20, 0, 0, DateTimeKind.Unspecified),
+                            PropertyId = 3,
+                            Rating = 8,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Comment = "Excellent family townhouse. The compound is safe and the neighbors are friendly. Kids love playing in the garden.",
+                            CreatedAt = new DateTime(2024, 3, 5, 16, 45, 0, 0, DateTimeKind.Unspecified),
+                            PropertyId = 4,
+                            Rating = 9,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Comment = "Good apartment for the price. Could use some updates but overall a solid choice.",
+                            CreatedAt = new DateTime(2024, 3, 15, 13, 10, 0, 0, DateTimeKind.Unspecified),
+                            PropertyId = 6,
+                            Rating = 7,
+                            UserId = 4
+                        });
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.User", b =>
@@ -450,6 +804,63 @@ namespace IjarifySystemDAL.Migrations
                             t.HasCheckConstraint("CK_IjarifyUserValidEmail", "Email like '_%@_%._%'");
 
                             t.HasCheckConstraint("CK_IjarifyUserValidPhone", "phone like '01%' and Phone not like '%[^0-9]%'");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "ahmed.hassan@example.com",
+                            ImageUrl = "https://i.pravatar.cc/150?img=12",
+                            Name = "Ahmed Hassan",
+                            Password = "AQAAAAEAACcQAAAAEH8zQK",
+                            Phone = "01012345678",
+                            Role = "User"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 2, 10, 14, 30, 0, 0, DateTimeKind.Unspecified),
+                            Email = "sara.mohamed@example.com",
+                            ImageUrl = "https://i.pravatar.cc/150?img=45",
+                            Name = "Sara Mohamed",
+                            Password = "AQAAAAEAACcQAAAAEH8zQK",
+                            Phone = "01123456789",
+                            Role = "User"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified),
+                            Email = "omar.ali@example.com",
+                            ImageUrl = "https://i.pravatar.cc/150?img=33",
+                            Name = "Omar Ali",
+                            Password = "AQAAAAEAACcQAAAAEH8zQK",
+                            Phone = "01234567890",
+                            Role = "Owner"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified),
+                            Email = "nour.ibrahim@example.com",
+                            ImageUrl = "https://i.pravatar.cc/150?img=27",
+                            Name = "Nour Ibrahim",
+                            Password = "AQAAAAEAACcQAAAAEH8zQK",
+                            Phone = "01098765432",
+                            Role = "Owner"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified),
+                            Email = "khaled.mahmoud@example.com",
+                            ImageUrl = "https://i.pravatar.cc/150?img=51",
+                            Name = "Khaled Mahmoud",
+                            Password = "AQAAAAEAACcQAAAAEH8zQK",
+                            Phone = "01187654321",
+                            Role = "User"
                         });
                 });
 

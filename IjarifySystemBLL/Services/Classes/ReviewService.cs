@@ -78,6 +78,7 @@ namespace IjarifySystemBLL.Services.Classes
                 Reviews = reviews.Select(r => new ReviewItemViewModel
                 {
                     ReviewId = r.Id,
+                    PropertyId = r.PropertyId,
                     Comment = r.Comment,
                     Rating = r.Rating,
                     CreatedAt = r.CreatedAt,
@@ -97,6 +98,7 @@ namespace IjarifySystemBLL.Services.Classes
             var userReviews = reviews.Select(r => new ReviewItemViewModel
             {
                 ReviewId = r.Id,
+                PropertyId = r.PropertyId,
                 Comment = r.Comment,
                 Rating = r.Rating,
                 CreatedAt = r.CreatedAt,

@@ -4,6 +4,7 @@ using IjarifySystemDAL.Data.Context;
 using IjarifySystemDAL.Repositories.Classes;
 using IjarifySystemDAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace IjarifySystemPL
 {
@@ -24,8 +25,9 @@ namespace IjarifySystemPL
             builder.Services.AddScoped<IOfferService,OfferService>();
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
             builder.Services.AddScoped<IBookingService, BookingService>();
-
-
+            builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+            builder.Services.AddScoped<IHomeRepository, HomeRepository>();
+            builder.Services.AddScoped<IHomeService, HomeService>();
             builder.Services.AddDbContext<IjarifyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

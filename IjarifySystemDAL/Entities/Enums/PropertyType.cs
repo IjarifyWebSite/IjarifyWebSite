@@ -16,7 +16,7 @@ namespace IjarifySystemDAL.Entities.Enums
         Clinic,       
         Shop          
     }
-    public enum AminityCatigory
+    public enum AminityCategory
     {
         Interior,
         Exterior
