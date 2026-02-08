@@ -27,7 +27,7 @@ namespace IjarifySystemBLL.ViewModels.PropertyViewModels
         public string AgentPhone { get; set; }
         public string AgentAvatar { get; set; }
 
-        // Rating & Reviews
-        public PropertyReviewsViewModel ReviewsInfo { get; set; }
+        //reviews & rating
+        public PropertyReviewsViewModel? Reviews { get; set; }
     }
 }
