@@ -14,10 +14,8 @@ namespace IjarifySystemPL.Controllers
         public async Task<ActionResult> Index(PropertyFilterViewModel filter, int page = 1)
         {
             var pageViewModel = await _propertyService.GetPagination(4, page, filter);
-
             ViewBag.CurrentPage = pageViewModel.CurrentPage;
             ViewBag.TotalPages = pageViewModel.TotalPages;
-
             return View(pageViewModel);
         }
 

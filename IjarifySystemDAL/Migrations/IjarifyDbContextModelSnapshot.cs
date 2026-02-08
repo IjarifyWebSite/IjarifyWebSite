@@ -69,6 +69,104 @@ namespace IjarifySystemDAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("amenities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Category = "Interior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "wifi",
+                            Name = "WiFi"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Category = "Interior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "snowflake",
+                            Name = "Air Conditioning"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Category = "Exterior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "car",
+                            Name = "Parking"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Category = "Exterior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "water",
+                            Name = "Swimming Pool"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Category = "Interior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "dumbbell",
+                            Name = "Gym"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Category = "Exterior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "shield",
+                            Name = "Security"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Category = "Interior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "elevator",
+                            Name = "Elevator"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Category = "Exterior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "tree",
+                            Name = "Garden"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Category = "Exterior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "balcony",
+                            Name = "Balcony"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Category = "Interior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "fire",
+                            Name = "Central Heating"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Category = "Interior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "kitchen",
+                            Name = "Kitchen Appliances"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Category = "Interior",
+                            CreatedAt = new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Icon = "couch",
+                            Name = "Furnished"
+                        });
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Booking", b =>
@@ -191,6 +289,43 @@ namespace IjarifySystemDAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("favourites");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 1, 25, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            PropertyId = 1,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 1, 28, 15, 30, 0, 0, DateTimeKind.Unspecified),
+                            PropertyId = 2,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 2, 20, 10, 45, 0, 0, DateTimeKind.Unspecified),
+                            PropertyId = 5,
+                            UserId = 4
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2024, 2, 25, 14, 20, 0, 0, DateTimeKind.Unspecified),
+                            PropertyId = 3,
+                            UserId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2024, 2, 28, 9, 15, 0, 0, DateTimeKind.Unspecified),
+                            PropertyId = 7,
+                            UserId = 2
+                        });
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Inquiry", b =>
@@ -658,6 +793,155 @@ namespace IjarifySystemDAL.Migrations
                     b.HasIndex("PropertyId");
 
                     b.ToTable("PropertyImages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 1, 20, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
+                            PropertyId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 1, 20, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
+                            PropertyId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 1, 20, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800",
+                            PropertyId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2024, 1, 25, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800",
+                            PropertyId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2024, 1, 25, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
+                            PropertyId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2024, 1, 25, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800",
+                            PropertyId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTime(2024, 1, 25, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800",
+                            PropertyId = 2
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTime(2024, 2, 1, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+                            PropertyId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedAt = new DateTime(2024, 2, 1, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=800",
+                            PropertyId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedAt = new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
+                            PropertyId = 4
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800",
+                            PropertyId = 4
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=800",
+                            PropertyId = 4
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedAt = new DateTime(2024, 2, 15, 12, 45, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
+                            PropertyId = 5
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedAt = new DateTime(2024, 2, 15, 12, 45, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800",
+                            PropertyId = 5
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedAt = new DateTime(2024, 2, 15, 12, 45, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800",
+                            PropertyId = 5
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedAt = new DateTime(2024, 3, 1, 10, 30, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1502672023488-70e25813eb80?w=800",
+                            PropertyId = 6
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreatedAt = new DateTime(2024, 3, 1, 10, 30, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1560185009-5bf9f2849488?w=800",
+                            PropertyId = 6
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreatedAt = new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
+                            PropertyId = 7
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CreatedAt = new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800",
+                            PropertyId = 7
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CreatedAt = new DateTime(2024, 2, 25, 13, 30, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800",
+                            PropertyId = 8
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CreatedAt = new DateTime(2024, 2, 25, 13, 30, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1551076805-e1869033e561?w=800",
+                            PropertyId = 8
+                        });
                 });
 
             modelBuilder.Entity("IjarifySystemDAL.Entities.Review", b =>

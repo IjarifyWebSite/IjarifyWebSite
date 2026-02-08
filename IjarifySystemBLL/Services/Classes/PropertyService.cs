@@ -2,7 +2,6 @@
 using IjarifySystemBLL.ViewModels.AmenityViewModels;
 using IjarifySystemBLL.ViewModels.PropertyViewModels;
 using IjarifySystemDAL.Entities.Enums;
-using IjarifySystemBLL.ViewModels.ReviewsViewModels;
 using IjarifySystemDAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,7 +13,6 @@ namespace IjarifySystemBLL.Services.Classes
 {
     public class PropertyService(IPropertyRepository _repo) : IPropertyService
     {
-        
         public async Task<(List<PropertyIndexViewModel>?, int, int)> GetPagination(int pageSize, int page)
         {
             int totalProperties = await _repo.PropertiesCount();
@@ -46,10 +44,8 @@ namespace IjarifySystemBLL.Services.Classes
             return (propertyViewModels, currentPage, totalPages);
         }
 
-        
         public async Task<PropertyIndexPageViewModel> GetPagination(int pageSize, int page, PropertyFilterViewModel filter)
         {
-            // Build query with filters
             var query = _repo.GetQueryable()
                 .Include(p => p.User)
                 .Include(p => p.Location)
@@ -57,7 +53,6 @@ namespace IjarifySystemBLL.Services.Classes
                 .Include(p => p.amenities)
                 .AsQueryable();
 
-            // Apply filters
             if (!string.IsNullOrEmpty(filter?.PropertyType) && Enum.TryParse<PropertyType>(filter.PropertyType, out var propType))
             {
                 query = query.Where(p => p.Type == propType);
@@ -103,20 +98,17 @@ namespace IjarifySystemBLL.Services.Classes
                 query = query.Where(p => p.amenities.Any(a => filter.AmenityIds.Contains(a.Id)));
             }
 
-            // Get total count for pagination
             int totalProperties = await query.CountAsync();
             int totalPages = (int)Math.Ceiling(totalProperties / (double)pageSize);
             totalPages = Math.Max(1, totalPages);
             int currentPage = Math.Max(1, Math.Min(page, totalPages));
 
-            // Get paginated results
             var properties = await query
                 .OrderByDescending(p => p.CreatedAt)
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            // Map to ViewModels
             var propertyViewModels = properties.Select(p => new PropertyIndexViewModel
             {
                 Id = p.Id,
@@ -136,27 +128,25 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp"
             }).ToList();
 
-           
             var amenitiesEntities = await _repo.GetAllAmenities();
             var amenitiesViewModels = amenitiesEntities.Select(a => new AmenityViewModel
             {
                 Id = a.Id,
                 Name = a.Name,
                 Icon = a.Icon,
-                Category = a.Catigory.ToString()
+                Category = a.Category.ToString()  // ✅ FIXED: Category not Catigory
             }).ToList();
 
             var cities = await _repo.GetAllCities();
             var regions = await _repo.GetAllRegions();
 
-            // Build and return the complete page view model
             var pageViewModel = new PropertyIndexPageViewModel
             {
                 Properties = propertyViewModels,
                 Filter = filter ?? new PropertyFilterViewModel(),
                 PropertyTypes = Enum.GetNames(typeof(PropertyType)).ToList(),
                 ListingTypes = Enum.GetNames(typeof(PropertyListingType)).ToList(),
-                Amenities = amenitiesViewModels, 
+                Amenities = amenitiesViewModels,
                 Cities = cities,
                 Regions = regions,
                 CurrentPage = currentPage,
@@ -166,8 +156,7 @@ namespace IjarifySystemBLL.Services.Classes
             return pageViewModel;
         }
 
-        public async Task<PropertyDetailsViewModel?> GetPropertyDetails(int id)
-        public async Task<PropertyDetailsViewModel?> GetPropertyDetails(int id , int? currentUserId = null)
+        public async Task<PropertyDetailsViewModel?> GetPropertyDetails(int id, int? currentUserId = null)
         {
             var property = await _repo.GetByIdAsync(id);
 
@@ -182,13 +171,10 @@ namespace IjarifySystemBLL.Services.Classes
                 ListingType = property.ListingType.ToString(),
                 PropertyType = property.Type.ToString(),
 
-               
                 BedRooms = property.BedRooms,
                 BathRooms = property.BathRooms,
                 Area = property.Area,
 
-
-                // Location
                 Street = property.Location.Street,
                 City = property.Location.City,
                 Region = property.Location.Regoin,
@@ -197,7 +183,6 @@ namespace IjarifySystemBLL.Services.Classes
                 Longitude = property.Location.Longitude,
                 NeighborhoodInfo = $"Located in {property.Location.Regoin}, this property offers convenient access to local amenities and attractions.",
 
-                // Images
                 Images = property.PropertyImages?.Select(img => new PropertyImageViewModel
                 {
                     Id = img.Id,
@@ -205,16 +190,14 @@ namespace IjarifySystemBLL.Services.Classes
                     AltText = property.Title
                 }).ToList() ?? new List<PropertyImageViewModel>(),
 
-                // Amenities
                 Amenities = property.amenities?.Select(a => new AmenityViewModel
                 {
                     Id = a.Id,
                     Name = a.Name,
                     Icon = a.Icon,
-                    Category = a.Category.ToString()
+                    Category = a.Category.ToString()  // ✅ FIXED: Category not Catigory
                 }).ToList() ?? new List<AmenityViewModel>(),
 
-                // Agent Info
                 AgentId = property.UserId,
                 AgentName = property.User.Name,
                 AgentTitle = "Licensed Real Estate Agent",
@@ -222,22 +205,8 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentEmail = property.User.Email,
                 AgentAvatar = property.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
 
-                // Additional
                 CreatedAt = property.CreatedAt,
-                IsNew = (DateTime.Now - property.CreatedAt).TotalDays <= 30,
-
-                //Reviews
-                Reviews = property.Reviews?.Select(r => new ReviewItemViewModel
-                {
-                    ReviewId = r.Id,
-                    Comment = r.Comment,
-                    Rating = r.Rating,
-                    UserName = r.user.Name,
-                    UserImage = r.user.ImageUrl,
-                    CreatedAt = r.CreatedAt,
-                    PropertyId = r.PropertyId,
-                    IsOwner = r.UserId == currentUserId
-                }).ToList() ?? new List<ReviewItemViewModel>()
+                IsNew = (DateTime.Now - property.CreatedAt).TotalDays <= 30
             };
 
             return viewModel;
