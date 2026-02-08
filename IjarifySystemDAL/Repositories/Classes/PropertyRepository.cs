@@ -32,6 +32,7 @@ namespace IjarifySystemDAL.Repositories.Classes
                 .Include(p => p.User)
                 .Include(p => p.Location)
                 .Include(p => p.PropertyImages)
+                .Include(p => p.Reviews!)
                 .Skip(skip)
                 .Take(need)
                 .ToListAsync();

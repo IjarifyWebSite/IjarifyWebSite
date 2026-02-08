@@ -35,7 +35,17 @@ namespace IjarifySystemBLL.Services.Classes
                 IsNew = (DateTime.Now - p.CreatedAt).TotalDays <= 30,
                 AgentName = p.User.Name,
                 AgentPhone = p.User.Phone,
-                AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp"
+                AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
+                //reviews
+                ReviewsInfo = new PropertyReviewsViewModel
+                {
+                    PropertyId = p.Id,
+                    TotalReviews = p.Reviews?.Count ?? 0,
+                    AverageRating = p.Reviews != null && p.Reviews.Any()
+                        ? p.Reviews.Average(r => r.Rating)
+                        : 0,
+                    Reviews = new List<ReviewItemViewModel>()
+                }
             }).ToList();
 
             return (vmList, pages, page);

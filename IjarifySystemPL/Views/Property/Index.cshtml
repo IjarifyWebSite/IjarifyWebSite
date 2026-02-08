@@ -72,47 +72,79 @@
                         <div class="row g-4">
 
                             <!-- ===== NORMAL CARD ===== -->
-                            @foreach(var property in Model)
-                                    {
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="property-card">
-                                            <div class="property-image">
-                                                <img src="@property.MainImage" alt="@property.Name" class="img-fluid">
-                                                    <div class="property-badges">
-                                                        @if(property.IsNew)
-                                                        {
-                                                            <span class="badge new">New</span>
-                                                        }
-                                                        <span class="badge for-sale">@property.ListingType</span>
-                                                    </div>
-                                                    <div class="property-overlay">
-                                                        <button class="favorite-btn"><i class="bi bi-heart"></i></button>
-                                                        <button class="gallery-btn" data-count="@property.TotalImages"><i class="bi bi-images"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="property-content">
-                                                    <div class="property-price">$@property.Price.ToString("N0")</div>
-                                                    <h4 class="property-title">@property.Name</h4>
-                                                    <p class="property-location"><i class="bi bi-geo-alt"></i> @property.Location</p>
-                                                    <div class="property-features">
-                                                        <span><i class="bi bi-house"></i> @property.BedRooms Bed</span>
-                                                        <span><i class="bi bi-water"></i> @property.BathRooms Bath</span>
-                                                        <span><i class="bi bi-arrows-angle-expand"></i> @property.Area.ToString("N0") sqft</span>
-                                                    </div>
-                                                    <div class="property-agent">
-                                                        <img src="@property.AgentAvatar" alt="@property.AgentName" class="agent-avatar">
-                                                        <div class="agent-info">
-                                                            <strong>@property.AgentName</strong>
-                                                            <div class="agent-contact">
-                                                                <small><i class="bi bi-telephone"></i> @property.AgentPhone</small>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <a href="@Url.Action("Details", "Property", new { id = property.Id })" class="btn btn-primary w-100">View Details</a>
-                                                </div>
+                            @foreach(var property in Model){
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="property-card">
+                                        <div class="property-image">
+                                            <img src="@property.MainImage" alt="@property.Name" class="img-fluid">
+                                            <div class="property-badges">
+                                                @if(property.IsNew)
+                                                {
+                                                    <span class="badge new">New</span>
+                                                }
+                                                <span class="badge for-sale">@property.ListingType</span>
+                                            </div>
+                                            <div class="property-overlay">
+                                                <button class="favorite-btn"><i class="bi bi-heart"></i></button>
+                                                <button class="gallery-btn" data-count="@property.TotalImages"><i class="bi bi-images"></i></button>
                                             </div>
                                         </div>
-                                        }
+                                        <div class="property-content">
+                                            <div class="property-price">$@property.Price.ToString("N0")</div>
+                                            <h4 class="property-title">@property.Name</h4>
+                                            <p class="property-location"><i class="bi bi-geo-alt"></i> @property.Location</p>
+                                            <!-- Rating Section -->
+                                            @if (property.ReviewsInfo.TotalReviews > 0)
+                                            {
+                                                <div class="property-rating">
+                                                    <div class="rating-stars">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            @if (i <= Math.Round(property.ReviewsInfo.AverageRating))
+                                                            {
+                                                                <i class="bi bi-star-fill"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="bi bi-star-fill empty"></i>
+                                                            }
+                                                        }
+                                                    </div>
+                                                    <span class="rating-count">(@property.ReviewsInfo.TotalReviews @(property.ReviewsInfo.TotalReviews == 1 ? "review" : "reviews"))</span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="property-rating">
+                                                    <div class="rating-stars">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            <i class="bi bi-star-fill empty"></i>
+                                                        }
+                                                    </div>
+                                                    <span class="rating-count">(No reviews yet)</span>
+                                                </div>
+                                            }
+
+                                            <div class="property-features">
+                                                <span><i class="bi bi-house"></i> @property.BedRooms Bed</span>
+                                                <span><i class="bi bi-water"></i> @property.BathRooms Bath</span>
+                                                <span><i class="bi bi-arrows-angle-expand"></i> @property.Area.ToString("N0") sqft</span>
+                                            </div>
+                                            <div class="property-agent">
+                                                <img src="@property.AgentAvatar" alt="@property.AgentName" class="agent-avatar">
+                                                <div class="agent-info">
+                                                    <strong>@property.AgentName</strong>
+                                                    <div class="agent-contact">
+                                                        <small><i class="bi bi-telephone"></i> @property.AgentPhone</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a href="@Url.Action("Details", "Property", new { id = property.Id })" class="btn btn-primary w-100">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                                 
                             
                             @for (int i = 0; i < placeHolders; i++)
@@ -465,4 +497,32 @@
     </section><!-- /Properties Section -->
 
 </main>
+
+<style>
+    .property-rating {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .rating-stars {
+        display: flex;
+        gap: 2px;
+    }
+
+    .rating-stars i {
+        font-size: 14px;
+        color: #ffc107;
+    }
+
+    .rating-stars i.empty {
+        color: #e9ecef;
+    }
+
+    .rating-count {
+        font-size: 13px;
+        color: #6c757d;
+    }
+</style>
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IjarifySystemBLL.ViewModels.ReviewsViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,5 +26,8 @@ namespace IjarifySystemBLL.ViewModels.PropertyViewModels
         public string AgentName { get; set; }
         public string AgentPhone { get; set; }
         public string AgentAvatar { get; set; }
+
+        // Rating & Reviews
+        public PropertyReviewsViewModel ReviewsInfo { get; set; }
     }
 }
