@@ -3,6 +3,7 @@ using IjarifySystemBLL.ViewModels.PropertyViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace IjarifySystemPL.Controllers
 {
     public class PropertyController(IPropertyService _propertyService) : Controller

@@ -3,16 +3,49 @@ using IjarifySystemBLL.ViewModels.AmenityViewModels;
 using IjarifySystemBLL.ViewModels.PropertyViewModels;
 using IjarifySystemDAL.Entities.Enums;
 using IjarifySystemDAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace IjarifySystemBLL.Services.Classes
 {
-    public class PropertyService(IPropertyRepository _repo):IPropertyService
+    public class PropertyService(IPropertyRepository _repo) : IPropertyService
     {
+        // ✅ IMPLEMENT THE FIRST OVERLOAD (without filter)
+        public async Task<(List<PropertyIndexViewModel>?, int, int)> GetPagination(int pageSize, int page)
+        {
+            int totalProperties = await _repo.PropertiesCount();
+            int totalPages = (int)Math.Ceiling(totalProperties / (double)pageSize);
+            totalPages = Math.Max(1, totalPages);
+            int currentPage = Math.Max(1, Math.Min(page, totalPages));
+
+            var properties = await _repo.GetForPagination(pageSize, (currentPage - 1) * pageSize);
+
+            var propertyViewModels = properties.Select(p => new PropertyIndexViewModel
+            {
+                Id = p.Id,
+                Name = p.Title,
+                Price = p.Price,
+                Location = $"{p.Location.Street}, {p.Location.City}, {p.Location.Regoin}",
+                BedRooms = p.BedRooms,
+                BathRooms = p.BathRooms,
+                Area = p.Area,
+                ListingType = p.ListingType.ToString(),
+                PropertyType = p.Type.ToString(),
+                MainImage = p.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "assets/img/real-estate/default-property.webp",
+                TotalImages = p.PropertyImages?.Count ?? 0,
+                IsNew = (DateTime.Now - p.CreatedAt).TotalDays <= 30,
+                AgentName = p.User.Name,
+                AgentPhone = p.User.Phone,
+                AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp"
+            }).ToList();
+
+            return (propertyViewModels, currentPage, totalPages);
+        }
+
+        // ✅ SECOND OVERLOAD (with filter) - CORRECTED
         public async Task<PropertyIndexPageViewModel> GetPagination(int pageSize, int page, PropertyFilterViewModel filter)
         {
             // Build query with filters
@@ -72,12 +105,12 @@ namespace IjarifySystemBLL.Services.Classes
             // Get total count for pagination
             int totalProperties = await query.CountAsync();
             int totalPages = (int)Math.Ceiling(totalProperties / (double)pageSize);
-            totalPages = Math.Max(1, totalPages); // At least 1 page
-            int currentPage = Math.Max(1, Math.Min(page, totalPages)); // Clamp page number
+            totalPages = Math.Max(1, totalPages);
+            int currentPage = Math.Max(1, Math.Min(page, totalPages));
 
             // Get paginated results
             var properties = await query
-                .OrderByDescending(p => p.CreatedAt) // Sort by newest first
+                .OrderByDescending(p => p.CreatedAt)
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -102,8 +135,16 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp"
             }).ToList();
 
-            // Get filter dropdown data
-            var amenities = await _repo.GetAllAmenities();
+            // ✅ FIX: Map amenities from Entity to ViewModel
+            var amenitiesEntities = await _repo.GetAllAmenities();
+            var amenitiesViewModels = amenitiesEntities.Select(a => new AmenityViewModel
+            {
+                Id = a.Id,
+                Name = a.Name,
+                Icon = a.Icon,
+                Category = a.Catigory.ToString()
+            }).ToList();
+
             var cities = await _repo.GetAllCities();
             var regions = await _repo.GetAllRegions();
 
@@ -114,7 +155,7 @@ namespace IjarifySystemBLL.Services.Classes
                 Filter = filter ?? new PropertyFilterViewModel(),
                 PropertyTypes = Enum.GetNames(typeof(PropertyType)).ToList(),
                 ListingTypes = Enum.GetNames(typeof(PropertyListingType)).ToList(),
-                Amenities = amenities,
+                Amenities = amenitiesViewModels, // ✅ Use mapped ViewModels
                 Cities = cities,
                 Regions = regions,
                 CurrentPage = currentPage,
@@ -123,6 +164,7 @@ namespace IjarifySystemBLL.Services.Classes
 
             return pageViewModel;
         }
+
         public async Task<PropertyDetailsViewModel?> GetPropertyDetails(int id)
         {
             var property = await _repo.GetByIdAsync(id);
@@ -142,7 +184,6 @@ namespace IjarifySystemBLL.Services.Classes
                 BedRooms = property.BedRooms,
                 BathRooms = property.BathRooms,
                 Area = property.Area,
-                
 
                 // Location
                 Street = property.Location.Street,

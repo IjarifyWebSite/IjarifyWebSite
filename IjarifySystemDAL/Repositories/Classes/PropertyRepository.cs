@@ -7,13 +7,19 @@ namespace IjarifySystemDAL.Repositories.Classes
 {
     public class PropertyRepository(IjarifyDbContext _context) : IPropertyRepository
     {
+        // ✅ ADD THIS METHOD
+        public IQueryable<Property> GetQueryable()
+        {
+            return _context.Properties.AsQueryable();
+        }
+
         public async Task<Property?> GetByIdAsync(int id)
         {
             return await _context.Properties
                 .Include(p => p.User)
                 .Include(p => p.Location)
                 .Include(p => p.PropertyImages)
-                .Include(p => p.amenities) 
+                .Include(p => p.amenities)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -33,8 +39,6 @@ namespace IjarifySystemDAL.Repositories.Classes
             return await _context.Properties.CountAsync();
         }
 
-      
-
         public async Task<List<Amenity>> GetAllAmenities()
         {
             return await _context.amenities.ToListAsync();
@@ -42,7 +46,6 @@ namespace IjarifySystemDAL.Repositories.Classes
 
         public async Task<List<string>> GetAllCities()
         {
-           
             return await _context.Locations
                 .Select(l => l.City)
                 .Distinct()
@@ -51,9 +54,8 @@ namespace IjarifySystemDAL.Repositories.Classes
 
         public async Task<List<string>> GetAllRegions()
         {
-            
             return await _context.Locations
-                .Select(l => l.Street)
+                .Select(l => l.Regoin) // ✅ Changed from Street to Regoin
                 .Distinct()
                 .ToListAsync();
         }
