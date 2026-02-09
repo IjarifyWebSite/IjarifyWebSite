@@ -92,6 +92,49 @@
                                             <div class="property-price">$@property.Price.ToString("N0")</div>
                                             <h4 class="property-title">@property.Name</h4>
                                             <p class="property-location"><i class="bi bi-geo-alt"></i> @property.Location</p>
+                                            @* Reviews  *@
+                                            @if (property.Reviews != null && property.Reviews.TotalReviews > 0)
+                                            {
+                                                <div class="property-rating mb-2">
+                                                    <div class="d-flex align-items-center gap-1">
+                                                        <div class="rating-stars">
+                                                            @for (int i = 1; i <= 5; i++)
+                                                            {
+                                                                if (i <= Math.Floor(property.Reviews.AverageRating))
+                                                                {
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                }
+                                                                else if (i - 0.5 <= property.Reviews.AverageRating)
+                                                                {
+                                                                    <i class="bi bi-star-half text-warning"></i>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <i class="bi bi-star text-muted"></i>
+                                                                }
+                                                            }
+                                                        </div>
+                                                        <small class="text-muted ms-1">
+                                                            <strong>@property.Reviews.AverageRating.ToString("0.0")</strong>
+                                                            (@property.Reviews.TotalReviews)
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="property-rating">
+                                                    <div class="rating-stars">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            <i class="bi bi-star-fill empty"></i>
+                                                        }
+                                                    </div>
+                                                    <span class="rating-count">(No reviews yet)</span>
+                                                </div>
+                                            }
+
+
                                             <div class="property-features">
                                                 <span><i class="bi bi-house"></i> @property.BedRooms Bed</span>
                                                 <span><i class="bi bi-water"></i> @property.BathRooms Bath</span>
@@ -362,3 +405,31 @@
         }
     </script>
 }
+
+<style>
+    .property-rating {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .rating-stars {
+        display: flex;
+        gap: 2px;
+    }
+
+    .rating-stars i {
+        font-size: 14px;
+        color: #ffc107;
+    }
+
+    .rating-stars i.empty {
+        color: #e9ecef;
+    }
+
+    .rating-count {
+        font-size: 13px;
+        color: #6c757d;
+    }
+</style>

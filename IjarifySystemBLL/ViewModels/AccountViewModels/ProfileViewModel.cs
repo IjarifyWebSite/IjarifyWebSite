@@ -1,4 +1,5 @@
-﻿using IjarifySystemBLL.ViewModels.ReviewsViewModels;
+﻿using IjarifySystemBLL.ViewModels.Booking;
+using IjarifySystemBLL.ViewModels.ReviewsViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,7 @@ namespace IjarifySystemBLL.ViewModels.AccountViewModels
         public string PhoneNumber { get; set; } = null!;
         public string WhatsApp { get; set; } = null!;
         public IEnumerable<ReviewItemViewModel> Reviews { get; set; }
+        public List<BookingListViewModel> RecentBookings { get; set; } = new List<BookingListViewModel>();
+        public int TotalBookings { get; set; }
     }
 }

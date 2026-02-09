@@ -1,7 +1,11 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.AmenityViewModels;
 using IjarifySystemBLL.ViewModels.PropertyViewModels;
+<<<<<<< HEAD
 using IjarifySystemDAL.Entities;
+=======
+using IjarifySystemBLL.ViewModels.ReviewsViewModels;
+>>>>>>> b7841cad8170dbb4224b2a0b2d3f9354470b5cf8
 using IjarifySystemDAL.Entities.Enums;
 using IjarifySystemDAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -16,8 +20,49 @@ namespace IjarifySystemBLL.Services.Classes
 {
     public class PropertyService(IPropertyRepository _repo) : IPropertyService
     {
+<<<<<<< HEAD
         // Using Directory.GetCurrentDirectory() to avoid hosting environment issues
         private readonly string _rootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+=======
+        public async Task<(List<PropertyIndexViewModel>?, int, int)> GetPagination(int pageSize, int page)
+        {
+            int totalProperties = await _repo.PropertiesCount();
+            int totalPages = (int)Math.Ceiling(totalProperties / (double)pageSize);
+            totalPages = Math.Max(1, totalPages);
+            int currentPage = Math.Max(1, Math.Min(page, totalPages));
+
+            var properties = await _repo.GetForPagination(pageSize, (currentPage - 1) * pageSize);
+
+            var propertyViewModels = properties.Select(p => new PropertyIndexViewModel
+            {
+                Id = p.Id,
+                Name = p.Title,
+                Price = p.Price,
+                Location = $"{p.Location.Street}, {p.Location.City}, {p.Location.Regoin}",
+                BedRooms = p.BedRooms,
+                BathRooms = p.BathRooms,
+                Area = p.Area,
+                ListingType = p.ListingType.ToString(),
+                PropertyType = p.Type.ToString(),
+                MainImage = p.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "assets/img/real-estate/default-property.webp",
+                TotalImages = p.PropertyImages?.Count ?? 0,
+                IsNew = (DateTime.Now - p.CreatedAt).TotalDays <= 30,
+                AgentName = p.User.Name,
+                AgentPhone = p.User.Phone,
+                AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
+                //reviews
+                Reviews = new PropertyReviewsViewModel
+                {
+                    PropertyId = p.Id,
+                    AverageRating = p.Reviews != null && p.Reviews.Any()? p.Reviews.Average(r => r.Rating): 0,
+                    TotalReviews = p.Reviews?.Count ?? 0
+                }
+
+            }).ToList();
+
+            return (propertyViewModels, currentPage, totalPages);
+        }
+>>>>>>> b7841cad8170dbb4224b2a0b2d3f9354470b5cf8
 
         public async Task<PropertyIndexPageViewModel> GetPagination(int pageSize, int page, PropertyFilterViewModel filter)
         {
@@ -26,6 +71,7 @@ namespace IjarifySystemBLL.Services.Classes
                 .Include(p => p.Location)
                 .Include(p => p.PropertyImages)
                 .Include(p => p.amenities)
+                .Include(p => p.Reviews!)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(filter?.PropertyType) && Enum.TryParse<PropertyType>(filter.PropertyType, out var propType))
@@ -77,7 +123,13 @@ namespace IjarifySystemBLL.Services.Classes
                 IsNew = (DateTime.Now - p.CreatedAt).TotalDays <= 30,
                 AgentName = p.User.Name,
                 AgentPhone = p.User.Phone,
-                AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp"
+                AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
+                Reviews = new PropertyReviewsViewModel
+                {
+                    PropertyId = p.Id,
+                    AverageRating = p.Reviews != null && p.Reviews.Any()? p.Reviews.Average(r => r.Rating): 0,
+                    TotalReviews = p.Reviews?.Count ?? 0
+                }
             }).ToList();
 
             var amenitiesEntities = await _repo.GetAllAmenities();
@@ -146,7 +198,19 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentEmail = property.User.Email,
                 AgentAvatar = property.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
                 CreatedAt = property.CreatedAt,
-                IsNew = (DateTime.Now - property.CreatedAt).TotalDays <= 30
+                IsNew = (DateTime.Now - property.CreatedAt).TotalDays <= 30,
+
+                 Reviews = property.Reviews?.Select(r => new ReviewItemViewModel
+                 {
+                     ReviewId = r.Id,
+                     Comment = r.Comment,
+                     Rating = r.Rating,
+                     UserName = r.user.Name,
+                     UserImage = r.user.ImageUrl,
+                     CreatedAt = r.CreatedAt,
+                     PropertyId = r.PropertyId,
+                     IsOwner = r.UserId == currentUserId
+                 }).ToList() ?? new List<ReviewItemViewModel>()
             };
         }
 

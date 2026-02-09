@@ -136,7 +136,7 @@
 
                                     <div class="edit-actions">
                                         <div class="stars-input">
-                                            @for (int i = 1; i <= 5; i++)
+                                            @for (int i = 5; i >= 1; i--)
                                             {
                                                 <input type="radio" name="Rating" value="@i" id="e@(review.ReviewId)-@i" @(i == review.Rating ? "checked" : "")>
                                                 <label for="e@(review.ReviewId)-@i"><i class="bi bi-star-fill"></i></label>
