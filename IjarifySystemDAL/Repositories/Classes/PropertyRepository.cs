@@ -16,6 +16,7 @@ namespace IjarifySystemDAL.Repositories.Classes
                 .Include(p => p.Location)
                 .Include(p => p.PropertyImages)
                 .Include(p => p.amenities)
+                .Include(p => p.Reviews!).ThenInclude(r => r.user)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -25,14 +26,7 @@ namespace IjarifySystemDAL.Repositories.Classes
                 .Include(p => p.User)
                 .Include(p => p.Location)
                 .Include(p => p.PropertyImages)
-<<<<<<< HEAD
                 .Skip(skip).Take(need).ToListAsync();
-=======
-                .Include(p => p.Reviews!)
-                .Skip(skip)
-                .Take(need)
-                .ToListAsync();
->>>>>>> b7841cad8170dbb4224b2a0b2d3f9354470b5cf8
         }
 
         public async Task<int> PropertiesCount() => await _context.Properties.CountAsync();

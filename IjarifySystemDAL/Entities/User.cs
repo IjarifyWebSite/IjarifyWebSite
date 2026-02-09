@@ -14,6 +14,7 @@ namespace IjarifySystemDAL.Entities
         public string  Phone { get; set; } = null!;
         public string Role { get; set; } = null!;
         public string? ImageUrl { get; set; }
+        public string Address { get; set; } = null!;
 
         public ICollection<Property>? Properties { get; set; }
         public ICollection<Inquiry>? UserInquiries { get; set; }

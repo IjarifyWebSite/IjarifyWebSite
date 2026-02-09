@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IjarifySystemDAL.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class InitailCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,6 +62,7 @@ namespace IjarifySystemDAL.Migrations
                     Phone = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -306,14 +307,14 @@ namespace IjarifySystemDAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedAt", "Email", "ImageUrl", "Name", "Password", "Phone", "Role", "UpdatedAt" },
+                columns: new[] { "Id", "Address", "CreatedAt", "Email", "ImageUrl", "Name", "Password", "Phone", "Role", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", "https://i.pravatar.cc/150?img=12", "Ahmed Hassan", "AQAAAAEAACcQAAAAEH8zQK", "01012345678", "User", null },
-                    { 2, new DateTime(2024, 2, 10, 14, 30, 0, 0, DateTimeKind.Unspecified), "sara.mohamed@example.com", "https://i.pravatar.cc/150?img=45", "Sara Mohamed", "AQAAAAEAACcQAAAAEH8zQK", "01123456789", "User", null },
-                    { 3, new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", "https://i.pravatar.cc/150?img=33", "Omar Ali", "AQAAAAEAACcQAAAAEH8zQK", "01234567890", "Owner", null },
-                    { 4, new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", "https://i.pravatar.cc/150?img=27", "Nour Ibrahim", "AQAAAAEAACcQAAAAEH8zQK", "01098765432", "Owner", null },
-                    { 5, new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", "https://i.pravatar.cc/150?img=51", "Khaled Mahmoud", "AQAAAAEAACcQAAAAEH8zQK", "01187654321", "User", null }
+                    { 1, "15 El Nile Street, Maadi, Cairo", new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", "https://i.pravatar.cc/150?img=33", "Omar Ali", "AQAAAAEAACcQAAAAEH8zQK", "01234567890", "Owner", null },
+                    { 2, "28 Tahrir Street, Downtown, Cairo", new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", "https://i.pravatar.cc/150?img=27", "Nour Ibrahim", "AQAAAAEAACcQAAAAEH8zQK", "01098765432", "Owner", null },
+                    { 3, "42 Nasr Road, Nasr City, Cairo", new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", "https://i.pravatar.cc/150?img=51", "Khaled Mahmoud", "AQAAAAEAACcQAAAAEH8zQK", "01187654321", "User", null },
+                    { 4, "10 Tahrir Square, Cairo", new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", "https://i.pravatar.cc/150?img=12", "Ahmed Hassan", "AQAAAAEAACcQAAAAEH8zQK", "01012345678", "Owner", null },
+                    { 5, "25 Alexandria Road, Cairo", new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), "fatima.mohamed@example.com", "https://i.pravatar.cc/150?img=45", "Fatima Mohamed", "AQAAAAEAACcQAAAAEH8zQK", "01123456789", "User", null }
                 });
 
             migrationBuilder.InsertData(
