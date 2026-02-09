@@ -1,209 +1,296 @@
-﻿
-@{
-    ViewData["Title"] = "_BookingCard";
-}
+﻿@model IjarifySystemBLL.ViewModels.Booking.BookingListViewModel
 
-@model IjarifySystemBLL.ViewModels.Booking.BookingListViewModel
-
-<div class="booking-card">
-    <div class="booking-card-header">
-        <div class="booking-id">
-            <i class="bi bi-receipt"></i> Booking #@Model.Id
-        </div>
-        <div class="booking-status">
-            <span class="badge @Model.StatusBadgeClass">
-                @Model.StatusText
+<div class="booking-card-modern">
+    <div class="booking-header-modern">
+        <div class="booking-id-section">
+            <span class="booking-id">#@Model.Id</span>
+            <span class="booking-status-badge @GetStatusClass()">
+                @Html.Raw(GetStatusIcon()) @Model.StatusText
             </span>
         </div>
     </div>
 
-    <div class="booking-card-body">
-        <h5 class="property-title">
-            <i class="bi bi-house-door"></i> @Model.PropertyTitle
-        </h5>
+    <div class="booking-body-modern">
+        <div class="property-info-modern">
+            <h5 class="property-name">
+                <i class="bi bi-building"></i>
+                @Model.PropertyTitle
+            </h5>
+        </div>
 
-        <div class="booking-dates">
-            <div class="date-item">
-                <i class="bi bi-calendar-check text-success"></i>
-                <div>
+        <div class="dates-section-modern">
+            <div class="date-box check-in">
+                <div class="date-icon">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="date-details">
                     <small>Check-In</small>
-                    <strong>@Model.Check_In.ToString("dd MMM yyyy")</strong>
+                    <strong>@Model.Check_In.ToString("dd MMM")</strong>
+                    <span class="year">@Model.Check_In.ToString("yyyy")</span>
                 </div>
             </div>
-            <div class="date-separator">
+
+            <div class="duration-indicator">
                 <i class="bi bi-arrow-right"></i>
+                <span>@Model.TotalNights nights</span>
             </div>
-            <div class="date-item">
-                <i class="bi bi-calendar-x text-danger"></i>
-                <div>
+
+            <div class="date-box check-out">
+                <div class="date-icon">
+                    <i class="bi bi-calendar-x"></i>
+                </div>
+                <div class="date-details">
                     <small>Check-Out</small>
-                    <strong>@Model.Check_Out.ToString("dd MMM yyyy")</strong>
+                    <strong>@Model.Check_Out.ToString("dd MMM")</strong>
+                    <span class="year">@Model.Check_Out.ToString("yyyy")</span>
                 </div>
             </div>
         </div>
 
-        <div class="booking-info">
-            <div class="info-item">
-                <i class="bi bi-moon"></i>
-                <span>@Model.TotalNights night(s)</span>
+        <div class="booking-footer-modern">
+            <div class="price-section">
+                <small>Total Amount</small>
+                <h4 class="price">@Model.TotalPrice.ToString("C")</h4>
             </div>
-            <div class="info-item price">
-                <i class="bi bi-cash-stack"></i>
-                <span>@Model.TotalPrice.ToString("C")</span>
+            <div class="action-section">
+                <a asp-controller="Booking" asp-action="Details" asp-route-id="@Model.Id" class="btn-view-details">
+                    View Details <i class="bi bi-arrow-right"></i>
+                </a>
             </div>
         </div>
-    </div>
-
-    <div class="booking-card-footer">
-        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-details">
-            <i class="bi bi-eye"></i> View Details
-        </a>
     </div>
 </div>
 
-@section Styles {
-    <style>
-        .booking-card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            height: 100%;
-        }
+@functions {
+    string GetStatusClass()
+    {
+        return Model.Status switch
+        {
+            IjarifySystemDAL.Entities.Enums.BookingStatus.Pending => "status-pending",
+            IjarifySystemDAL.Entities.Enums.BookingStatus.Approved => "status-approved",
+            IjarifySystemDAL.Entities.Enums.BookingStatus.Rejected => "status-rejected",
+            _ => "status-default"
+        };
+    }
 
-            .booking-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 8px 35px rgba(0, 0, 0, 0.12);
-            }
-
-        .booking-card-header {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .booking-id {
-            font-weight: 600;
-            color: #495057;
-            font-size: 14px;
-        }
-
-            .booking-id i {
-                color: #2a5298;
-            }
-
-        .booking-status .badge {
-            padding: 6px 12px;
-            font-size: 12px;
-            border-radius: 20px;
-        }
-
-        .booking-card-body {
-            padding: 20px;
-        }
-
-        .property-title {
-            color: #2a5298;
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-            .property-title i {
-                margin-right: 8px;
-            }
-
-        .booking-dates {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .date-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-            .date-item i {
-                font-size: 24px;
-            }
-
-            .date-item small {
-                display: block;
-                color: #6c757d;
-                font-size: 11px;
-            }
-
-            .date-item strong {
-                display: block;
-                color: #212529;
-                font-size: 14px;
-            }
-
-        .date-separator {
-            color: #dee2e6;
-            font-size: 20px;
-        }
-
-        .booking-info {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 10px;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #6c757d;
-        }
-
-            .info-item i {
-                color: #2a5298;
-            }
-
-            .info-item.price {
-                color: #2a5298;
-                font-weight: 700;
-                font-size: 16px;
-            }
-
-        .booking-card-footer {
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .btn-details {
-            display: block;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
-            color: #fff;
-            border-radius: 6px;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-
-            .btn-details:hover {
-                opacity: 0.9;
-                color: #fff;
-            }
-
-            .btn-details i {
-                margin-right: 5px;
-            }
-    </style>
+    string GetStatusIcon()
+    {
+        return Model.Status switch
+        {
+            IjarifySystemDAL.Entities.Enums.BookingStatus.Pending => "<i class='bi bi-clock-history'></i>",
+            IjarifySystemDAL.Entities.Enums.BookingStatus.Approved => "<i class='bi bi-check-circle-fill'></i>",
+            IjarifySystemDAL.Entities.Enums.BookingStatus.Rejected => "<i class='bi bi-x-circle-fill'></i>",
+            _ => "<i class='bi bi-question-circle'></i>"
+        };
+    }
 }
 
+<style>
+    .booking-card-modern {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+    }
+
+        .booking-card-modern:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+    .booking-header-modern {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 20px;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .booking-id-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .booking-id {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--accent-color);
+    }
+
+    .booking-status-badge {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-approved {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-rejected {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .booking-body-modern {
+        padding: 25px;
+    }
+
+    .property-info-modern {
+        margin-bottom: 20px;
+    }
+
+    .property-name {
+        font-size: 20px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .property-name i {
+            color: var(--accent-color);
+            font-size: 22px;
+        }
+
+    .dates-section-modern {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .date-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .date-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+    }
+
+    .date-box.check-in .date-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .date-box.check-out .date-icon {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .date-details small {
+        display: block;
+        font-size: 11px;
+        color: #6c757d;
+        margin-bottom: 3px;
+    }
+
+    .date-details strong {
+        display: block;
+        font-size: 18px;
+        color: #2c3e50;
+        font-weight: 700;
+    }
+
+    .date-details .year {
+        display: block;
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .duration-indicator {
+        text-align: center;
+        color: #6c757d;
+    }
+
+        .duration-indicator i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .duration-indicator span {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+    .booking-footer-modern {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 20px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .price-section small {
+        display: block;
+        font-size: 12px;
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+
+    .price {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--accent-color);
+        margin: 0;
+    }
+
+    .btn-view-details {
+        background: var(--accent-color);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-view-details:hover {
+            transform: translateX(5px);
+            color: white;
+            opacity: 0.9;
+        }
+
+    @@media (max-width: 768px) {
+        .dates-section-modern
+
+    {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .duration-indicator i {
+        transform: rotate(90deg);
+    }
+
+    }
+</style>
