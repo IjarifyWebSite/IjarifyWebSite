@@ -1,12 +1,12 @@
-﻿@using IjarifySystemBLL.ViewModels.PropertyViewModels
-@model List<PropertyIndexViewModel>
+﻿@model IjarifySystemBLL.ViewModels.PropertyViewModels.PropertyIndexPageViewModel
+
 @{
     ViewData["Title"] = "Index";
     int maxCards = 4;
 
-    int currentPage = ViewBag.CurrentPage - 1 ?? 1;
+    int currentPage = ViewBag.CurrentPage ?? 1;
     int totalPages = ViewBag.TotalPages ?? 1;
-    int placeHolders = maxCards - totalPages;
+    int placeHolders = maxCards - Model.Properties.Count;
 }
 
 <main class="main">
@@ -19,10 +19,8 @@
                     <div class="col-lg-8">
                         <h1 class="heading-title">Properties</h1>
                         <p class="mb-0">
-                            Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo
-                            odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum
-                            debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat
-                            ipsum dolorem.
+                            Browse through our collection of premium properties.
+                            Find your dream home or investment opportunity today.
                         </p>
                     </div>
                 </div>
@@ -72,49 +70,91 @@
                         <div class="row g-4">
 
                             <!-- ===== NORMAL CARD ===== -->
-                            @foreach(var property in Model)
-                                    {
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="property-card">
-                                            <div class="property-image">
-                                                <img src="@property.MainImage" alt="@property.Name" class="img-fluid">
-                                                    <div class="property-badges">
-                                                        @if(property.IsNew)
-                                                        {
-                                                            <span class="badge new">New</span>
-                                                        }
-                                                        <span class="badge for-sale">@property.ListingType</span>
-                                                    </div>
-                                                    <div class="property-overlay">
-                                                        <button class="favorite-btn"><i class="bi bi-heart"></i></button>
-                                                        <button class="gallery-btn" data-count="@property.TotalImages"><i class="bi bi-images"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="property-content">
-                                                    <div class="property-price">$@property.Price.ToString("N0")</div>
-                                                    <h4 class="property-title">@property.Name</h4>
-                                                    <p class="property-location"><i class="bi bi-geo-alt"></i> @property.Location</p>
-                                                    <div class="property-features">
-                                                        <span><i class="bi bi-house"></i> @property.BedRooms Bed</span>
-                                                        <span><i class="bi bi-water"></i> @property.BathRooms Bath</span>
-                                                        <span><i class="bi bi-arrows-angle-expand"></i> @property.Area.ToString("N0") sqft</span>
-                                                    </div>
-                                                    <div class="property-agent">
-                                                        <img src="@property.AgentAvatar" alt="@property.AgentName" class="agent-avatar">
-                                                        <div class="agent-info">
-                                                            <strong>@property.AgentName</strong>
-                                                            <div class="agent-contact">
-                                                                <small><i class="bi bi-telephone"></i> @property.AgentPhone</small>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <a href="@Url.Action("Details", "Property", new { id = property.Id })" class="btn btn-primary w-100">View Details</a>
-                                                </div>
+                            @foreach (var property in Model.Properties)
+                            {
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="property-card">
+                                        <div class="property-image">
+                                            <img src="@property.MainImage" alt="@property.Name" class="img-fluid">
+                                            <div class="property-badges">
+                                                @if (property.IsNew)
+                                                {
+                                                    <span class="badge new">New</span>
+                                                }
+                                                <span class="badge for-sale">@property.ListingType</span>
+                                            </div>
+                                            <div class="property-overlay">
+                                                <button class="favorite-btn"><i class="bi bi-heart"></i></button>
+                                                <button class="gallery-btn" data-count="@property.TotalImages"><i class="bi bi-images"></i></button>
                                             </div>
                                         </div>
-                                        }
-                                
-                            
+                                        <div class="property-content">
+                                            <div class="property-price">$@property.Price.ToString("N0")</div>
+                                            <h4 class="property-title">@property.Name</h4>
+                                            <p class="property-location"><i class="bi bi-geo-alt"></i> @property.Location</p>
+                                            @* Reviews  *@
+                                            @if (property.Reviews != null && property.Reviews.TotalReviews > 0)
+                                            {
+                                                <div class="property-rating mb-2">
+                                                    <div class="d-flex align-items-center gap-1">
+                                                        <div class="rating-stars">
+                                                            @for (int i = 1; i <= 5; i++)
+                                                            {
+                                                                if (i <= Math.Floor(property.Reviews.AverageRating))
+                                                                {
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                }
+                                                                else if (i - 0.5 <= property.Reviews.AverageRating)
+                                                                {
+                                                                    <i class="bi bi-star-half text-warning"></i>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <i class="bi bi-star text-muted"></i>
+                                                                }
+                                                            }
+                                                        </div>
+                                                        <small class="text-muted ms-1">
+                                                            <strong>@property.Reviews.AverageRating.ToString("0.0")</strong>
+                                                            (@property.Reviews.TotalReviews)
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="property-rating">
+                                                    <div class="rating-stars">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            <i class="bi bi-star-fill empty"></i>
+                                                        }
+                                                    </div>
+                                                    <span class="rating-count">(No reviews yet)</span>
+                                                </div>
+                                            }
+
+
+                                            <div class="property-features">
+                                                <span><i class="bi bi-house"></i> @property.BedRooms Bed</span>
+                                                <span><i class="bi bi-water"></i> @property.BathRooms Bath</span>
+                                                <span><i class="bi bi-arrows-angle-expand"></i> @property.Area.ToString("N0") sqft</span>
+                                            </div>
+                                            <div class="property-agent">
+                                                <img src="@property.AgentAvatar" alt="@property.AgentName" class="agent-avatar">
+                                                <div class="agent-info">
+                                                    <strong>@property.AgentName</strong>
+                                                    <div class="agent-contact">
+                                                        <small><i class="bi bi-telephone"></i> @property.AgentPhone</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id" class="btn btn-primary w-100">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
                             @for (int i = 0; i < placeHolders; i++)
                             {
                                 <!-- ===== SKELETON CARD ===== -->
@@ -142,165 +182,52 @@
                         </div>
                     </div>
 
-
                     <div class="properties-list view-list" data-aos="fade-up" data-aos-delay="200">
-
-                        <div class="property-list-item">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="property-image">
-                                        <img src="assets/img/real-estate/property-exterior-1.webp" alt="Modern Family Home" class="img-fluid">
-                                        <div class="property-badges">
-                                            <span class="badge featured">Featured</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="property-content">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <div>
-                                                <h4 class="property-title mb-1">Modern Family Home with Garden</h4>
-                                                <p class="property-location mb-2"><i class="bi bi-geo-alt"></i> 2847 Oak Street, Beverly Hills, CA 90210</p>
-                                            </div>
-                                            <div class="property-price">$875,000</div>
-                                        </div>
-                                        <div class="property-features mb-3">
-                                            <span><i class="bi bi-house"></i> 4 Bed</span>
-                                            <span><i class="bi bi-water"></i> 3 Bath</span>
-                                            <span><i class="bi bi-arrows-angle-expand"></i> 2,400 sqft</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="property-agent">
-                                                <img src="assets/img/real-estate/agent-1.webp" alt="Agent" class="agent-avatar">
-                                                <span>Sarah Johnson</span>
-                                            </div>
-                                            <div class="property-actions">
-                                                <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-heart"></i></button>
-                                                <a href="#" class="btn btn-primary btn-sm">View Details</a>
+                        @foreach (var property in Model.Properties)
+                        {
+                            <div class="property-list-item">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-4">
+                                        <div class="property-image">
+                                            <img src="@property.MainImage" alt="@property.Name" class="img-fluid">
+                                            <div class="property-badges">
+                                                @if (property.IsNew)
+                                                {
+                                                    <span class="badge new">New</span>
+                                                }
+                                                <span class="badge for-sale">@property.ListingType</span>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div><!-- End Property List Item -->
-
-                        <div class="property-list-item">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="property-image">
-                                        <img src="assets/img/real-estate/property-exterior-3.webp" alt="Downtown Luxury Condo" class="img-fluid">
-                                        <div class="property-badges">
-                                            <span class="badge new">New</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="property-content">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <div>
-                                                <h4 class="property-title mb-1">Downtown Luxury Condominium</h4>
-                                                <p class="property-location mb-2"><i class="bi bi-geo-alt"></i> 1542 Main Avenue, Manhattan, NY 10001</p>
+                                    <div class="col-lg-8">
+                                        <div class="property-content">
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <div>
+                                                    <h4 class="property-title mb-1">@property.Name</h4>
+                                                    <p class="property-location mb-2"><i class="bi bi-geo-alt"></i> @property.Location</p>
+                                                </div>
+                                                <div class="property-price">$@property.Price.ToString("N0")</div>
                                             </div>
-                                            <div class="property-price">$1,250,000</div>
-                                        </div>
-                                        <div class="property-features mb-3">
-                                            <span><i class="bi bi-house"></i> 2 Bed</span>
-                                            <span><i class="bi bi-water"></i> 2 Bath</span>
-                                            <span><i class="bi bi-arrows-angle-expand"></i> 1,800 sqft</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="property-agent">
-                                                <img src="assets/img/real-estate/agent-3.webp" alt="Agent" class="agent-avatar">
-                                                <span>Michael Chen</span>
+                                            <div class="property-features mb-3">
+                                                <span><i class="bi bi-house"></i> @property.BedRooms Bed</span>
+                                                <span><i class="bi bi-water"></i> @property.BathRooms Bath</span>
+                                                <span><i class="bi bi-arrows-angle-expand"></i> @property.Area.ToString("N0") sqft</span>
                                             </div>
-                                            <div class="property-actions">
-                                                <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-heart"></i></button>
-                                                <a href="#" class="btn btn-primary btn-sm">View Details</a>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="property-agent">
+                                                    <img src="@property.AgentAvatar" alt="@property.AgentName" class="agent-avatar">
+                                                    <span>@property.AgentName</span>
+                                                </div>
+                                                <div class="property-actions">
+                                                    <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-heart"></i></button>
+                                                    <a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id" class="btn btn-primary btn-sm">View Details</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- End Property List Item -->
-
-                        <div class="property-list-item">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="property-image">
-                                        <img src="assets/img/real-estate/property-interior-4.webp" alt="Suburban Villa" class="img-fluid">
-                                        <div class="property-badges">
-                                            <span class="badge for-rent">For Rent</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="property-content">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <div>
-                                                <h4 class="property-title mb-1">Spacious Suburban Villa</h4>
-                                                <p class="property-location mb-2"><i class="bi bi-geo-alt"></i> 789 Pine Ridge Drive, Austin, TX 73301</p>
-                                            </div>
-                                            <div class="property-price">$4,500<span>/month</span></div>
-                                        </div>
-                                        <div class="property-features mb-3">
-                                            <span><i class="bi bi-house"></i> 5 Bed</span>
-                                            <span><i class="bi bi-water"></i> 4 Bath</span>
-                                            <span><i class="bi bi-arrows-angle-expand"></i> 3,200 sqft</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="property-agent">
-                                                <img src="assets/img/real-estate/agent-5.webp" alt="Agent" class="agent-avatar">
-                                                <span>Emma Rodriguez</span>
-                                            </div>
-                                            <div class="property-actions">
-                                                <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-heart"></i></button>
-                                                <a href="#" class="btn btn-primary btn-sm">View Details</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- End Property List Item -->
-
-                        <div class="property-list-item">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="property-image">
-                                        <img src="assets/img/real-estate/property-exterior-6.webp" alt="Waterfront Townhouse" class="img-fluid">
-                                        <div class="property-badges">
-                                            <span class="badge open-house">Open House</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="property-content">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <div>
-                                                <h4 class="property-title mb-1">Waterfront Townhouse with Dock</h4>
-                                                <p class="property-location mb-2"><i class="bi bi-geo-alt"></i> 456 Harbor View Lane, Miami, FL 33101</p>
-                                            </div>
-                                            <div class="property-price">$695,000</div>
-                                        </div>
-                                        <div class="property-features mb-3">
-                                            <span><i class="bi bi-house"></i> 3 Bed</span>
-                                            <span><i class="bi bi-water"></i> 2 Bath</span>
-                                            <span><i class="bi bi-arrows-angle-expand"></i> 2,100 sqft</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="property-agent">
-                                                <img src="assets/img/real-estate/agent-7.webp" alt="Agent" class="agent-avatar">
-                                                <span>David Williams</span>
-                                            </div>
-                                            <div class="property-actions">
-                                                <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-heart"></i></button>
-                                                <a href="#" class="btn btn-primary btn-sm">View Details</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- End Property List Item -->
-
+                        }
                     </div>
 
                     @if (totalPages > 1)
@@ -331,127 +258,126 @@
 
                     <div class="properties-sidebar">
 
-                        <div class="filter-widget">
-                            <h5 class="filter-title">Filter Properties</h5>
+                        <form asp-action="Index" method="get">
+                            <div class="filter-widget">
+                                <h5 class="filter-title">Filter Properties</h5>
 
-                            <div class="filter-section">
-                                <label class="form-label">Property Type</label>
-                                <select class="form-select">
-                                    <option>All Types</option>
-                                    <option>House</option>
-                                    <option>Apartment</option>
-                                    <option>Condo</option>
-                                    <option>Townhouse</option>
-                                    <option>Commercial</option>
-                                </select>
-                            </div>
+                                <div class="filter-section">
+                                    <label class="form-label">Listing Type</label>
+                                    <select class="form-select" name="Filter.ListingType">
+                                        <option value="">All Listings</option>
+                                        @foreach (var listingType in Model.ListingTypes)
+                                        {
+                                            <option value="@listingType" selected="@(Model.Filter?.ListingType == listingType)">@listingType</option>
+                                        }
+                                    </select>
+                                </div>
 
-                            <div class="filter-section">
-                                <label class="form-label">Price Range</label>
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        <input type="number" class="form-control" placeholder="Min Price">
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="number" class="form-control" placeholder="Max Price">
+                                <div class="filter-section">
+                                    <label class="form-label">Property Type</label>
+                                    <select class="form-select" name="Filter.PropertyType">
+                                        <option value="">All Types</option>
+                                        @foreach (var propType in Model.PropertyTypes)
+                                        {
+                                            <option value="@propType" selected="@(Model.Filter?.PropertyType == propType)">@propType</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="filter-section">
+                                    <label class="form-label">Price Range</label>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <input type="number" class="form-control" name="Filter.MinPrice" placeholder="Min Price" value="@Model.Filter?.MinPrice">
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" class="form-control" name="Filter.MaxPrice" placeholder="Max Price" value="@Model.Filter?.MaxPrice">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="filter-section">
-                                <label class="form-label">Bedrooms</label>
-                                <div class="bedroom-filter">
-                                    <button class="btn btn-outline-secondary btn-sm filter-btn active">Any</button>
-                                    <button class="btn btn-outline-secondary btn-sm filter-btn">1+</button>
-                                    <button class="btn btn-outline-secondary btn-sm filter-btn">2+</button>
-                                    <button class="btn btn-outline-secondary btn-sm filter-btn">3+</button>
-                                    <button class="btn btn-outline-secondary btn-sm filter-btn">4+</button>
+                                <div class="filter-section">
+                                    <label class="form-label">Bedrooms</label>
+                                    <div class="bedroom-filter">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm filter-btn @(Model.Filter?.MinBedrooms == null ? "active" : "")" onclick="setMinBedrooms(null)">Any</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm filter-btn @(Model.Filter?.MinBedrooms == 1 ? "active" : "")" onclick="setMinBedrooms(1)">1+</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm filter-btn @(Model.Filter?.MinBedrooms == 2 ? "active" : "")" onclick="setMinBedrooms(2)">2+</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm filter-btn @(Model.Filter?.MinBedrooms == 3 ? "active" : "")" onclick="setMinBedrooms(3)">3+</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm filter-btn @(Model.Filter?.MinBedrooms == 4 ? "active" : "")" onclick="setMinBedrooms(4)">4+</button>
+                                    </div>
+                                    <input type="hidden" name="Filter.MinBedrooms" id="minBedroomsInput" value="@Model.Filter?.MinBedrooms">
                                 </div>
-                            </div>
 
-                            <div class="filter-section">
-                                <label class="form-label">Bathrooms</label>
-                                <div class="bathroom-filter">
-                                    <button class="btn btn-outline-secondary btn-sm filter-btn active">Any</button>
-                                    <button class="btn btn-outline-secondary btn-sm filter-btn">1+</button>
-                                    <button class="btn btn-outline-secondary btn-sm filter-btn">2+</button>
-                                    <button class="btn btn-outline-secondary btn-sm filter-btn">3+</button>
+                                <div class="filter-section">
+                                    <label class="form-label">Bathrooms</label>
+                                    <div class="bathroom-filter">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm filter-btn @(Model.Filter?.MinBathrooms == null ? "active" : "")" onclick="setMinBathrooms(null)">Any</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm filter-btn @(Model.Filter?.MinBathrooms == 1 ? "active" : "")" onclick="setMinBathrooms(1)">1+</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm filter-btn @(Model.Filter?.MinBathrooms == 2 ? "active" : "")" onclick="setMinBathrooms(2)">2+</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm filter-btn @(Model.Filter?.MinBathrooms == 3 ? "active" : "")" onclick="setMinBathrooms(3)">3+</button>
+                                    </div>
+                                    <input type="hidden" name="Filter.MinBathrooms" id="minBathroomsInput" value="@Model.Filter?.MinBathrooms">
                                 </div>
-                            </div>
 
-                            <div class="filter-section">
-                                <label class="form-label">Location</label>
-                                <input type="text" class="form-control" placeholder="Enter city or neighborhood">
-                            </div>
+                                <div class="filter-section">
+                                    <label class="form-label">City</label>
+                                    <select class="form-select" name="Filter.City">
+                                        <option value="">All Cities</option>
+                                        @foreach (var city in Model.Cities)
+                                        {
+                                            <option value="@city" selected="@(Model.Filter?.City == city)">@city</option>
+                                        }
+                                    </select>
+                                </div>
 
-                            <div class="filter-section">
-                                <label class="form-label">Features</label>
-                                <div class="features-filter">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="garage">
-                                        <label class="form-check-label" for="garage">Garage</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="pool">
-                                        <label class="form-check-label" for="pool">Swimming Pool</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="balcony">
-                                        <label class="form-check-label" for="balcony">Balcony</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="garden">
-                                        <label class="form-check-label" for="garden">Garden</label>
+                                <div class="filter-section">
+                                    <label class="form-label">Region</label>
+                                    <select class="form-select" name="Filter.Region">
+                                        <option value="">All Regions</option>
+                                        @foreach (var region in Model.Regions)
+                                        {
+                                            <option value="@region" selected="@(Model.Filter?.Region == region)">@region</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="filter-section">
+                                    <label class="form-label">Amenities</label>
+                                    <div class="features-filter">
+                                        @foreach (var amenity in Model.Amenities.Take(8))
+                                        {
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="Filter.AmenityIds" value="@amenity.Id" id="amenity_@amenity.Id"
+                                                       checked="@(Model.Filter?.AmenityIds?.Contains(amenity.Id) ?? false)">
+                                                <label class="form-check-label" for="amenity_@amenity.Id">@amenity.Name</label>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                                <a asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">Clear Filters</a>
                             </div>
-
-                            <button class="btn btn-primary w-100">Apply Filters</button>
-
-                        </div>
+                        </form>
 
                         <div class="featured-properties mt-4">
                             <h5>Featured Properties</h5>
 
-                            <div class="featured-item">
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-5">
-                                        <img src="assets/img/real-estate/property-exterior-8.webp" alt="Property" class="img-fluid rounded">
-                                    </div>
-                                    <div class="col-7">
-                                        <h6 class="mb-1">Luxury Penthouse</h6>
-                                        <p class="text-muted small mb-1">Manhattan, NY</p>
-                                        <strong class="text-primary">$2,850,000</strong>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="featured-item">
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-5">
-                                        <img src="assets/img/real-estate/property-interior-7.webp" alt="Property" class="img-fluid rounded">
-                                    </div>
-                                    <div class="col-7">
-                                        <h6 class="mb-1">Modern Studio</h6>
-                                        <p class="text-muted small mb-1">Brooklyn, NY</p>
-                                        <strong class="text-primary">$3,200/mo</strong>
+                            @foreach (var property in Model.Properties.Where(p => p.IsNew).Take(3))
+                            {
+                                <div class="featured-item">
+                                    <div class="row g-3 align-items-center">
+                                        <div class="col-5">
+                                            <img src="@property.MainImage" alt="@property.Name" class="img-fluid rounded">
+                                        </div>
+                                        <div class="col-7">
+                                            <h6 class="mb-1">@property.Name</h6>
+                                            <p class="text-muted small mb-1">@property.Location</p>
+                                            <strong class="text-primary">$@property.Price.ToString("N0")</strong>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="featured-item">
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-5">
-                                        <img src="assets/img/real-estate/property-exterior-9.webp" alt="Property" class="img-fluid rounded">
-                                    </div>
-                                    <div class="col-7">
-                                        <h6 class="mb-1">Family Home</h6>
-                                        <p class="text-muted small mb-1">Queens, NY</p>
-                                        <strong class="text-primary">$895,000</strong>
-                                    </div>
-                                </div>
-                            </div>
-
+                            }
                         </div>
 
                     </div>
@@ -466,3 +392,44 @@
 
 </main>
 
+@section Scripts {
+    <script>
+        function setMinBedrooms(value) {
+            document.getElementById('minBedroomsInput').value = value || '';
+            document.querySelector('form').submit();
+        }
+
+        function setMinBathrooms(value) {
+            document.getElementById('minBathroomsInput').value = value || '';
+            document.querySelector('form').submit();
+        }
+    </script>
+}
+
+<style>
+    .property-rating {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .rating-stars {
+        display: flex;
+        gap: 2px;
+    }
+
+    .rating-stars i {
+        font-size: 14px;
+        color: #ffc107;
+    }
+
+    .rating-stars i.empty {
+        color: #e9ecef;
+    }
+
+    .rating-count {
+        font-size: 13px;
+        color: #6c757d;
+    }
+</style>
