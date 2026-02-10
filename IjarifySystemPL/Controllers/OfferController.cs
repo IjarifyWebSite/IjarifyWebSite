@@ -6,14 +6,56 @@ namespace IjarifySystemPL.Controllers
     public class OfferController : Controller
     {
         private readonly IOfferService _offerService;
+        private readonly ILocationService _locationService;
+        private readonly IPropertyService _propertyService;
 
-        public OfferController(IOfferService offerService)
+        public OfferController(IOfferService offerService,ILocationService locationService,IPropertyService propertyService)
         {
             _offerService = offerService;
+            _locationService = locationService;
+            _propertyService = propertyService;
         }
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Create()
+        {
+            var FakeUserId = 1;
+            var Model = new CreateOfferViewModel()
+            {
+                properties = _propertyService.GetPropertyByuser(FakeUserId),
+                locations=_locationService.GetAllLocations()
+
+            };
+
+
+            return View(Model);
+        }
+        [HttpPost]
+        public IActionResult Create(CreateOfferViewModel request)
+        {
+            ModelState.Remove("properties");
+            ModelState.Remove("locations");
+            if (!ModelState.IsValid)
+            {
+                var FakeUserId = 1;
+                request.locations = _locationService.GetAllLocations();
+                request.properties = _propertyService.GetPropertyByuser(FakeUserId);
+                return View(request);
+            }
+            bool IsCreated= _offerService.CreateOffer(request);
+            if(IsCreated)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var fakeUserId = 1;
+            request.locations = _locationService.GetAllLocations();
+            request.properties = _propertyService.GetPropertyByuser(fakeUserId);
+            ModelState.AddModelError("", "Something went wrong while creating the offer. Please try again.");
+            return View(request);
         }
         public IActionResult LocationOffers(string City)
         {
@@ -30,6 +72,14 @@ namespace IjarifySystemPL.Controllers
         {
             var FilteredOffers = _offerService.GetFilteredOffers(Filter);
             return View(FilteredOffers);
+        }
+
+        // for ajax call
+       public IActionResult GetPropertiesByLocation(int locationId)
+        {
+            var fakeUserId = 1;
+            var properties = _propertyService.GetByLocationAndUser(locationId, fakeUserId);
+            return Json(properties);
         }
     } 
 }
