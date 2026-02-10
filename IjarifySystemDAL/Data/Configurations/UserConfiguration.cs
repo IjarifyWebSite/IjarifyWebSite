@@ -18,6 +18,7 @@ namespace IjarifySystemDAL.Data.Configurations
             builder.Property(u => u.Name).HasColumnType("varchar").HasMaxLength(50);
             builder.Property(u => u.Email).HasColumnType("varchar").HasMaxLength(100);
             builder.Property(u => u.Phone).HasColumnType("varchar").HasMaxLength(11);
+            builder.Property(u => u.Address).HasColumnType("varchar").HasMaxLength(100);
             builder.Property<DateTime>("CreatedAt").HasDefaultValueSql("GETDATE()");
 
 

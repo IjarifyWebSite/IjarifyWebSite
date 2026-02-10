@@ -8,42 +8,45 @@ namespace IjarifySystemPL.Controllers
     public class AccountController : Controller
     {
         private readonly IReviewService _reviewService;
-        private readonly IBookingService _bookingService; // ⬅️ أضف دي
+        private readonly IBookingService _bookingService;
+        private readonly IUserService _userService;
+        private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly string _imagePath;
 
-        public AccountController(IReviewService reviewService, IBookingService bookingService)
+        public AccountController(IReviewService reviewService, IBookingService bookingService, IUserService userService, IWebHostEnvironment webHostEnvironment)
         {
             _reviewService = reviewService;
-            _bookingService = bookingService; 
-        }
+            _bookingService = bookingService;
+            _userService = userService;
+            this.webHostEnvironment = webHostEnvironment;
 
-        // 🔹 Helper Method - نفس GetCurrentUserId من BookingController
-        private int GetCurrentUserId()
-        {
-            return 4; // نفس الـ user اللي في BookingController
+            _imagePath = Path.Combine(webHostEnvironment.WebRootPath, "Images", "profiles");
+
+            if (!Directory.Exists(_imagePath))
+            {
+                Directory.CreateDirectory(_imagePath);
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Profile() 
         {
-            int userId = GetCurrentUserId();
+            int userId = 3;
+            var user = _userService.GetUserById(userId);
 
-            // جلب الـ Reviews
             var reviews = _reviewService.GetReviewsByUser(userId);
 
-            // ⬇️ جلب الـ Bookings ⬇️
             var allBookings = await _bookingService.GetUserBookingsAsync(userId);
 
             var profile = new ProfileViewModel
             {
-                FullName = "User Name",
-                Email = "user@example.com",
-                Address = "Cairo, Egypt",
-                ProfileImageUrl = "/assets/img/real-estate/agent-1.webp",
-                PhoneNumber = "+201234567890",
-                WhatsApp = "+201234567890",
+                FullName = user.Name,
+                Email = user.Email,
+                Address = user.Address ?? "Cairo, Egypt",
+                ProfileImageUrl = user.ImageUrl ?? "/images/default-avatar.jpg",
+                PhoneNumber = user.Phone,
+                WhatsApp = user.Phone,
                 Reviews = reviews,
-
-                // ⬇️ أضف الـ Bookings دي ⬇️
                 RecentBookings = allBookings
                     .OrderByDescending(b => b.Check_In)
                     .Take(6)
@@ -64,5 +67,839 @@ namespace IjarifySystemPL.Controllers
 
             return View(profile);
         }
+
+        [HttpGet]
+        public IActionResult EditProfile()
+        {
+            int userId = 3;
+
+            var user = _userService.GetUserById(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var model = new EditProfileViewModel
+            {
+                FullName = user.Name,
+                Email = user.Email,
+                Address = user.Address,
+                PhoneNumber = user.Phone,
+                WhatsApp = user.Phone,
+                ProfileImageUrl = user.ImageUrl ?? "/images/default-avatar.jpg"
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(EditProfileViewModel editModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(editModel);
+            }
+
+            int userId = 3;
+
+            try
+            {
+                string? newImagePath = null;
+
+                // Handle image upload
+                if (editModel.ProfileImage != null)
+                {
+                    // Delete old image if exists
+                    var user = _userService.GetUserById(userId);
+                    if (user != null && !string.IsNullOrEmpty(user.ImageUrl))
+                    {
+                        DeleteImageFile(user.ImageUrl);
+                    }
+
+                    newImagePath = await SaveProfileImageAsync(editModel.ProfileImage);
+                }
+
+                bool isUpdated = _userService.UpdateUserProfile(editModel, userId, newImagePath);
+
+                if (isUpdated)
+                {
+                    TempData["SuccessMessage"] = "Profile updated successfully!";
+                    return RedirectToAction("Profile");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to update profile. Please try again.";
+                    return View(editModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"An error occurred: {ex.Message}";
+                return View(editModel);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteProfileImage()
+        {
+            int userId = 3;
+
+            try
+            {
+                var user = _userService.GetUserById(userId);
+                if (user != null && !string.IsNullOrEmpty(user.ImageUrl))
+                    DeleteImageFile(user.ImageUrl);
+
+                bool isDeleted = _userService.DeleteProfileImage(userId);
+
+                if (isDeleted)
+                {
+                    TempData["SuccessMessage"] = "Profile image removed successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to remove profile image.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"An error occurred: {ex.Message}";
+            }
+
+            return RedirectToAction("EditProfile");
+        }
+
+        #region Helper Methods
+        private async Task<string> SaveProfileImageAsync(IFormFile image)
+        {
+            try
+            {
+                var imageName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
+                var filePath = Path.Combine(_imagePath, imageName);
+
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await image.CopyToAsync(stream);
+
+                return $"/Images/profiles/{imageName}";
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private void DeleteImageFile(string imageUrl)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(imageUrl) || imageUrl.Contains("default-avatar") || imageUrl.Contains("agent-"))
+                    return;
+
+                var fileName = Path.GetFileName(imageUrl);
+
+                var filePath = Path.Combine(_imagePath, fileName);
+
+                if (System.IO.File.Exists(filePath))
+                    System.IO.File.Delete(filePath);
+            }
+            catch { }
+        }
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

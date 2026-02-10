@@ -69,9 +69,9 @@
                                 <span class="stat-value">@Model.TotalBookings</span>
                                 <span class="stat-label">Bookings</span>
                             </div>
-                            <button class="edit-btn">
+                            <a asp-action="EditProfile" asp-controller="Account" class="edit-btn" style="text-decoration: none;">
                                 <i class="bi bi-pencil me-1"></i> Edit Profile
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -254,16 +254,16 @@
                                 </div>
                             </a>
 
-                        </div>
+                            <!-- Address -->
+                            <a href="https://www.google.com/maps/search/@Model.Address" target="_blank" class="contact-method">
+                                <i class="bi bi-geo-alt-fill"></i>
+                                <div>
+                                    <span class="method-label">Address</span>
+                                    <span class="method-value">@Model.Address</span>
+                                </div>
+                            </a>
 
-                        <div class="social-connect">
-                            <h5>Follow Me</h5>
-                            <div class="social-links">
-                                <a href="#"><i class="bi bi-linkedin"></i></a>
-                                <a href="#"><i class="bi bi-instagram"></i></a>
-                                <a href="#"><i class="bi bi-facebook"></i></a>
-                                <a href="#"><i class="bi bi-youtube"></i></a>
-                            </div>
+
                         </div>
                     </div>
 
