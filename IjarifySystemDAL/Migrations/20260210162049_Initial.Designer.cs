@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IjarifySystemDAL.Migrations
 {
     [DbContext(typeof(IjarifyDbContext))]
-    [Migration("20260208051502_init")]
-    partial class init
+    [Migration("20260210162049_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1044,6 +1044,11 @@ namespace IjarifySystemDAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -1097,28 +1102,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 1, 15, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "ahmed.hassan@example.com",
-                            ImageUrl = "https://i.pravatar.cc/150?img=12",
-                            Name = "Ahmed Hassan",
-                            Password = "AQAAAAEAACcQAAAAEH8zQK",
-                            Phone = "01012345678",
-                            Role = "User"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 10, 14, 30, 0, 0, DateTimeKind.Unspecified),
-                            Email = "sara.mohamed@example.com",
-                            ImageUrl = "https://i.pravatar.cc/150?img=45",
-                            Name = "Sara Mohamed",
-                            Password = "AQAAAAEAACcQAAAAEH8zQK",
-                            Phone = "01123456789",
-                            Role = "User"
-                        },
-                        new
-                        {
-                            Id = 3,
+                            Address = "15 El Nile Street, Maadi, Cairo",
                             CreatedAt = new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified),
                             Email = "omar.ali@example.com",
                             ImageUrl = "https://i.pravatar.cc/150?img=33",
@@ -1129,7 +1113,8 @@ namespace IjarifySystemDAL.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 2,
+                            Address = "28 Tahrir Street, Downtown, Cairo",
                             CreatedAt = new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified),
                             Email = "nour.ibrahim@example.com",
                             ImageUrl = "https://i.pravatar.cc/150?img=27",
@@ -1140,13 +1125,38 @@ namespace IjarifySystemDAL.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            Id = 3,
+                            Address = "42 Nasr Road, Nasr City, Cairo",
                             CreatedAt = new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified),
                             Email = "khaled.mahmoud@example.com",
                             ImageUrl = "https://i.pravatar.cc/150?img=51",
                             Name = "Khaled Mahmoud",
                             Password = "AQAAAAEAACcQAAAAEH8zQK",
                             Phone = "01187654321",
+                            Role = "User"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "10 Tahrir Square, Cairo",
+                            CreatedAt = new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "ahmed.hassan@example.com",
+                            ImageUrl = "https://i.pravatar.cc/150?img=12",
+                            Name = "Ahmed Hassan",
+                            Password = "AQAAAAEAACcQAAAAEH8zQK",
+                            Phone = "01012345678",
+                            Role = "Owner"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "25 Alexandria Road, Cairo",
+                            CreatedAt = new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified),
+                            Email = "fatima.mohamed@example.com",
+                            ImageUrl = "https://i.pravatar.cc/150?img=45",
+                            Name = "Fatima Mohamed",
+                            Password = "AQAAAAEAACcQAAAAEH8zQK",
+                            Phone = "01123456789",
                             Role = "User"
                         });
                 });
