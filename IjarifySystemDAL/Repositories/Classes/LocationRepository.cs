@@ -17,9 +17,15 @@ namespace IjarifySystemDAL.Repositories.Classes
         {
             _DbContext = DbContext;
         }
+
         public Location? GetByCity(string city)
         {
             return _DbContext.Locations.AsNoTracking().FirstOrDefault(l=>l.City==city);
+        }
+
+        public List<Location> GetAll()
+        {
+            return _DbContext.Locations.ToList();
         }
     }
 }

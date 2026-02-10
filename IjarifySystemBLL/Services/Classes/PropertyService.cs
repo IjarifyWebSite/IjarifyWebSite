@@ -319,5 +319,15 @@ namespace IjarifySystemBLL.Services.Classes
                 }
             }
         }
+        // related to offers
+        public List<Property> GetPropertyByuser(int userId)
+        {
+            return _repo.GetByUser(userId);
+        }
+
+        public List<Property> GetByLocationAndUser(int locationId, int userId)
+        {
+            return _repo.GetByLocationAndUser(locationId,userId);
+        }
     }
 }
