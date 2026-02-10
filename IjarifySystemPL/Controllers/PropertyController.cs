@@ -2,7 +2,6 @@
 using IjarifySystemBLL.ViewModels.PropertyViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.Services.Classes;
 
@@ -10,6 +9,7 @@ namespace IjarifySystemPL.Controllers
 {
     public class PropertyController(IPropertyService _propertyService) : Controller
     {
+
         // GET: PropertyController
         public async Task<ActionResult> Index(PropertyFilterViewModel filter, int page = 1)
         {

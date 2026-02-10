@@ -26,7 +26,6 @@
             </div>
         </nav>
     </div><!-- End Page Title -->
-
     <!-- Agent Profile Section -->
     <section id="agent-profile" class="agent-profile section">
 
@@ -67,8 +66,8 @@
                                 <span class="stat-label">Properties Viewed</span>
                             </div>
                             <div class="quick-stat">
-                                <span class="stat-value">0</span>
-                                <span class="stat-label">Favorites</span>
+                                <span class="stat-value">@Model.TotalBookings</span>
+                                <span class="stat-label">Bookings</span>
                             </div>
                             <a asp-action="EditProfile" asp-controller="Account" class="edit-btn" style="text-decoration: none;">
                                 <i class="bi bi-pencil me-1"></i> Edit Profile
@@ -155,8 +154,70 @@
 
                         </div>
                     </div>
-                </div>
 
+                    <!-- My Bookings Section -->
+                    <div class="col-lg-8 mt-5">
+                        <!-- Bookings Header -->
+                        <div class="reviews-header reviews-toggle" onclick="toggleBookings()">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                <div>
+                                    <h2 class="reviews-title">My Bookings</h2>
+                                    <p class="reviews-subtitle mb-0">Track your reservations and booking history</p>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="reviews-count-badge">
+                                        <i class="bi bi-calendar-check me-1"></i>
+                                        @Model.TotalBookings
+                                    </span>
+
+                                    <i id="bookingsArrow" class="bi bi-chevron-down toggle-arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bookings Content -->
+                        <div id="bookingsContent" class="reviews-content collapsed">
+                            @if (Model.RecentBookings != null && Model.RecentBookings.Any())
+                            {
+                                <div class="bookings-list">
+                                    @foreach (var booking in Model.RecentBookings)
+                                    {
+                                        <div class="booking-wrapper" data-aos="fade-up" data-aos-delay="100">
+                                            @await Html.PartialAsync("~/Views/Booking/_BookingCard.cshtml", booking)
+                                        </div>
+                                    }
+                                </div>
+
+                                @if (Model.TotalBookings > 6)
+                                {
+                                    <div class="text-center mt-4 mb-3">
+                                        <a asp-controller="Booking" asp-action="MyBookings" class="view-all-btn">
+                                            <i class="bi bi-calendar-week me-2"></i>
+                                            View All Bookings (@Model.TotalBookings)
+                                            <i class="bi bi-arrow-right ms-2"></i>
+                                        </a>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <i class="bi bi-calendar-x empty-state-icon"></i>
+                                    <p class="empty-state-text">
+                                        You haven't made any bookings yet.<br />
+                                        Start exploring and book your next stay!
+                                    </p>
+                                    <a asp-controller="Property" asp-action="Index" class="browse-btn">
+                                        <i class="bi bi-search me-2"></i>Browse Properties
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End Left Content -->
                 <!-- Right Sidebar -->
                 <div class="content-sidebar">
 
@@ -236,13 +297,14 @@
                                 </div>
                                 <div class="achievement-text">
                                     <h6>Bookings</h6>
-                                    <span>0 Total</span>
+                                    <span>@Model.TotalBookings Total</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                 </div>
+
             </div>
 
         </div>
@@ -267,11 +329,11 @@
         box-shadow: 0 4px 12px rgba(44, 122, 123, 0.3);
     }
 
-    .edit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(44, 122, 123, 0.4);
-        color: #fff;
-    }
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(44, 122, 123, 0.4);
+            color: #fff;
+        }
 
     .reviews-toggle {
         cursor: pointer;
@@ -282,16 +344,16 @@
         transition: max-height 0.5s ease, opacity 0.4s ease;
     }
 
-    .reviews-content.collapsed {
-        max-height: 0;
-        opacity: 0;
-        pointer-events: none;
-    }
+        .reviews-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
 
-    .reviews-content.expanded {
-        max-height: 3000px;
-        opacity: 1;
-    }
+        .reviews-content.expanded {
+            max-height: 3000px;
+            opacity: 1;
+        }
 
     .toggle-arrow {
         font-size: 20px;
@@ -299,9 +361,9 @@
         transition: transform 0.3s ease;
     }
 
-    .toggle-arrow.rotate {
-        transform: rotate(180deg);
-    }
+        .toggle-arrow.rotate {
+            transform: rotate(180deg);
+        }
 
     .reviews-header {
         background: #fff;
@@ -342,11 +404,11 @@
         border-left: 4px solid transparent;
     }
 
-    .review-card:hover {
-        transform: translateX(8px);
-        box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-        border-left-color: #38b2ac;
-    }
+        .review-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+            border-left-color: #38b2ac;
+        }
 
     .review-property-name {
         font-size: 20px;
@@ -371,9 +433,9 @@
         margin-right: 2px;
     }
 
-    .star-icon.empty {
-        color: #e9ecef;
-    }
+        .star-icon.empty {
+            color: #e9ecef;
+        }
 
     .review-comment {
         color: #495057;
@@ -406,11 +468,11 @@
         color: #e74c3c;
     }
 
-    .delete-btn:hover {
-        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-        color: #c0392b;
-        transform: translateY(-2px);
-    }
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #c0392b;
+            transform: translateY(-2px);
+        }
 
     .empty-state {
         text-align: center;
@@ -435,17 +497,76 @@
         gap: 30px !important;
     }
 
-    @@media (max-width: 768px)
-    {
-        .review-header{
+    /* Bookings Styles */
+    .bookings-list {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin-top: 20px;
+    }
+
+    .booking-wrapper {
+        width: 100%;
+    }
+
+        .booking-wrapper .booking-card-modern {
+            width: 100%;
+            max-width: 100%;
+        }
+
+    .view-all-btn {
+        display: inline-flex;
+        align-items: center;
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+        color: #fff;
+        padding: 14px 32px;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(44, 122, 123, 0.3);
+    }
+
+        .view-all-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(44, 122, 123, 0.4);
+            color: #fff;
+        }
+
+    .browse-btn {
+        display: inline-flex;
+        align-items: center;
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+        color: #fff;
+        padding: 12px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        margin-top: 24px;
+        transition: all 0.3s ease;
+    }
+
+        .browse-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(44, 122, 123, 0.3);
+            color: #fff;
+        }
+
+    @@media (max-width: 768px) {
+        .review-header {
             flex-direction: column;
         }
 
         .review-rating {
             margin-top: 10px;
         }
+
+        .bookings-list {
+            gap: 16px;
+        }
     }
-    
 </style>
 
 <script>
@@ -457,5 +578,13 @@
         content.classList.toggle("expanded");
         arrow.classList.toggle("rotate");
     }
-</script>
 
+    function toggleBookings() {
+        const content = document.getElementById("bookingsContent");
+        const arrow = document.getElementById("bookingsArrow");
+
+        content.classList.toggle("collapsed");
+        content.classList.toggle("expanded");
+        arrow.classList.toggle("rotate");
+    }
+</script>

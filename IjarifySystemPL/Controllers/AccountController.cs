@@ -1,51 +1,65 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
+using System.Linq;
 
 namespace IjarifySystemPL.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IReviewService _reviewService;
-        private readonly IUserService _userService;
-        private readonly string _imagePath;
+        private readonly IBookingService _bookingService; // ⬅️ أضف دي
 
-        public AccountController(IReviewService reviewService,IUserService userService,IWebHostEnvironment webHostEnvironment)
+        public AccountController(IReviewService reviewService, IBookingService bookingService)
         {
             _reviewService = reviewService;
-            _userService = userService;
+            _bookingService = bookingService; 
+        }
 
-            _imagePath = Path.Combine(webHostEnvironment.WebRootPath, "Images", "profiles");
-
-            if (!Directory.Exists(_imagePath))
-            {
-                Directory.CreateDirectory(_imagePath);
-            }
+        // 🔹 Helper Method - نفس GetCurrentUserId من BookingController
+        private int GetCurrentUserId()
+        {
+            return 4; // نفس الـ user اللي في BookingController
         }
 
         [HttpGet]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile() 
         {
-            int userId = 3;
+            int userId = GetCurrentUserId();
 
-            var user = _userService.GetUserById(userId);
+            // جلب الـ Reviews
+            var reviews = _reviewService.GetReviewsByUser(userId);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
+            // ⬇️ جلب الـ Bookings ⬇️
+            var allBookings = await _bookingService.GetUserBookingsAsync(userId);
 
             var profile = new ProfileViewModel
             {
-                FullName = user.Name,
-                Email = user.Email,
-                Address = user.Address ?? "Cairo, Egypt",
-                ProfileImageUrl = user.ImageUrl ?? "/images/default-avatar.jpg",
-                PhoneNumber = user.Phone,
-                WhatsApp = user.Phone,
-                Reviews = _reviewService.GetReviewsByUser(userId)
+                FullName = "User Name",
+                Email = "user@example.com",
+                Address = "Cairo, Egypt",
+                ProfileImageUrl = "/assets/img/real-estate/agent-1.webp",
+                PhoneNumber = "+201234567890",
+                WhatsApp = "+201234567890",
+                Reviews = reviews,
+
+                // ⬇️ أضف الـ Bookings دي ⬇️
+                RecentBookings = allBookings
+                    .OrderByDescending(b => b.Check_In)
+                    .Take(6)
+                    .Select(b => new IjarifySystemBLL.ViewModels.Booking.BookingListViewModel
+                    {
+                        Id = b.Id,
+                        PropertyTitle = b.PropertyTitle,
+                        Check_In = b.Check_In,
+                        Check_Out = b.Check_Out,
+                        TotalPrice = b.TotalPrice,
+                        Status = b.Status,
+                        PropertyID = b.PropertyID,
+                        IsValid = b.IsValid
+                    })
+                    .ToList(),
+                TotalBookings = allBookings.Count()
             };
 
             return View(profile);
