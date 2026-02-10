@@ -66,26 +66,26 @@ namespace IjarifySystemDAL.Data.Context
                 new User
                 {
                     Id = 4,
-                    Address = "10 Tahrir Square, Cairo", 
-                    CreatedAt =  new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified),
-                    Email = "ahmed.hassan@example.com",
-                    ImageUrl = "https://i.pravatar.cc/150?img=12",
                     Name = "Ahmed Hassan",
+                    Email = "ahmed.hassan@example.com",
                     Password = "AQAAAAEAACcQAAAAEH8zQK",
                     Phone = "01012345678",
                     Role = "Owner",
+                    Address = "10 Tahrir Square, Cairo",
+                    ImageUrl = "https://i.pravatar.cc/150?img=12",
+                    CreatedAt = new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified)
                 },
                 new User
                 {
                     Id = 5,
-                    Address = "25 Alexandria Road, Cairo",
-                    CreatedAt = new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), 
-                    Email = "fatima.mohamed@example.com",
-                    ImageUrl = "https://i.pravatar.cc/150?img=45",
                     Name = "Fatima Mohamed",
+                    Email = "fatima.mohamed@example.com",
                     Password = "AQAAAAEAACcQAAAAEH8zQK",
                     Phone = "01123456789",
-                    Role = "User"
+                    Role = "User",
+                    Address = "25 Alexandria Road, Cairo",
+                    ImageUrl = "https://i.pravatar.cc/150?img=45",
+                    CreatedAt = new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified)
                 }
             );
 
