@@ -17,7 +17,7 @@ namespace IjarifySystemDAL.Data.Configurations
 
             builder.Property(u => u.Name).HasColumnType("varchar").HasMaxLength(50);
             builder.Property(u => u.Email).HasColumnType("varchar").HasMaxLength(100);
-            builder.Property(u => u.Phone).HasColumnType("varchar").HasMaxLength(11);
+            builder.Property(u => u.PhoneNumber).HasColumnType("varchar").HasMaxLength(11);
             builder.Property(u => u.Address).HasColumnType("varchar").HasMaxLength(100);
             builder.Property<DateTime>("CreatedAt").HasDefaultValueSql("GETDATE()");
 
@@ -25,11 +25,11 @@ namespace IjarifySystemDAL.Data.Configurations
             builder.ToTable(tb =>
             {
                 tb.HasCheckConstraint("CK_IjarifyUserValidEmail", "Email like '_%@_%._%'");
-                tb.HasCheckConstraint("CK_IjarifyUserValidPhone", "phone like '01%' and Phone not like '%[^0-9]%'");
+                tb.HasCheckConstraint("CK_IjarifyUserValidPhone", "PhoneNumber like '01%' and PhoneNumber not like '%[^0-9]%'");
             });
 
             builder.HasIndex(x => x.Email).IsUnique();
-            builder.HasIndex(x => x.Phone).IsUnique();
+            builder.HasIndex(x => x.PhoneNumber).IsUnique();
 
             builder.HasMany(u => u.Properties)
                    .WithOne(p => p.User)

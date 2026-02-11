@@ -78,7 +78,7 @@ namespace IjarifySystemBLL.Services.Classes
                 TotalImages = p.PropertyImages?.Count ?? 0,
                 IsNew = (DateTime.Now - p.CreatedAt).TotalDays <= 30,
                 AgentName = p.User.Name,
-                AgentPhone = p.User.Phone,
+                AgentPhone = p.User.PhoneNumber,
                 AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
                 Reviews = new PropertyReviewsViewModel
                 {
@@ -150,7 +150,7 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentId = property.UserId,
                 AgentName = property.User.Name,
                 AgentTitle = "Licensed Real Estate Agent",
-                AgentPhone = property.User.Phone,
+                //AgentPhone = property.User.Phone,
                 AgentEmail = property.User.Email,
                 AgentAvatar = property.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
                 CreatedAt = property.CreatedAt,

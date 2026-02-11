@@ -1,8 +1,10 @@
 using IjarifySystemBLL.Services.Classes;
 using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemDAL.Data.Context;
+using IjarifySystemDAL.Entities;
 using IjarifySystemDAL.Repositories.Classes;
 using IjarifySystemDAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -34,6 +36,14 @@ namespace IjarifySystemPL
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+            }).AddEntityFrameworkStores<IjarifyDbContext>()
+            .AddDefaultTokenProviders();
+
             var app = builder.Build();
 
 
