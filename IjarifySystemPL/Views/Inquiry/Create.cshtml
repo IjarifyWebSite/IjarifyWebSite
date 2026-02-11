@@ -1,0 +1,157 @@
+﻿@model IjarifySystemBLL.ViewModels.InquiryViewModels.CreateInquiryViewModel
+
+@{
+    ViewData["Title"] = "Send Inquiry";
+}
+
+<!-- ===== PAGE HEADER ===== -->
+<section class="page-header" style="margin-top: 100px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="heading-title">Send Inquiry</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item"><a asp-controller="Property" asp-action="Index">Properties</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Send Inquiry</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== INQUIRY FORM ===== -->
+<section class="inquiry-form-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">Contact Property Owner</h4>
+
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                @TempData["ErrorMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                @TempData["SuccessMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+
+                        <form asp-action="Create" asp-controller="Inquiry" method="post">
+                            <input type="hidden" asp-for="PropertyId" />
+                            <input type="hidden" asp-for="UserId" />
+
+                            <!-- Message Field -->
+                            <div class="mb-4">
+                                <label asp-for="Message" class="form-label fw-bold">Your Message</label>
+                                <textarea asp-for="Message"
+                                          class="form-control"
+                                          rows="6"
+                                          placeholder="Hello, I'm interested in this property. Could you please provide more details about..."
+                                          required></textarea>
+                                <span asp-validation-for="Message" class="text-danger"></span>
+                                <div class="form-text">Minimum 10 characters, maximum 1000 characters</div>
+                            </div>
+
+                            <!-- Sample Questions (Optional Helper) -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Need help? Try these questions:</label>
+                                <div class="list-group">
+                                    <button type="button" class="list-group-item list-group-item-action sample-question">
+                                        Is this property still available for rent?
+                                    </button>
+                                    <button type="button" class="list-group-item list-group-item-action sample-question">
+                                        Can I schedule a viewing of the property?
+                                    </button>
+                                    <button type="button" class="list-group-item list-group-item-action sample-question">
+                                        What utilities are included in the rent?
+                                    </button>
+                                    <button type="button" class="list-group-item list-group-item-action sample-question">
+                                        Are pets allowed in this property?
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-between">
+                                <a href="@Url.Action("Details", "Property", new { id = Model.PropertyId })" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left"></i> Back to Property
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-send"></i> Send Inquiry
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tips Section -->
+                <div class="alert alert-info mt-4">
+                    <h6 class="alert-heading"><i class="bi bi-lightbulb"></i> Tips for a good inquiry:</h6>
+                    <ul class="mb-0">
+                        <li>Be specific about what you want to know</li>
+                        <li>Include your preferred move-in date if applicable</li>
+                        <li>Mention any special requirements (pets, parking, etc.)</li>
+                        <li>Be polite and professional</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Sample questions functionality
+        $('.sample-question').click(function() {
+            var question = $(this).text().trim();
+            var currentMessage = $('#Message').val();
+
+            if (currentMessage) {
+                $('#Message').val(currentMessage + '\n\n' + question);
+            } else {
+                $('#Message').val(question);
+            }
+
+            // Scroll to textarea
+            $('html, body').animate({
+                scrollTop: $('#Message').offset().top - 100
+            }, 500);
+
+            // Focus on textarea
+            $('#Message').focus();
+        });
+
+        // Character counter (optional)
+        $('#Message').on('input', function() {
+            var length = $(this).val().length;
+            var max = 1000;
+            var remaining = max - length;
+
+            if (!$('#charCount').length) {
+                $(this).after('<div id="charCount" class="form-text text-end"></div>');
+            }
+
+            $('#charCount').text(length + ' / ' + max + ' characters');
+
+            if (length > max) {
+                $('#charCount').addClass('text-danger');
+            } else {
+                $('#charCount').removeClass('text-danger');
+            }
+        });
+    </script>
+}

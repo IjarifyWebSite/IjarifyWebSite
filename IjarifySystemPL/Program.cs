@@ -22,6 +22,8 @@ namespace IjarifySystemPL
             builder.Services.AddScoped<IOfferRepository,OfferRepository>();
             builder.Services.AddScoped<IOfferService,OfferService>();
 
+            builder.Services.AddScoped<IInquiryService, InquiryService>();
+            builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
 
             builder.Services.AddDbContext<IjarifyDbContext>(options =>
             {
