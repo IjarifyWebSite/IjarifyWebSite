@@ -32,6 +32,10 @@ namespace IjarifySystemPL
             builder.Services.AddScoped<IHomeService, HomeService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
+            builder.Services.AddScoped<IInquiryService, InquiryService>();
+            builder.Services.AddScoped<IFavouriteRepository, FavouriteRepository>();
+            builder.Services.AddScoped<IFavouriteService, FavouriteService>();
             builder.Services.AddDbContext<IjarifyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
