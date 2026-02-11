@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IjarifySystemDAL.Migrations
 {
     [DbContext(typeof(IjarifyDbContext))]
-    [Migration("20260211213559_Init")]
-    partial class Init
+    [Migration("20260211221854_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1144,7 +1144,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Address = "15 El Nile Street, Maadi, Cairo",
-                            ConcurrencyStamp = "0e05b7aa-87b4-4f86-a7fc-4ee4524ad27b",
+                            ConcurrencyStamp = "d8fee37d-2665-438b-ad17-3da6e5cfb377",
                             CreatedAt = new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified),
                             Email = "omar.ali@example.com",
                             EmailConfirmed = false,
@@ -1159,7 +1159,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             Address = "28 Tahrir Street, Downtown, Cairo",
-                            ConcurrencyStamp = "6b330db5-0f7e-448b-802e-7406166f1eb9",
+                            ConcurrencyStamp = "a27208e3-4c9e-4cd7-ba01-96e5ae957a5e",
                             CreatedAt = new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified),
                             Email = "nour.ibrahim@example.com",
                             EmailConfirmed = false,
@@ -1174,7 +1174,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 3,
                             AccessFailedCount = 0,
                             Address = "42 Nasr Road, Nasr City, Cairo",
-                            ConcurrencyStamp = "b805dea2-a682-46f1-ad7e-c9aaa10ad7c3",
+                            ConcurrencyStamp = "89df8108-e099-490b-8c02-478ec81a9908",
                             CreatedAt = new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified),
                             Email = "khaled.mahmoud@example.com",
                             EmailConfirmed = false,
@@ -1189,7 +1189,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 4,
                             AccessFailedCount = 0,
                             Address = "10 Tahrir Square, Cairo",
-                            ConcurrencyStamp = "703a671a-8b00-4228-b219-1f50e582ff60",
+                            ConcurrencyStamp = "f9e3561c-0e1a-4884-9dd1-323aee55bd82",
                             CreatedAt = new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ahmed.hassan@example.com",
                             EmailConfirmed = false,
@@ -1204,7 +1204,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 5,
                             AccessFailedCount = 0,
                             Address = "25 Alexandria Road, Cairo",
-                            ConcurrencyStamp = "b3306ab1-c5d0-4716-8fb5-9f3331c65755",
+                            ConcurrencyStamp = "5957f3f6-bc37-4300-818a-26bdde938dac",
                             CreatedAt = new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified),
                             Email = "fatima.mohamed@example.com",
                             EmailConfirmed = false,

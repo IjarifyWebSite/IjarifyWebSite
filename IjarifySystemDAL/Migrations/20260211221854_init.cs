@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IjarifySystemDAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -441,11 +441,11 @@ namespace IjarifySystemDAL.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "ImageUrl", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "15 El Nile Street, Maadi, Cairo", "0e05b7aa-87b4-4f86-a7fc-4ee4524ad27b", new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", false, "https://i.pravatar.cc/150?img=33", false, null, "Omar Ali", null, null, null, null, false, null, false, null, null },
-                    { 2, 0, "28 Tahrir Street, Downtown, Cairo", "6b330db5-0f7e-448b-802e-7406166f1eb9", new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", false, "https://i.pravatar.cc/150?img=27", false, null, "Nour Ibrahim", null, null, null, null, false, null, false, null, null },
-                    { 3, 0, "42 Nasr Road, Nasr City, Cairo", "b805dea2-a682-46f1-ad7e-c9aaa10ad7c3", new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", false, "https://i.pravatar.cc/150?img=51", false, null, "Khaled Mahmoud", null, null, null, null, false, null, false, null, null },
-                    { 4, 0, "10 Tahrir Square, Cairo", "703a671a-8b00-4228-b219-1f50e582ff60", new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", false, "https://i.pravatar.cc/150?img=12", false, null, "Ahmed Hassan", null, null, null, null, false, null, false, null, null },
-                    { 5, 0, "25 Alexandria Road, Cairo", "b3306ab1-c5d0-4716-8fb5-9f3331c65755", new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), "fatima.mohamed@example.com", false, "https://i.pravatar.cc/150?img=45", false, null, "Fatima Mohamed", null, null, null, null, false, null, false, null, null }
+                    { 1, 0, "15 El Nile Street, Maadi, Cairo", "d8fee37d-2665-438b-ad17-3da6e5cfb377", new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", false, "https://i.pravatar.cc/150?img=33", false, null, "Omar Ali", null, null, null, null, false, null, false, null, null },
+                    { 2, 0, "28 Tahrir Street, Downtown, Cairo", "a27208e3-4c9e-4cd7-ba01-96e5ae957a5e", new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", false, "https://i.pravatar.cc/150?img=27", false, null, "Nour Ibrahim", null, null, null, null, false, null, false, null, null },
+                    { 3, 0, "42 Nasr Road, Nasr City, Cairo", "89df8108-e099-490b-8c02-478ec81a9908", new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", false, "https://i.pravatar.cc/150?img=51", false, null, "Khaled Mahmoud", null, null, null, null, false, null, false, null, null },
+                    { 4, 0, "10 Tahrir Square, Cairo", "f9e3561c-0e1a-4884-9dd1-323aee55bd82", new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", false, "https://i.pravatar.cc/150?img=12", false, null, "Ahmed Hassan", null, null, null, null, false, null, false, null, null },
+                    { 5, 0, "25 Alexandria Road, Cairo", "5957f3f6-bc37-4300-818a-26bdde938dac", new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), "fatima.mohamed@example.com", false, "https://i.pravatar.cc/150?img=45", false, null, "Fatima Mohamed", null, null, null, null, false, null, false, null, null }
                 });
 
             migrationBuilder.InsertData(
