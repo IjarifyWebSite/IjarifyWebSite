@@ -160,7 +160,7 @@ namespace IjarifySystemBLL.Services.Classes
                 UserID = booking.UserID,
                 UserName = booking.user?.Name ?? string.Empty,
                 UserEmail = booking.user?.Email ?? string.Empty,
-                UserPhone = booking.user?.Phone ?? string.Empty
+                UserPhone = booking.user?.PhoneNumber ?? string.Empty
             };
         }
     }

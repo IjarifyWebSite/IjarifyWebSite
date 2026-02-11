@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemDAL.Entities
 {
-    public class User:BaseEntity
+    public class User : IdentityUser<int>
     {
         public string Name { get; set; } = null!;
-        public string Email { get; set; } = null!;
-        public string Password { get; set; } = null!;
-        public string  Phone { get; set; } = null!;
-        public string Role { get; set; } = null!;
         public string? ImageUrl { get; set; }
         public string Address { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public ICollection<Property>? Properties { get; set; }
         public ICollection<Inquiry>? UserInquiries { get; set; }

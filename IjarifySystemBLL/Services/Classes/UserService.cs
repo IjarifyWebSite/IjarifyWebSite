@@ -34,7 +34,7 @@ namespace IjarifySystemBLL.Services.Classes
 
                 user.Name = updatedModel.FullName;
                 user.Email = updatedModel.Email;
-                user.Phone = updatedModel.PhoneNumber;
+                user.PhoneNumber = updatedModel.PhoneNumber;
                 
                 // Update image
                 if (!string.IsNullOrEmpty(newImagePath))
