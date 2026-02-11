@@ -1,10 +1,11 @@
-﻿using System;
+﻿using IjarifySystemDAL.Entities.Enums;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace IjarifySystemBLL.ViewModels.PropertyViewModels
 {
@@ -72,7 +73,7 @@ namespace IjarifySystemBLL.ViewModels.PropertyViewModels
     public class AmenityInput
     {
         public string Name { get; set; } = null!;
-        public string Category { get; set; } = null!; // Interior or Exterior
+        public AminityCategory Category { get; set; }  // Interior or Exterior
     }
     #endregion
 }

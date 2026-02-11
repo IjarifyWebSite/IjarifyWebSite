@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IjarifySystemDAL.Migrations
 {
     [DbContext(typeof(IjarifyDbContext))]
-    [Migration("20260210222623_InitailCreate")]
-    partial class InitailCreate
+    [Migration("20260211190416_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
