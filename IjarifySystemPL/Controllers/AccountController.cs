@@ -1,5 +1,7 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.AccountViewModels;
+using IjarifySystemDAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -11,15 +13,18 @@ namespace IjarifySystemPL.Controllers
         private readonly IBookingService _bookingService;
         private readonly IUserService _userService;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
         private readonly string _imagePath;
 
-        public AccountController(IReviewService reviewService, IBookingService bookingService, IUserService userService, IWebHostEnvironment webHostEnvironment)
+        public AccountController(IReviewService reviewService, IBookingService bookingService, IUserService userService, IWebHostEnvironment webHostEnvironment, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _reviewService = reviewService;
             _bookingService = bookingService;
             _userService = userService;
             this.webHostEnvironment = webHostEnvironment;
-
+            this.userManager = userManager;
+            this.signInManager = signInManager;
             _imagePath = Path.Combine(webHostEnvironment.WebRootPath, "Images", "profiles");
 
             if (!Directory.Exists(_imagePath))
@@ -44,8 +49,8 @@ namespace IjarifySystemPL.Controllers
                 Email = user.Email,
                 Address = user.Address ?? "Cairo, Egypt",
                 ProfileImageUrl = user.ImageUrl ?? "/images/default-avatar.jpg",
-                PhoneNumber = user.Phone,
-                WhatsApp = user.Phone,
+                //PhoneNumber = user.Phone,
+                //WhatsApp = user.Phone,
                 Reviews = reviews,
                 RecentBookings = allBookings
                     .OrderByDescending(b => b.Check_In)
@@ -85,8 +90,8 @@ namespace IjarifySystemPL.Controllers
                 FullName = user.Name,
                 Email = user.Email,
                 Address = user.Address,
-                PhoneNumber = user.Phone,
-                WhatsApp = user.Phone,
+                //PhoneNumber = user.Phone,
+                //WhatsApp = user.Phone,
                 ProfileImageUrl = user.ImageUrl ?? "/images/default-avatar.jpg"
             };
 
@@ -210,40 +215,35 @@ namespace IjarifySystemPL.Controllers
         #endregion
 
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View("Login");
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel loginUser)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await userManager.FindByNameAsync(loginUser.UserName);
+                if (user != null)
+                {
+                    //  check password
+                    bool IsExsits = await userManager.CheckPasswordAsync(user, loginUser.Password);
+                    if (IsExsits)
+                    {
+                        // Create Cookie
+                        await signInManager.SignInAsync(user, loginUser.RememberMe);
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                ModelState.AddModelError(string.Empty, "Invalid Login Data");
+            }
+            return View("Login", loginUser);
+        }
 
 
 
