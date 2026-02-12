@@ -15,11 +15,15 @@ namespace IjarifySystemBLL.Services.Classes
     {
         private readonly IOfferRepository _offerRepository;
         private readonly ILocationRepository _locationRepository;
+        private readonly IPropertyRepository _propertyRepository;
+        private readonly IBookingRepository _bookingRepository;
 
-        public OfferService(IOfferRepository offerRepository,ILocationRepository locationRepository)
+        public OfferService(IOfferRepository offerRepository,ILocationRepository locationRepository,IPropertyRepository propertyRepository,IBookingRepository bookingRepository)
         {
             _offerRepository = offerRepository;
             _locationRepository = locationRepository;
+            _propertyRepository = propertyRepository;
+            _bookingRepository = bookingRepository;
         }
         public bool CreateOffer(CreateOfferViewModel offerViewModel)
         {
@@ -30,7 +34,7 @@ namespace IjarifySystemBLL.Services.Classes
                     Title = offerViewModel.Title,
                     CreatedAt = offerViewModel.StartDate,
                     EndDate = offerViewModel.EndDate,
-                    DiscountPercentage = offerViewModel.DiscountPercentage,
+                    DiscountPercentage = (int)offerViewModel.DiscountPercentage,
                     PropertyId = offerViewModel.PropertyId,
 
                 };
@@ -66,7 +70,7 @@ namespace IjarifySystemBLL.Services.Classes
       
         public LocationOffersPageViewModel? GetAllOffersByLocation(string city)
         {
-            var Offers= _offerRepository.GetAllForLocation(city,o=>o.CreatedAt<o.EndDate);
+            var Offers= _offerRepository.GetAllForLocation(city,o=>o.CreatedAt<o.EndDate && o.IsActive);
             var location = _locationRepository.GetByCity(city);
             if(location == null)
             {
@@ -82,7 +86,7 @@ namespace IjarifySystemBLL.Services.Classes
                     Title = o.Title,
                     StartDateRaw = o.CreatedAt,
                     EndDateRaw = o.EndDate,
-                    DiscountPercentage = o.DiscountPercentage,
+                    DiscountPercentage = (int)o.DiscountPercentage,
                     PropertyTitle = o.Property.Title,
                     LocationName = $"{o.Property.Location.City}-{o.Property.Location.Street}-{o.Property.Location.Regoin}"
                 }).ToList()
@@ -104,36 +108,43 @@ namespace IjarifySystemBLL.Services.Classes
                 Title = Offer.Title,
                 StartDateRaw = Offer.CreatedAt,
                 EndDateRaw = Offer.EndDate,
-                DiscountPercentage = Offer.DiscountPercentage,
+                DiscountPercentage = (int)Offer.DiscountPercentage,
                 PropertyTitle = Offer.Property.Title,
                 LocationName = $"{Offer.Property.Location.City}-{Offer.Property.Location.Street}-{Offer.Property.Location.Regoin}"
             };
             return offerViewModel;
         }
 
-        public UpdateOfferViewModel? GetOfferForUpdate(int id)
+        public CreateOfferViewModel? GetOfferForUpdate(int id,int userId)
         {
             var offer = _offerRepository.GetById(id);
+
             if (offer == null)
             {
                 return null;
             }
-            var offerViewModel = new UpdateOfferViewModel
+            var properties = _propertyRepository.GetByUser(userId);
+            var Locations = _locationRepository.GetAll();
+            var offerViewModel = new CreateOfferViewModel
             {
+                Id= offer.Id,
                 Title = offer.Title,
                 StartDate = offer.CreatedAt,
                 EndDate = offer.EndDate,
-                DiscountPercentage = offer.DiscountPercentage,
+                DiscountPercentage = (int)offer.DiscountPercentage,
                 PropertyId = offer.PropertyId,
+                LoctionId = offer.Property.LocationId,
+                properties = properties,
+                locations = Locations,
             };
             return offerViewModel;
         }
 
-        public bool UpdateOffer(UpdateOfferViewModel offerViewModel,int OfferId)
+        public bool UpdateOffer(CreateOfferViewModel offerViewModel)
         {
             try
             {
-                var offer = _offerRepository.GetById(OfferId);
+                var offer = _offerRepository.GetById(offerViewModel.Id);
                 if (offer == null)
                 {
                     return false;
@@ -152,24 +163,25 @@ namespace IjarifySystemBLL.Services.Classes
                 return false;
             }
         }
-        public bool DeleteOffer(int id)
+        public async Task <bool> DeleteOffer(int id)
         {
-            //var offer = _offerRepository.GetById(id);
-            //if (offer == null)
-            //{
-            //    return false;
-            //}
-            //offer.IsActive = false;
-            //_offerRepository.Update(offer);
-            //_offerRepository.SaveChanges();
-
-            //if(_bookingRepo.GetAll(b=>b.propertyId == id).any())
-            //{
-            //    return True;
-            //}
-            //_offerRepository.Delete(offer);
-            //return _offerRepository.SaveChanges() > 0;
-            return false;
+            var offer = _offerRepository.GetById(id);
+            if (offer == null)
+            {
+                return false;
+            }
+            offer.IsActive = false;
+            _offerRepository.Update(offer);
+            _offerRepository.SaveChanges();
+            var bookings = await _bookingRepository.GetAllAsync(b => b.PropertyID == offer.PropertyId);
+            if (!bookings.Any())
+            {
+                _offerRepository.Delete(offer);
+                return _offerRepository.SaveChanges() > 0;
+            }
+            return true;
+            
+           
         }
 
         public OfferFilterViewModel GetFilterPageIntialData()
@@ -187,7 +199,7 @@ namespace IjarifySystemBLL.Services.Classes
                     Title = o.Title,
                     StartDateRaw = o.CreatedAt,
                     EndDateRaw = o.EndDate,
-                    DiscountPercentage = o.DiscountPercentage,
+                    DiscountPercentage = (int)o.DiscountPercentage,
                     PropertyImageUrl= o.Property.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "assets/img/real-estate/property-interior-7",
                     PropertyTitle = o.Property.Title,
                     LocationName = $"{o.Property.Location.City}-{o.Property.Location.Street}-{o.Property.Location.Regoin}"
@@ -207,7 +219,7 @@ namespace IjarifySystemBLL.Services.Classes
                     Title = o.Title,
                     StartDateRaw = o.CreatedAt,
                     EndDateRaw = o.EndDate,
-                    DiscountPercentage = o.DiscountPercentage,
+                    DiscountPercentage = (int)o.DiscountPercentage,
                     PropertyImageUrl = o.Property.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "assets/img/real-estate/property-interior-7",
                     PropertyTitle = o.Property.Title,
                     LocationName = $"{o.Property.Location.City}-{o.Property.Location.Street}-{o.Property.Location.Regoin}"
@@ -223,5 +235,29 @@ namespace IjarifySystemBLL.Services.Classes
             };
             return filterData;
         }
+
+        IEnumerable<OfferViewModel?> IOfferService.GetUserOffers(int UserId)
+        {
+           var offers= _offerRepository.GetByUserId(UserId);    
+            if(offers == null || !offers.Any())
+            {
+                return Enumerable.Empty<OfferViewModel?>();
+            }
+            var model = offers.Select(o => new OfferViewModel
+            {
+                Id = o.Id,
+                Title = o.Title,
+                StartDateRaw = o.CreatedAt,
+                EndDateRaw = o.EndDate,
+                DiscountPercentage = (int)o.DiscountPercentage,
+                PropertyTitle = o.Property.Title,
+                LocationName = $"{o.Property.Location.City}-{o.Property.Location.Street}-{o.Property.Location.Regoin}"
+
+            });
+            return model;
+
+        }
+
+       
     }
 }

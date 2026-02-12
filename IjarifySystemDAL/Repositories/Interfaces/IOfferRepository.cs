@@ -14,6 +14,7 @@ namespace IjarifySystemDAL.Repositories.Interfaces
         IEnumerable<Offer> GetAll(Expression< Func<Offer,bool>>? Condition=null);
         IEnumerable<Offer> GetAllForLocation(string LocationName, Expression<Func<Offer, bool>>? Condition = null);
         IEnumerable<Offer> GetOffersWithPropertyAndLocation(Expression<Func<Offer, bool>>? Condition = null, string? Search = null, List<string>? Areas = null, List<string>? Compounds = null, List<decimal>? HotOffers=null);
+        IEnumerable<Offer> GetByUserId(int UserId);
         Offer? GetById(int id);
         void Add(Offer offer);
         void Update(Offer offer);
