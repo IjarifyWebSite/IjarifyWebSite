@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.Services.Classes;
+using Microsoft.AspNetCore.Identity;
+using IjarifySystemDAL.Entities;
 
 namespace IjarifySystemPL.Controllers
 {
-    public class PropertyController(IPropertyService _propertyService) : Controller
+    public class PropertyController(IPropertyService _propertyService, UserManager<User> _userManager) : Controller
     {
 
         // GET: PropertyController
@@ -22,8 +24,8 @@ namespace IjarifySystemPL.Controllers
         // GET: PropertyController/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            int fakeUserId = 3;
-            var vmModel = await _propertyService.GetPropertyDetails(id , fakeUserId);
+            var currentUser = await _userManager.GetUserAsync(User);
+            var vmModel = await _propertyService.GetPropertyDetails(id , currentUser.Id);
 
             return View("Details",vmModel);
         }
