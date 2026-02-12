@@ -15,6 +15,7 @@ namespace IjarifySystemBLL.Services.Interfaces
         Task<IEnumerable<BookingReadDto>> GetPropertyBookingsAsync(int propertyId);
         Task<BookingReadDto> CreateBookingAsync(BookingCreateDto dto, int userId);
         Task<BookingReadDto?> UpdateBookingAsync(int id, BookingUpdateDto dto);
+        Task<PropertyBasicInfoDto?> GetPropertyBasicInfo(int propertyId);
         Task<bool> DeleteBookingAsync(int id);
         Task<bool> ApproveBookingAsync(int id);
         Task<bool> RejectBookingAsync(int id);

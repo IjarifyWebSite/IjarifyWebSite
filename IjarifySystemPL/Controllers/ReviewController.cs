@@ -22,7 +22,7 @@ namespace IjarifyWeb.Controllers
                 return RedirectToAction("Details", "Property", new { id = createReview.PropertyId });
             }
 
-            int fakeUserId = 3;
+            int fakeUserId = 4;
             bool isCreated = reviewService.CreateReview(createReview, fakeUserId);
 
             if (isCreated)
@@ -46,7 +46,7 @@ namespace IjarifyWeb.Controllers
                 return RedirectToAction("Details", "Property", new { id = updateReview.PropertyId });
             }
 
-            int fakeUserId = 3;
+            int fakeUserId = 4;
             bool isUpdated = reviewService.UpdateReview(updateReview, fakeUserId, updateReview.ReviewId ?? 0);
 
             if (isUpdated)
@@ -64,7 +64,7 @@ namespace IjarifyWeb.Controllers
         [HttpPost]
         public IActionResult Delete(int id, int propertyId)
         {
-            int fakeUserId = 3;
+            int fakeUserId = 4;
             bool isDeleted = reviewService.DeleteReview(id, fakeUserId);
 
             if (isDeleted)
