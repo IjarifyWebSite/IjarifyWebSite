@@ -362,3 +362,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/IjarifySystemPL/Program.cs
+/IjarifySystemPL/appsettings.Development.json
+/IjarifySystemPL/Views/Account/Profile.cshtml
+/IjarifySystemDAL/Migrations/20260212201128_initial.cs
+/IjarifySystemDAL/Migrations/IjarifyDbContextModelSnapshot.cs
+/IjarifySystemDAL/Migrations/20260212201128_initial.Designer.cs
+/IjarifySystemDAL/Data/Context/IjarifyDbContext.cs

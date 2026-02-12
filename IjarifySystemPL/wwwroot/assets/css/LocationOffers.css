@@ -166,16 +166,14 @@ body {
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+    transition: background var(--transition), color var(--transition), box-shadow var(--transition), transform var(--transition);
     box-shadow: 0 4px 14px var(--teal-glow);
 }
 
     .btn-add-offer:hover {
-        background: var(--teal-dark);
-        box-shadow: 0 6px 20px var(--teal-glow);
-        transform: translateY(-1px);
-        color: #fff;
-        text-decoration: none;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
+        color: white;
     }
 
 .offer-card {
@@ -668,7 +666,7 @@ body {
 
 .offer-card-wrap:nth-child(7) {
     animation-delay: .35s;
-}
+
 
 .offer-card-wrap:nth-child(8) {
     animation-delay: .40s;
