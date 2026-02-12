@@ -1,5 +1,6 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.AmenityViewModels;
+using IjarifySystemBLL.ViewModels.HomeViewModels;
 using IjarifySystemBLL.ViewModels.PropertyViewModels;
 using IjarifySystemBLL.ViewModels.ReviewsViewModels;
 using IjarifySystemDAL.Entities;
@@ -318,6 +319,20 @@ namespace IjarifySystemBLL.Services.Classes
                     File.Delete(fullPath);
                 }
             }
+        }
+
+        public async Task<List<LocationCardViewModel>> GetTopLocationsAsync(int count)
+        {
+            var locations = await _repo.GetTopLocationsWithPropertyCountAsync(count);
+
+            return locations.Select(l => new LocationCardViewModel
+            {
+                Id = l.Id,
+                City = l.City,
+                Region = l.Regoin,
+                ImageUrl = l.ImageUrl ?? "assets/img/real-estate/default-location.webp",
+                PropertyCount = l.Properties?.Count ?? 0
+            }).ToList();
         }
     }
 }
