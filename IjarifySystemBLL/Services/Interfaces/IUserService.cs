@@ -10,8 +10,9 @@ namespace IjarifySystemBLL.Services.Interfaces
 {
     public interface IUserService
     {
-        User? GetUserById(int id);
-        bool UpdateUserProfile(EditProfileViewModel model, int userId, string? newImagePath = null);
-        bool DeleteProfileImage(int userId);
+        public User? GetUserById(int id);
+        public bool UpdateUserProfile(EditProfileViewModel model, int userId, string? newImagePath = null);
+        public bool DeleteProfileImage(int userId);
+        public User? GetUserByPhoneNumber(string phoneNumber);
     }
 }
