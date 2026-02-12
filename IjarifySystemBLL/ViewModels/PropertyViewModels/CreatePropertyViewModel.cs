@@ -11,6 +11,7 @@ namespace IjarifySystemBLL.ViewModels.PropertyViewModels
 {
     public class CreatePropertyViewModel
     {
+        public int? Id { get; set; } // Add this
         //Property Info
         [Required(ErrorMessage = "Property title is required")]
         [StringLength(150, MinimumLength = 5, ErrorMessage = "Title must be between 5 and 150 characters")]

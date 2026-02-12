@@ -8,6 +8,7 @@ using IjarifySystemDAL.Entities.Enums;
 using IjarifySystemDAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -228,23 +229,65 @@ namespace IjarifySystemBLL.Services.Classes
             await _repo.SaveAsync();
         }
 
-        public async Task DeletePropertyAsync(int id)
+        public async Task<bool> DeletePropertyAsync(int id, int userId)
         {
             var property = await _repo.GetByIdAsync(id);
-            if (property == null) return;
 
-            DeletePhysicalImages(property.PropertyImages);
+            if (property == null)
+            {
+                return false;
+            }
+
+            // Check if the property belongs to the user
+            if (property.UserId != userId)
+            {
+                throw new UnauthorizedAccessException("You don't have permission to delete this property.");
+            }
+
+            // Delete images from file system
+            if (property.PropertyImages != null && property.PropertyImages.Any())
+            {
+                foreach (var image in property.PropertyImages)
+                {
+                    DeleteImageFile(image.ImageUrl);
+                }
+            }
+
+            // Delete the property (cascade delete will handle related entities)
             _repo.Delete(property);
             await _repo.SaveAsync();
+
+            return true;
+        }
+
+        private void DeleteImageFile(string imageUrl)
+        {
+            if (string.IsNullOrEmpty(imageUrl)) return;
+
+            string filePath = Path.Combine("wwwroot", imageUrl.TrimStart('/'));
+
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    File.Delete(filePath);
+                }
+                catch (Exception)
+                {
+                   //later
+                }
+            }
         }
 
         public async Task<CreatePropertyViewModel?> GetPropertyForEditAsync(int id)
         {
+
             var p = await _repo.GetByIdAsync(id);
             if (p == null) return null;
 
             return new CreatePropertyViewModel
             {
+                Id = p.Id, 
                 Title = p.Title,
                 Description = p.Description,
                 Price = p.Price,
