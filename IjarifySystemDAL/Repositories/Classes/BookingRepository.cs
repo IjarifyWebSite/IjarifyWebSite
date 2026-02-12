@@ -109,6 +109,11 @@ namespace IjarifySystemDAL.Repositories.Classes
         {
             return await _context.SaveChangesAsync();
         }
-
+        public async Task<Property?> GetPropertyBasicInfo(int propertyId)
+        {
+            return await _context.Properties
+                .Include(p => p.PropertyImages)
+                .FirstOrDefaultAsync(p => p.Id == propertyId);
+        }
     }
 }

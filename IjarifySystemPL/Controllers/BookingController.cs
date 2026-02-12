@@ -24,35 +24,64 @@ namespace IjarifySystemPL.Controllers
             // TODO: Replace with Identity later
             return 4; // user وهمي للتجربة
         }
-        // GET: Booking/Create/5
+
+        //GET: Booking/Create/5
         [HttpGet]
-        public IActionResult Create(int propertyId)
+        public async Task<IActionResult> Create(int propertyId)
         {
+            if (propertyId == 0)
+            {
+                TempData["Error"] = "Property not found";
+                return RedirectToAction("Index", "Property");
+            }
+
+
+            var property = await _bookingService.GetPropertyBasicInfo(propertyId);
+
+            if (property == null)
+            {
+                TempData["Error"] = "Property not found";
+                return RedirectToAction("Index", "Property");
+            }
+
             var viewModel = new BookingCreateViewModel
             {
                 PropertyID = propertyId,
+                PropertyTitle = property.Title,
+                PricePerNight = property.Price,
                 Check_In = DateTime.Today.AddDays(1),
-                Check_Out = DateTime.Today.AddDays(2)
+                Check_Out = DateTime.Today.AddDays(2),
+                TotalPrice = property.Price
             };
 
             return View(viewModel);
         }
 
-        // POST: Booking/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookingCreateViewModel viewModel)
         {
+            Console.WriteLine("=== Form Submitted ===");
+            Console.WriteLine($"PropertyID: {viewModel.PropertyID}");
+            Console.WriteLine($"Check_In: {viewModel.Check_In}");
+            Console.WriteLine($"Check_Out: {viewModel.Check_Out}");
+            Console.WriteLine($"TotalPrice: {viewModel.TotalPrice}");
+
             if (!ModelState.IsValid)
             {
+                Console.WriteLine("=== ModelState Invalid ===");
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine($"Error: {error.ErrorMessage}");
+                }
+                TempData["Error"] = "Please fill all required fields correctly";
                 return View(viewModel);
             }
 
             try
             {
-                //int userId = 4;
-                //var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
                 int userId = GetCurrentUserId();
+
                 var createDto = new BookingCreateDto
                 {
                     PropertyID = viewModel.PropertyID,
@@ -64,14 +93,51 @@ namespace IjarifySystemPL.Controllers
                 var booking = await _bookingService.CreateBookingAsync(createDto, userId);
 
                 TempData["Success"] = "Booking created successfully! Waiting for approval.";
-                return RedirectToAction(nameof(Details), new { id = booking.Id });
+                return RedirectToAction("Details", new { id = booking.Id });
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                Console.WriteLine($"=== Exception: {ex.Message} ===");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                TempData["Error"] = $"Error: {ex.Message}";
                 return View(viewModel);
             }
         }
+
+        // POST: Booking/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(BookingCreateViewModel viewModel)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(viewModel);
+        //    }
+
+        //    try
+        //    {
+        //        //int userId = 4;
+        //        //var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        //        int userId = GetCurrentUserId();
+        //        var createDto = new BookingCreateDto
+        //        {
+        //            PropertyID = viewModel.PropertyID,
+        //            Check_In = viewModel.Check_In,
+        //            Check_Out = viewModel.Check_Out,
+        //            TotalPrice = viewModel.TotalPrice
+        //        };
+
+        //        var booking = await _bookingService.CreateBookingAsync(createDto, userId);
+
+        //        TempData["Success"] = "Booking created successfully! Waiting for approval.";
+        //        return RedirectToAction(nameof(Details), new { id = booking.Id });
+        //    }
+        //    catch (InvalidOperationException ex)
+        //    {
+        //        ModelState.AddModelError("", ex.Message);
+        //        return View(viewModel);
+        //    }
+        //}
 
         // GET: Booking/MyBookings
         [HttpGet]

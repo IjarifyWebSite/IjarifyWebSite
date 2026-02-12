@@ -22,7 +22,6 @@
     </div>
 </section>
 
-<!-- ===== INQUIRY FORM ===== -->
 <section class="inquiry-form-section py-5">
     <div class="container">
         <div class="row justify-content-center">
@@ -50,7 +49,7 @@
                             <input type="hidden" asp-for="PropertyId" />
                             <input type="hidden" asp-for="UserId" />
 
-                            <!-- Message Field -->
+                        
                             <div class="mb-4">
                                 <label asp-for="Message" class="form-label fw-bold">Your Message</label>
                                 <textarea asp-for="Message"
@@ -62,7 +61,7 @@
                                 <div class="form-text">Minimum 10 characters, maximum 1000 characters</div>
                             </div>
 
-                            <!-- Sample Questions (Optional Helper) -->
+                         
                             <div class="mb-4">
                                 <label class="form-label fw-bold">Need help? Try these questions:</label>
                                 <div class="list-group">
@@ -81,7 +80,7 @@
                                 </div>
                             </div>
 
-                            <!-- Action Buttons -->
+                           
                             <div class="d-flex justify-content-between">
                                 <a href="@Url.Action("Details", "Property", new { id = Model.PropertyId })" class="btn btn-outline-secondary">
                                     <i class="bi bi-arrow-left"></i> Back to Property
@@ -94,7 +93,7 @@
                     </div>
                 </div>
 
-                <!-- Tips Section -->
+               
                 <div class="alert alert-info mt-4">
                     <h6 class="alert-heading"><i class="bi bi-lightbulb"></i> Tips for a good inquiry:</h6>
                     <ul class="mb-0">
@@ -115,7 +114,7 @@
     }
 
     <script>
-        // Sample questions functionality
+        
         $('.sample-question').click(function() {
             var question = $(this).text().trim();
             var currentMessage = $('#Message').val();
@@ -126,16 +125,16 @@
                 $('#Message').val(question);
             }
 
-            // Scroll to textarea
+          
             $('html, body').animate({
                 scrollTop: $('#Message').offset().top - 100
             }, 500);
 
-            // Focus on textarea
+       
             $('#Message').focus();
         });
 
-        // Character counter (optional)
+      
         $('#Message').on('input', function() {
             var length = $(this).val().length;
             var max = 1000;

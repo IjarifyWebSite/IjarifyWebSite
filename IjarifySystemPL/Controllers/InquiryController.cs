@@ -53,7 +53,7 @@ namespace IjarifySystemPL.Controllers
         }
 
         //  /Inquiry/Create
-        // صفحة إنشاء inquiry جديد
+        
         public IActionResult Create(int propertyId)
         {
             if (propertyId == 0)
@@ -64,7 +64,7 @@ namespace IjarifySystemPL.Controllers
             var model = new CreateInquiryViewModel
             {
                 PropertyId = propertyId,
-                UserId = 1 // TODO: استبدل بالـ logged-in user
+                UserId = 1 
             };
 
             return View(model);
@@ -81,7 +81,6 @@ namespace IjarifySystemPL.Controllers
                 return View(model);
             }
 
-            // TODO: استبدل بالـ logged-in user
             model.UserId = 1;
 
             try

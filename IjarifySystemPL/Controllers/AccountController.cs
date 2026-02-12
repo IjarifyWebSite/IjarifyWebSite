@@ -84,12 +84,12 @@ namespace IjarifySystemPL.Controllers
         [Authorize]
         public async Task<IActionResult> EditProfile()
         {
-            var currentUser = await userManager.GetUserAsync(User);
+             var currentUser = await userManager.GetUserAsync(User);
 
-            if (currentUser == null)
-            {
-                return RedirectToAction("Login");
-            }
+             if (currentUser == null)
+             {
+                 return RedirectToAction("Login");
+             }
 
             var user = _userService.GetUserById(currentUser.Id);
 
@@ -280,78 +280,78 @@ namespace IjarifySystemPL.Controllers
             TempData["SuccessMessage"] = $"Welcome back, {user.Name}!";
             return RedirectToAction("Index", "Home");
         }
+      
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        public async Task<IActionResult> Register(RegisterViewModel newUser)
+        {
+            if (ModelState.IsValid)
+            {
+                // Check if username already exists
+                var existingUser = await userManager.FindByNameAsync(newUser.UserName);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("UserName", "Username already exists");
+                    return View(newUser);
+                }
+
+                // Check if email already exists
+                var existingEmail = await userManager.FindByEmailAsync(newUser.Email);
+                if (existingEmail != null)
+                {
+                    ModelState.AddModelError("Email", "Email already registered");
+                    return View(newUser);
+                }
+
+                // Create new user
+                User user = new User
+                {
+                    Name = newUser.Name,
+                    UserName = newUser.UserName,
+                    Email = newUser.Email,
+                    Address = newUser.Address,
+                    PhoneNumber = newUser.PhoneNumber,
+                    CreatedAt = DateTime.Now
+                };
+
+                // Create user with password
+                var result = await userManager.CreateAsync(user, newUser.Password);
+
+                if (result.Succeeded)
+                {
+                    // Auto login after registration
+                    await signInManager.SignInAsync(user, isPersistent: false);
+                    TempData["SuccessMessage"] = "Registration successful! Welcome to Ijarify.";
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    // Show errors
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+
+            return View(newUser);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
             TempData["SuccessMessage"] = "You have been logged out successfully";
             return RedirectToAction("Index", "Home");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
