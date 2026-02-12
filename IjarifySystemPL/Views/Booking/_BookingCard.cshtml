@@ -123,11 +123,11 @@
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
-        .booking-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 40px rgba(15, 23, 42, 0.15);
-            border-color: #cbd5e1;
-        }
+    .booking-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px rgba(15, 23, 42, 0.15);
+        border-color: #cbd5e1;
+    }
 
     /* Card Header */
     .card-header-section {
@@ -156,10 +156,10 @@
         color: #0f172a;
     }
 
-        .booking-number i {
-            color: #0d9488;
-            font-size: 18px;
-        }
+    .booking-number i {
+        color: #0d9488;
+        font-size: 18px;
+    }
 
     /* Status Badge */
     .status-badge {
@@ -174,9 +174,9 @@
         letter-spacing: 0.3px;
     }
 
-        .status-badge i {
-            font-size: 16px;
-        }
+    .status-badge i {
+        font-size: 16px;
+    }
 
     .status-pending {
         background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
@@ -332,25 +332,25 @@
         border: 1px solid #e2e8f0;
     }
 
-        .duration-badge i {
-            font-size: 18px;
-            color: #0d9488;
-        }
+    .duration-badge i {
+        font-size: 18px;
+        color: #0d9488;
+    }
 
-        .duration-badge span {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0f172a;
-            line-height: 1;
-        }
+    .duration-badge span {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1;
+    }
 
-        .duration-badge small {
-            font-size: 10px;
-            color: #64748b;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
+    .duration-badge small {
+        font-size: 10px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
 
     /* Card Footer */
     .card-footer-section {
@@ -393,7 +393,7 @@
         align-items: center;
         gap: 10px;
         padding: 14px 24px;
-        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        background:  linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
         color: white;
         border-radius: 12px;
         text-decoration: none;
@@ -403,118 +403,117 @@
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-        .btn-details:hover {
-            transform: translateX(4px);
-            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
-            color: white;
-        }
+    .btn-details:hover {
+        transform: translateX(4px);
+        box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+        color: white;
+    }
 
-        .btn-details i {
-            font-size: 20px;
-            transition: transform 0.3s;
-        }
+    .btn-details i {
+        font-size: 20px;
+        transition: transform 0.3s;
+    }
 
-        .btn-details:hover i {
-            transform: translateX(3px);
+    .btn-details:hover i {
+        transform: translateX(3px);
         }
 
     /* Responsive Design */
     @@media (max-width: 768px) {
         .card-header-section
 
-    {
-        padding: 16px 20px;
-    }
+        {
+            padding: 16px 20px;
+        }
 
-    .timeline-section {
-        flex-direction: column;
-        padding: 20px;
-        gap: 20px;
-    }
+        .timeline-section {
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+        }
 
-    .timeline-item {
-        width: 100%;
-    }
+        .timeline-item {
+            width: 100%;
+        }
 
-    .timeline-connector {
-        flex-direction: row;
-        width: 100%;
-        padding: 0;
-        justify-content: center;
-    }
+        .timeline-connector {
+            flex-direction: row;
+            width: 100%;
+            padding: 0;
+            justify-content: center;
+        }
 
-    .connector-line {
-        width: 60px;
-        height: 2px;
-        background: linear-gradient(to right, #bbf7d0 0%, #fecaca 100%);
-    }
+        .connector-line {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(to right, #bbf7d0 0%, #fecaca 100%);
+        }
 
-    .duration-badge {
-        flex-direction: row;
-        gap: 6px;
-    }
+        .duration-badge {
+            flex-direction: row;
+            gap: 6px;
+        }
 
         .duration-badge small {
             display: inline;
         }
 
-    .card-footer-section {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 16px;
-        padding: 20px;
-    }
+        .card-footer-section {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+            padding: 20px;
+        }
 
-    .price-container {
-        text-align: center;
-    }
+        .price-container {
+            text-align: center;
+        }
 
-    .btn-details {
-        width: 100%;
-        justify-content: center;
-    }
+        .btn-details {
+            width: 100%;
+            justify-content: center;
+        }
 
-    .property-section {
-        padding: 20px;
-    }
+        .property-section {
+            padding: 20px;
+        }
 
-    .property-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 24px;
-    }
+        .property-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 24px;
+        }
 
-    .property-title {
-        font-size: 16px;
-    }
+        .property-title {
+            font-size: 16px;
+        }
 
     }
 
     @@media (max-width: 480px) {
         .status-badge
 
-    {
-        padding: 8px 14px;
-        font-size: 11px;
-    }
+        {
+            padding: 8px 14px;
+            font-size: 11px;
+        }
 
-    .booking-number {
-        font-size: 14px;
-    }
+        .booking-number {
+            font-size: 14px;
+        }
 
-    .price-value {
-        font-size: 24px;
-    }
+        .price-value {
+            font-size: 24px;
+        }
 
-    .timeline-date {
-        font-size: 14px;
-    }
+        .timeline-date {
+            font-size: 14px;
+        }
 
-    .timeline-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 20px;
-    }
-
-    }
+        .timeline-icon {
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
+        }
+}
 </style>

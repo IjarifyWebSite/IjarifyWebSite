@@ -25,7 +25,8 @@ namespace IjarifySystemPL.Controllers
         public async Task<ActionResult> Details(int id)
         {
             var currentUser = await _userManager.GetUserAsync(User);
-            var vmModel = await _propertyService.GetPropertyDetails(id , currentUser.Id);
+            int? userId = currentUser?.Id;
+            var vmModel = await _propertyService.GetPropertyDetails(id , userId);
 
             return View("Details",vmModel);
         }
