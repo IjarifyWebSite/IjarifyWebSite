@@ -45,6 +45,18 @@
                             </div>
                         }
 
+<style>
+    .teal-btn {
+        transition: all 0.3s ease;
+    }
+    .teal-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
+        color: white !important;
+        opacity: 1;
+    }
+</style>
+
                         <form asp-action="Create" asp-controller="Inquiry" method="post">
                             <input type="hidden" asp-for="PropertyId" />
                             <input type="hidden" asp-for="UserId" />
@@ -85,7 +97,7 @@
                                 <a href="@Url.Action("Details", "Property", new { id = Model.PropertyId })" class="btn btn-outline-secondary">
                                     <i class="bi bi-arrow-left"></i> Back to Property
                                 </a>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary teal-btn" style="background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%); border: none;">
                                     <i class="bi bi-send"></i> Send Inquiry
                                 </button>
                             </div>

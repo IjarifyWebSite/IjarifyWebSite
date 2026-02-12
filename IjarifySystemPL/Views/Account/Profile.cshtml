@@ -216,6 +216,99 @@
                         </div>
                     </div>
 
+                    <!-- My Inquiries Section -->
+                    <div class="col-lg-8 mt-5">
+                        <!-- Inquiries Header -->
+                        <div class="reviews-header reviews-toggle" onclick="toggleInquiries()">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                <div>
+                                    <h2 class="reviews-title">My Inquiries</h2>
+                                    <p class="reviews-subtitle mb-0">Messages you've sent to property owners</p>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="reviews-count-badge">
+                                        <i class="bi bi-envelope-fill me-1"></i>
+                                        @Model.TotalInquiries
+                                    </span>
+
+                                    <i id="inquiriesArrow" class="bi bi-chevron-down toggle-arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Inquiries Content -->
+                        <div id="inquiriesContent" class="reviews-content collapsed">
+                            @if (Model.RecentInquiries != null && Model.RecentInquiries.Any())
+                            {
+                                <div class="inquiries-list">
+                                    @foreach (var inquiry in Model.RecentInquiries)
+                                    {
+                                        <div class="inquiry-profile-card" data-aos="fade-up" data-aos-delay="150">
+                                            <div class="inquiry-card-header">
+                                                <div class="inquiry-property-info">
+                                                    <i class="bi bi-building"></i>
+                                                    <div>
+                                                        <h5 class="inquiry-property-name">
+                                                            <a asp-controller="Property" asp-action="Details" asp-route-id="@inquiry.PropertyId" class="text-decoration-none">
+                                                                @inquiry.PropertyTitle
+                                                            </a>
+                                                        </h5>
+                                                        <span class="inquiry-location"><i class="bi bi-geo-alt me-1"></i>@inquiry.PropertyLocation</span>
+                                                    </div>
+                                                </div>
+                                                <div class="inquiry-date">
+                                                    <i class="bi bi-clock me-1"></i>@inquiry.CreatedAt.ToString("MMM dd, yyyy")
+                                                </div>
+                                            </div>
+
+                                            <div class="inquiry-message-box">
+                                                <i class="bi bi-chat-quote"></i>
+                                                <p>@inquiry.Message</p>
+                                            </div>
+
+                                            <div class="inquiry-card-footer">
+                                                <div class="inquiry-owner">
+                                                    <small class="text-muted">To:</small>
+                                                    <span class="fw-bold ms-1">@inquiry.PropertyOwnerName</span>
+                                                </div>
+                                                <div class="inquiry-actions-btns">
+                                                    <a asp-controller="Inquiry" asp-action="Details" asp-route-id="@inquiry.InquiryId" class="action-btn inquiry-view-btn">
+                                                        <i class="bi bi-eye me-1"></i>View
+                                                    </a>
+                                                    <button class="action-btn inquiry-delete-btn" onclick="deleteInquiry(@inquiry.InquiryId, 4)">
+                                                        <i class="bi bi-trash me-1"></i>Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                    <div class="text-center mt-4 mb-3">
+                                        <a asp-controller="Inquiry" asp-action="Index" class="view-all-btn">
+                                            <i class="bi bi-envelope me-2"></i>
+                                            View All Inquiries (@Model.TotalInquiries)
+                                            <i class="bi bi-arrow-right ms-2"></i>
+                                        </a>
+                                    </div>
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <i class="bi bi-envelope-x empty-state-icon"></i>
+                                    <p class="empty-state-text">
+                                        You haven't sent any inquiries yet.<br />
+                                        Browse properties and ask owners your questions!
+                                    </p>
+                                    <a asp-controller="Property" asp-action="Index" class="browse-btn">
+                                        <i class="bi bi-search me-2"></i>Browse Properties
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
                 </div>
                 <!-- End Left Content -->
                 <!-- Right Sidebar -->
@@ -300,6 +393,16 @@
                                     <span>@Model.TotalBookings Total</span>
                                 </div>
                             </div>
+
+                            <div class="achievement-item">
+                                <div class="achievement-icon">
+                                    <i class="bi bi-envelope-fill"></i>
+                                </div>
+                                <div class="achievement-text">
+                                    <h6>Inquiries</h6>
+                                    <span>@Model.TotalInquiries Sent</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -312,6 +415,34 @@
     </section><!-- /Agent Profile Section -->
 
 </main>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center px-4 pb-4">
+                <div class="mb-4">
+                    <div class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="bi bi-trash text-danger" style="font-size: 2.5rem;"></i>
+                    </div>
+                </div>
+                <h4 class="mb-3">Delete Inquiry?</h4>
+                <p class="text-muted mb-0">Are you sure you want to delete this inquiry? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center gap-2 pt-0 pb-4">
+                <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
+                    <i class="bi bi-trash me-1"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
     .edit-btn {
@@ -529,9 +660,9 @@
     }
 
         .view-all-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(44, 122, 123, 0.4);
-            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
+            color: white;
         }
 
     .browse-btn {
@@ -550,8 +681,165 @@
 
         .browse-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(44, 122, 123, 0.3);
-            color: #fff;
+            box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
+            color: white;
+        }
+
+    /* Inquiry Card Styles */
+    .inquiries-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .inquiry-profile-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 24px 28px;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+        .inquiry-profile-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+            border-left-color: #38b2ac;
+        }
+
+    .inquiry-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .inquiry-property-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .inquiry-property-info > i {
+            font-size: 28px;
+            color: #2c7a7b;
+            background: linear-gradient(135deg, #e6fffa, #b2f5ea);
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+    .inquiry-property-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+    }
+
+        .inquiry-property-name a {
+            color: #1a1a1a;
+            transition: color 0.2s;
+        }
+
+            .inquiry-property-name a:hover {
+                color: #2c7a7b;
+            }
+
+    .inquiry-location {
+        font-size: 13px;
+        color: #6c757d;
+    }
+
+    .inquiry-date {
+        font-size: 13px;
+        color: #6c757d;
+        white-space: nowrap;
+    }
+
+    .inquiry-message-box {
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border-radius: 14px;
+        padding: 16px 20px;
+        margin-bottom: 16px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+        .inquiry-message-box > i {
+            color: #38b2ac;
+            font-size: 20px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .inquiry-message-box p {
+            margin: 0;
+            color: #495057;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+    .inquiry-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 14px;
+        border-top: 1px solid #f1f3f5;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .inquiry-owner {
+        font-size: 14px;
+        color: #495057;
+    }
+
+    .inquiry-actions-btns {
+        display: flex;
+        gap: 8px;
+    }
+
+    .inquiry-view-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+        color: #2c7a7b;
+        padding: 8px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .inquiry-view-btn:hover {
+            background: linear-gradient(135deg, #b2f5ea 0%, #81e6d9 100%);
+            color: #234e52;
+            transform: translateY(-2px);
+        }
+
+    .inquiry-delete-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        color: #e74c3c;
+        padding: 8px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .inquiry-delete-btn:hover {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #c0392b;
+            transform: translateY(-2px);
         }
 
     @@media (max-width: 768px) {
@@ -565,6 +853,15 @@
 
         .bookings-list {
             gap: 16px;
+        }
+
+        .inquiry-card-header {
+            flex-direction: column;
+        }
+
+        .inquiry-card-footer {
+            flex-direction: column;
+            align-items: flex-start;
         }
     }
 </style>
@@ -586,5 +883,83 @@
         content.classList.toggle("collapsed");
         content.classList.toggle("expanded");
         arrow.classList.toggle("rotate");
+    }
+
+    function toggleInquiries() {
+        const content = document.getElementById("inquiriesContent");
+        const arrow = document.getElementById("inquiriesArrow");
+
+        content.classList.toggle("collapsed");
+        content.classList.toggle("expanded");
+        arrow.classList.toggle("rotate");
+    }
+
+    var deleteInquiryId = null;
+    var deleteUserId = null;
+
+    function deleteInquiry(inquiryId, userId) {
+        deleteInquiryId = inquiryId;
+        deleteUserId = userId;
+        var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        deleteModal.show();
+    }
+
+    // Handle confirm delete button click
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        if (deleteInquiryId === null) return;
+
+        var modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+        
+        $.ajax({
+            url: '@Url.Action("Delete", "Inquiry")',
+            type: 'POST',
+            data: {
+                id: deleteInquiryId,
+                userId: deleteUserId
+            },
+            success: function(response) {
+                modal.hide();
+                
+                if (response.success) {
+                    // Hide the card with animation
+                    // Note: Profile cards don't have data-inquiry-id attribute yet, so we need to reload or find parent
+                    // Ideally we should add data-inquiry-id to the card
+                    
+                    // For now, since we want it "like index", let's reload to update counts and lists accurately
+                    // Or we can try to remove the element if we can select it
+                    
+                    location.reload(); 
+
+                    // Ideally: remove element and update counts without reload, but reload is safer for Profile stats
+                } else {
+                    showNotification(response.message, 'error');
+                }
+                
+                deleteInquiryId = null;
+                deleteUserId = null;
+            },
+            error: function() {
+                modal.hide();
+                showNotification('An error occurred while deleting the inquiry', 'error');
+                deleteInquiryId = null;
+                deleteUserId = null;
+            }
+        });
+    });
+
+    function showNotification(message, type) {
+        var alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        var icon = type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle';
+
+        var notification = $('<div class="alert ' + alertClass + ' alert-dismissible fade show position-fixed" style="top: 20px; right: 20px; z-index: 9999; min-width: 300px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" role="alert">' +
+            '<i class="' + icon + ' me-2"></i>' + message +
+            '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>' +
+            '</div>');
+
+        $('body').append(notification);
+
+        setTimeout(function() {
+            notification.alert('close');
+        }, 3000);
     }
 </script>

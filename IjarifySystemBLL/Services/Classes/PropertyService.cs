@@ -15,12 +15,12 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemBLL.Services.Classes
 {
-    public class PropertyService(IPropertyRepository _repo) : IPropertyService
+    public class PropertyService(IPropertyRepository _repo, IFavouriteRepository _favouriteRepo) : IPropertyService
     {
         // Using Directory.GetCurrentDirectory() to avoid hosting environment issues
         private readonly string _rootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
-        public async Task<PropertyIndexPageViewModel> GetPagination(int pageSize, int page, PropertyFilterViewModel filter)
+        public async Task<PropertyIndexPageViewModel> GetPagination(int pageSize, int page, PropertyFilterViewModel filter, int? currentUserId = null)
         {
             var query = _repo.GetQueryable()
                 .Include(p => p.User)
@@ -63,6 +63,17 @@ namespace IjarifySystemBLL.Services.Classes
                 .Take(pageSize)
                 .ToListAsync();
 
+            // Get user favorites if logged in
+            var favoritePropertyIds = new HashSet<int>();
+            if (currentUserId.HasValue)
+            {
+                var favorites = _favouriteRepo.GetAllByUserId(currentUserId.Value);
+                foreach (var fav in favorites)
+                {
+                    favoritePropertyIds.Add(fav.PropertyId);
+                }
+            }
+
             var propertyViewModels = properties.Select(p => new PropertyIndexViewModel
             {
                 Id = p.Id,
@@ -80,6 +91,7 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentName = p.User.Name,
                 AgentPhone = p.User.PhoneNumber,
                 AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
+                IsFavourite = favoritePropertyIds.Contains(p.Id),
                 Reviews = new PropertyReviewsViewModel
                 {
                     PropertyId = p.Id,

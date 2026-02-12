@@ -212,6 +212,26 @@
                             }
                         </div>
 
+                        <!-- Favourite Button -->
+                        <div class="favourite-action mt-3 mb-3">
+                            <form asp-controller="Favourite" asp-action="Toggle" method="post">
+                                <input type="hidden" name="propertyId" value="@Model.Id" />
+                                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                                @if (Model.IsFavourite)
+                                {
+                                    <button type="submit" class="btn btn-outline-danger w-100" style="border-radius: 12px; padding: 10px 20px; font-weight: 600;">
+                                        <i class="bi bi-heart-fill" style="color: #e74c3c;"></i> Remove from Favourites
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-outline-secondary w-100" style="border-radius: 12px; padding: 10px 20px; font-weight: 600;">
+                                        <i class="bi bi-heart"></i> Add to Favourites
+                                    </button>
+                                }
+                            </form>
+                        </div>
+
                         <!-- Agent Info -->
                         <div class="agent-info">
                             <div class="agent-avatar">
@@ -244,35 +264,22 @@
                             </p>
                         </div>
 
-                        <!-- Contact Form -->
-                        <div class="contact-form">
-                        <!-- Contact Form -->
-                        <div class="contact-form">
-                            <h4>Schedule a Tour</h4>
-                            <form asp-controller="Inquiry" asp-action="Create" method="post" class="php-email-form">
-                                <input type="hidden" name="PropertyId" value="@Model.Id" />
-                                <div class="row">
-                                    <div class="col-12 form-group">
-                                        <input type="text" name="Name" class="form-control" placeholder="Your Name" required>
-                                    </div>
-                                    <div class="col-12 form-group">
-                                        <input type="email" name="Email" class="form-control" placeholder="Your Email" required>
-                                    </div>
-                                    <div class="col-12 form-group">
-                                        <input type="tel" name="Phone" class="form-control" placeholder="Your Phone">
-                                    </div>
-                                    <div class="col-12 form-group">
-                                        <input type="date" name="PreferredDate" class="form-control" placeholder="Preferred Tour Date">
-                                    </div>
-                                    <div class="col-12 form-group">
-                                        <textarea class="form-control" name="Message" rows="4" placeholder="Your Message"></textarea>
-                                    </div>
-                                    <div class="col-12 text-center">
-                                        <button type="submit" class="btn btn-primary">Schedule Tour</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div><!-- End Contact Form -->
+                        <!-- Inquiry Button -->
+                        <div class="inquiry-action-card">
+                            <div class="inquiry-icon">
+                                <i class="bi bi-chat-left-text-fill"></i>
+                            </div>
+                            <h4 class="inquiry-title">Have a Question?</h4>
+                            <p class="inquiry-subtitle">Ask the owner anything about this property</p>
+                            <a asp-controller="Inquiry"
+                               asp-action="Create"
+                               asp-route-propertyId="@Model.Id"
+                               class="btn-send-inquiry">
+                                <i class="bi bi-envelope-fill"></i>
+                                Send Inquiry
+                            </a>
+                        </div>
+
                         <!-- Social Share -->
                         <div class="social-share">
                             <h5>Share This Property</h5>
@@ -399,6 +406,62 @@
 
             .booking-note i {
                 font-size: 16px;
+            }
+
+        .inquiry-action-card {
+            background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(44, 122, 123, 0.3);
+            text-align: center;
+            color: white;
+        }
+
+        .inquiry-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .inquiry-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: white;
+        }
+
+        .inquiry-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .btn-send-inquiry {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px 24px;
+            background: white;
+            color: #2c7a7b;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            .btn-send-inquiry:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                color: #1a5c5c;
+            }
+
+            .btn-send-inquiry i {
+                font-size: 20px;
             }
     </style>
 </main>

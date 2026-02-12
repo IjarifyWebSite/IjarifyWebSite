@@ -29,7 +29,7 @@
                 <!-- Header with count -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3>You have <span class="text-primary" id="inquiriesCount">@Model.TotalCount</span> inquiries</h3>
-                    <a href="@Url.Action("Index", "Property")" class="btn btn-primary">
+                    <a href="@Url.Action("Index", "Property")" class="btn btn-teal">
                         <i class="bi bi-search"></i> Browse Properties
                     </a>
                 </div>
@@ -101,10 +101,10 @@
                                                         <span class="fw-bold ms-2">@inquiry.PropertyOwnerName</span>
                                                     </div>
                                                     <div>
-                                                        <a href="@Url.Action("Details", new { id = inquiry.InquiryId })" class="btn btn-sm btn-outline-primary me-2">
+                                                        <a href="@Url.Action("Details", new { id = inquiry.InquiryId })" class="btn btn-sm btn-teal me-2">
                                                             <i class="bi bi-eye"></i> View Details
                                                         </a>
-                                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteInquiry(@inquiry.InquiryId, @Model.UserId)">
+                                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteInquiry(@inquiry.InquiryId)">
                                                             <i class="bi bi-trash"></i> Delete
                                                         </button>
                                                     </div>
@@ -126,7 +126,7 @@
                         </div>
                         <h4 class="text-muted mb-3">No inquiries yet!</h4>
                         <p class="text-muted mb-4">You haven't sent any inquiries about properties.</p>
-                        <a href="@Url.Action("Index", "Property")" class="btn btn-primary">
+                        <a href="@Url.Action("Index", "Property")" class="btn btn-teal">
                             <i class="bi bi-search"></i> Browse Properties
                         </a>
                     </div>
@@ -167,11 +167,9 @@
 @section Scripts {
     <script>
         var deleteInquiryId = null;
-        var deleteUserId = null;
 
-        function deleteInquiry(inquiryId, userId) {
+        function deleteInquiry(inquiryId) {
             deleteInquiryId = inquiryId;
-            deleteUserId = userId;
             var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             deleteModal.show();
         }
@@ -186,8 +184,7 @@
                 url: '@Url.Action("Delete", "Inquiry")',
                 type: 'POST',
                 data: {
-                    id: deleteInquiryId,
-                    userId: deleteUserId
+                    id: deleteInquiryId
                 },
                 success: function(response) {
                     modal.hide();
@@ -213,13 +210,11 @@
                     }
                     
                     deleteInquiryId = null;
-                    deleteUserId = null;
                 },
                 error: function() {
                     modal.hide();
                     showNotification('An error occurred while deleting the inquiry', 'error');
                     deleteInquiryId = null;
-                    deleteUserId = null;
                 }
             });
         });
