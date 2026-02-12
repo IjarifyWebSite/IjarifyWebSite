@@ -1,8 +1,10 @@
 using IjarifySystemBLL.Services.Classes;
 using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemDAL.Data.Context;
+using IjarifySystemDAL.Entities;
 using IjarifySystemDAL.Repositories.Classes;
 using IjarifySystemDAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -28,10 +30,24 @@ namespace IjarifySystemPL
             builder.Services.AddScoped<ILocationRepository, LocationRepository>();
             builder.Services.AddScoped<IHomeRepository, HomeRepository>();
             builder.Services.AddScoped<IHomeService, HomeService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
+            builder.Services.AddScoped<IInquiryService, InquiryService>();
+            builder.Services.AddScoped<IFavouriteRepository, FavouriteRepository>();
+            builder.Services.AddScoped<IFavouriteService, FavouriteService>();
             builder.Services.AddDbContext<IjarifyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+            }).AddEntityFrameworkStores<IjarifyDbContext>()
+            .AddDefaultTokenProviders();
+
             var app = builder.Build();
 
 
@@ -47,7 +63,7 @@ namespace IjarifySystemPL
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

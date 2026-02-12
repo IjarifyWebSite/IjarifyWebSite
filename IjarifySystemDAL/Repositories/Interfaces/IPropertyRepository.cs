@@ -21,5 +21,6 @@ namespace IjarifySystemDAL.Repositories.Interfaces
         // Lookup Helpers
         Task<Location?> GetLocationAsync(string city, string region, string street);
         Task<Amenity?> GetAmenityByNameAsync(string name);
+        Task<List<Location>> GetTopLocationsWithPropertyCountAsync(int count);
     }
 }

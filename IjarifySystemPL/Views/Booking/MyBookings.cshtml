@@ -1,380 +1,774 @@
 ﻿@model IjarifySystemBLL.ViewModels.Booking.MyBookingsViewModel
 
 @{
-    ViewData["Title"] = "My Bookings";
+    ViewData["Title"] = "My Bookings - Ijarify";
 }
 
-<main class="main">
-    <!-- Page Title -->
-    @* <div class="page-title" style="background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);">
-        <div class="heading">
-            <div class="container">
-                <div class="row d-flex justify-content-center text-center">
-                    <div class="col-lg-8">
-                        <h1 class="heading-title text-white">My Bookings</h1>
-                        <p class="mb-0 text-white opacity-75">
-                            Manage your property reservations and booking history
-                        </p>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="bookings-wrapper">
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="header-icon">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <div>
+                        <h1>My Bookings</h1>
+                        <p>Manage your property reservations and booking history</p>
                     </div>
                 </div>
+                <a asp-controller="Property" asp-action="Index" class="btn-new-booking">
+                    <i class="bi bi-plus-circle"></i>
+                    Browse Properties
+                </a>
             </div>
-        </div> *@
-    @*     <nav class="breadcrumbs">
-            <div class="container">
-                <ol>
-                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="current">My Bookings</li>
-                </ol>
+        </div>
+
+        <!-- Alerts -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert-box success">
+                <i class="bi bi-check-circle-fill"></i>
+                <div>
+                    <strong>Success!</strong>
+                    <p>@TempData["Success"]</p>
+                </div>
+                <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                    <i class="bi bi-x"></i>
+                </button>
             </div>
-        </nav>
-    </div> *@
+        }
 
-    <!-- Bookings Section -->
-    <section id="my-bookings" class="my-bookings section">
-        <div class="container">
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert-box error">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <div>
+                    <strong>Error!</strong>
+                    <p>@TempData["Error"]</p>
+                </div>
+                <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        }
 
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card upcoming">
+                <div class="stat-icon">
+                    <i class="bi bi-calendar-check-fill"></i>
                 </div>
-            }
-
-            @if (TempData["Error"] != null)
-            {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["Error"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div class="stat-content">
+                    <h3>@Model.UpcomingBookings.Count</h3>
+                    <p>Upcoming Bookings</p>
                 </div>
-            }
-
-            <!-- Stats Cards -->
-            <div class="row mb-4">
-                <div class="col-md-3 mb-3">
-                    <div class="stat-card upcoming">
-                        <div class="stat-icon">
-                            <i class="bi bi-calendar-check"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3>@Model.UpcomingBookings.Count</h3>
-                            <p>Upcoming</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <div class="stat-card pending">
-                        <div class="stat-icon">
-                            <i class="bi bi-hourglass-split"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3>@Model.PendingBookings.Count</h3>
-                            <p>Pending</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <div class="stat-card past">
-                        <div class="stat-icon">
-                            <i class="bi bi-archive"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3>@Model.PastBookings.Count</h3>
-                            <p>Completed</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <div class="stat-card rejected">
-                        <div class="stat-icon">
-                            <i class="bi bi-x-circle"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3>@Model.RejectedBookings.Count</h3>
-                            <p>Rejected</p>
-                        </div>
-                    </div>
-                </div>
+                <div class="stat-badge">Active</div>
             </div>
 
-            <!-- Booking Tabs -->
-            <ul class="nav nav-pills booking-tabs mb-4" role="tablist">
-                <li class="nav-item">
-                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#upcoming" type="button">
-                        <i class="bi bi-calendar-check"></i> Upcoming
-                        @if (Model.UpcomingBookings.Any())
-                        {
-                            <span class="badge">@Model.UpcomingBookings.Count</span>
-                        }
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pending" type="button">
-                        <i class="bi bi-hourglass-split"></i> Pending
-                        @if (Model.PendingBookings.Any())
-                        {
-                            <span class="badge">@Model.PendingBookings.Count</span>
-                        }
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#past" type="button">
-                        <i class="bi bi-archive"></i> Past
-                        @if (Model.PastBookings.Any())
-                        {
-                            <span class="badge">@Model.PastBookings.Count</span>
-                        }
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#rejected" type="button">
-                        <i class="bi bi-x-circle"></i> Rejected
-                        @if (Model.RejectedBookings.Any())
-                        {
-                            <span class="badge">@Model.RejectedBookings.Count</span>
-                        }
-                    </button>
-                </li>
-            </ul>
+            <div class="stat-card pending">
+                <div class="stat-icon">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>@Model.PendingBookings.Count</h3>
+                    <p>Pending Review</p>
+                </div>
+                <div class="stat-badge">Waiting</div>
+            </div>
 
-            <div class="tab-content">
-                <!-- Upcoming -->
-                <div class="tab-pane fade show active" id="upcoming">
+            <div class="stat-card completed">
+                <div class="stat-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>@Model.PastBookings.Count</h3>
+                    <p>Completed Stays</p>
+                </div>
+                <div class="stat-badge">Done</div>
+            </div>
+
+            <div class="stat-card rejected">
+                <div class="stat-icon">
+                    <i class="bi bi-x-circle-fill"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>@Model.RejectedBookings.Count</h3>
+                    <p>Declined Requests</p>
+                </div>
+                <div class="stat-badge">Closed</div>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs-container">
+            <nav class="booking-tabs">
+                <button class="tab-btn active" data-tab="upcoming">
+                    <i class="bi bi-calendar-event"></i>
+                    <span>Upcoming</span>
                     @if (Model.UpcomingBookings.Any())
                     {
-                        <div class="row">
+                        <span class="count-badge">@Model.UpcomingBookings.Count</span>
+                    }
+                </button>
+                <button class="tab-btn" data-tab="pending">
+                    <i class="bi bi-clock-history"></i>
+                    <span>Pending</span>
+                    @if (Model.PendingBookings.Any())
+                    {
+                        <span class="count-badge">@Model.PendingBookings.Count</span>
+                    }
+                </button>
+                <button class="tab-btn" data-tab="past">
+                    <i class="bi bi-archive"></i>
+                    <span>Past</span>
+                    @if (Model.PastBookings.Any())
+                    {
+                        <span class="count-badge">@Model.PastBookings.Count</span>
+                    }
+                </button>
+                <button class="tab-btn" data-tab="rejected">
+                    <i class="bi bi-x-octagon"></i>
+                    <span>Rejected</span>
+                    @if (Model.RejectedBookings.Any())
+                    {
+                        <span class="count-badge">@Model.RejectedBookings.Count</span>
+                    }
+                </button>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+
+                <!-- Upcoming Tab -->
+                <div class="tab-pane active" id="upcoming-tab">
+                    @if (Model.UpcomingBookings.Any())
+                    {
+                        <div class="bookings-grid">
                             @foreach (var booking in Model.UpcomingBookings)
                             {
-                                <div class="col-lg-6 mb-4">
-                                    @await Html.PartialAsync("_BookingCard", booking)
-                                </div>
+                                @await Html.PartialAsync("_BookingCard", booking)
                             }
                         </div>
                     }
                     else
                     {
                         <div class="empty-state">
-                            <i class="bi bi-calendar-x"></i>
-                            <h4>No Upcoming Bookings</h4>
-                            <p>You don't have any upcoming reservations</p>
-                            <a asp-controller="Property" asp-action="Index" class="btn-getstarted">
-                                <i class="bi bi-search"></i> Browse Properties
+                            <div class="empty-icon">
+                                <i class="bi bi-calendar-x"></i>
+                            </div>
+                            <h3>No Upcoming Bookings</h3>
+                            <p>You don't have any upcoming reservations at the moment.</p>
+                            <a asp-controller="Property" asp-action="Index" class="btn-action">
+                                <i class="bi bi-search"></i>
+                                Explore Properties
                             </a>
                         </div>
                     }
                 </div>
 
-                <!-- Pending -->
-                <div class="tab-pane fade" id="pending">
+                <!-- Pending Tab -->
+                <div class="tab-pane" id="pending-tab">
                     @if (Model.PendingBookings.Any())
                     {
-                        <div class="row">
+                        <div class="bookings-grid">
                             @foreach (var booking in Model.PendingBookings)
                             {
-                                <div class="col-lg-6 mb-4">
-                                    @await Html.PartialAsync("_BookingCard", booking)
-                                </div>
+                                @await Html.PartialAsync("_BookingCard", booking)
                             }
                         </div>
                     }
                     else
                     {
                         <div class="empty-state">
-                            <i class="bi bi-hourglass"></i>
-                            <h4>No Pending Bookings</h4>
-                            <p>All your booking requests have been processed</p>
+                            <div class="empty-icon">
+                                <i class="bi bi-hourglass"></i>
+                            </div>
+                            <h3>No Pending Bookings</h3>
+                            <p>All your booking requests have been processed.</p>
                         </div>
                     }
                 </div>
 
-                <!-- Past -->
-                <div class="tab-pane fade" id="past">
+                <!-- Past Tab -->
+                <div class="tab-pane" id="past-tab">
                     @if (Model.PastBookings.Any())
                     {
-                        <div class="row">
+                        <div class="bookings-grid">
                             @foreach (var booking in Model.PastBookings)
                             {
-                                <div class="col-lg-6 mb-4">
-                                    @await Html.PartialAsync("_BookingCard", booking)
-                                </div>
+                                @await Html.PartialAsync("_BookingCard", booking)
                             }
                         </div>
                     }
                     else
                     {
                         <div class="empty-state">
-                            <i class="bi bi-clock-history"></i>
-                            <h4>No Past Bookings</h4>
-                            <p>You haven't completed any stays yet</p>
+                            <div class="empty-icon">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                            <h3>No Past Bookings</h3>
+                            <p>You haven't completed any stays yet.</p>
                         </div>
                     }
                 </div>
 
-                <!-- Rejected -->
-                <div class="tab-pane fade" id="rejected">
+                <!-- Rejected Tab -->
+                <div class="tab-pane" id="rejected-tab">
                     @if (Model.RejectedBookings.Any())
                     {
-                        <div class="row">
+                        <div class="bookings-grid">
                             @foreach (var booking in Model.RejectedBookings)
                             {
-                                <div class="col-lg-6 mb-4">
-                                    @await Html.PartialAsync("_BookingCard", booking)
-                                </div>
+                                @await Html.PartialAsync("_BookingCard", booking)
                             }
                         </div>
                     }
                     else
                     {
                         <div class="empty-state">
-                            <i class="bi bi-check-circle"></i>
-                            <h4>No Rejected Bookings</h4>
-                            <p>Great news! None of your requests have been rejected</p>
+                            <div class="empty-icon">
+                                <i class="bi bi-emoji-smile"></i>
+                            </div>
+                            <h3>No Rejected Bookings</h3>
+                            <p>Great news! None of your booking requests have been declined.</p>
                         </div>
                     }
                 </div>
+
             </div>
         </div>
-    </section>
-</main>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+
+                    // Remove active class from all buttons and panes
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding pane
+                    this.classList.add('active');
+                    document.getElementById(targetTab + '-tab').classList.add('active');
+                });
+            });
+        });
+    </script>
+}
 
 <style>
-    /* Stats Cards */
-    .stat-card {
-        background: white;
-        border-radius: 12px;
-        margin-top:70px;
-        padding: 25px;
-        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f8fafc;
+    }
+
+    /* Wrapper */
+    .bookings-wrapper {
+        margin-top:100px;
+        min-height: 100vh;
+        padding: 40px 0 80px;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Page Header */
+    .page-header {
+        margin-bottom: 40px;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .header-left {
         display: flex;
         align-items: center;
         gap: 20px;
-        transition: transform 0.3s, box-shadow 0.3s;
     }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-        }
-
-    .stat-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
+    .header-icon {
+        width: 72px;
+        height: 72px;
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 28px;
+        font-size: 36px;
         color: white;
+        box-shadow: 0 8px 24px rgba(13, 148, 136, 0.25);
+    }
+
+    .header-left h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 6px;
+    }
+
+    .header-left p {
+        color: #64748b;
+        font-size: 15px;
+        margin: 0;
+    }
+
+    .btn-new-booking {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 28px;
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        color: white;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
+        transition: all 0.3s;
+    }
+
+        .btn-new-booking:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+        }
+
+        .btn-new-booking i {
+            font-size: 20px;
+        }
+
+    /* Alert Box */
+    .alert-box {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+        .alert-box i:first-child {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .alert-box.success {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+        }
+
+            .alert-box.success i {
+                color: #16a34a;
+            }
+
+        .alert-box.error {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+        }
+
+            .alert-box.error i {
+                color: #dc2626;
+            }
+
+        .alert-box strong {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+
+        .alert-box p {
+            margin: 0;
+            font-size: 14px;
+            color: #475569;
+        }
+
+    .alert-close {
+        margin-left: auto;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        color: #94a3b8;
+        padding: 0;
+    }
+
+        .alert-close:hover {
+            color: #64748b;
+        }
+
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .stat-card.upcoming::before {
+            background: linear-gradient(to bottom, #0d9488, #14b8a6);
+        }
+
+        .stat-card.pending::before {
+            background: linear-gradient(to bottom, #f59e0b, #fbbf24);
+        }
+
+        .stat-card.completed::before {
+            background: linear-gradient(to bottom, #3b82f6, #60a5fa);
+        }
+
+        .stat-card.rejected::before {
+            background: linear-gradient(to bottom, #ef4444, #f87171);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.12);
+        }
+
+    .stat-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        flex-shrink: 0;
     }
 
     .stat-card.upcoming .stat-icon {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+        color: #0d9488;
     }
 
     .stat-card.pending .stat-icon {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #f59e0b;
     }
 
-    .stat-card.past .stat-icon {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    .stat-card.completed .stat-icon {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        color: #3b82f6;
     }
 
     .stat-card.rejected .stat-icon {
-        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #ef4444;
     }
 
-    .stat-content h3 {
-        font-size: 32px;
-        font-weight: 700;
-        color: #2a5298;
-        margin: 0;
+    .stat-content {
+        flex: 1;
     }
 
-    .stat-content p {
-        margin: 0;
-        color: #6c757d;
-        font-size: 14px;
-    }
-
-    /* Tabs */
-    .booking-tabs {
-        background: white;
-        border-radius: 12px;
-        padding: 10px;
-        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-        display: flex;
-        gap: 10px;
-    }
-
-        .booking-tabs .nav-link {
-            border-radius: 8px;
-            padding: 12px 20px;
-            color: #6c757d;
-            font-weight: 600;
-            border: none;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .stat-content h3 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+            line-height: 1;
         }
 
-            .booking-tabs .nav-link i {
-                font-size: 18px;
-            }
+        .stat-content p {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+            margin: 0;
+        }
 
-            .booking-tabs .nav-link .badge {
-                background: #e9ecef;
-                color: #6c757d;
-                border-radius: 12px;
-                padding: 3px 8px;
-                font-size: 11px;
-                font-weight: 600;
-            }
+    .stat-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-            .booking-tabs .nav-link.active {
-                background: var(--accent-color);
-                color: white;
-            }
+    .stat-card.upcoming .stat-badge {
+        background: #ccfbf1;
+        color: #0d9488;
+    }
 
-                .booking-tabs .nav-link.active .badge {
-                    background: rgba(255,255,255,0.2);
-                    color: white;
-                }
+    .stat-card.pending .stat-badge {
+        background: #fef3c7;
+        color: #f59e0b;
+    }
+
+    .stat-card.completed .stat-badge {
+        background: #dbeafe;
+        color: #3b82f6;
+    }
+
+    .stat-card.rejected .stat-badge {
+        background: #fee2e2;
+        color: #ef4444;
+    }
+
+    /* Tabs Container */
+    .tabs-container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+    }
+
+    .booking-tabs {
+        display: flex;
+        background: #f8fafc;
+        padding: 8px;
+        gap: 6px;
+        border-bottom: 1px solid #e2e8f0;
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 24px;
+        background: transparent;
+        border: none;
+        border-radius: 10px;
+        color: #64748b;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+
+        .tab-btn i {
+            font-size: 18px;
+        }
+
+        .tab-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+        }
+
+    .count-badge {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .tab-btn:not(.active) .count-badge {
+        background: #cbd5e1;
+        color: #475569;
+    }
+
+    /* Tab Content */
+    .tab-content {
+        padding: 32px;
+    }
+
+    .tab-pane {
+        display: none;
+    }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+    /* Bookings Grid */
+    .bookings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+        gap: 24px;
+    }
 
     /* Empty State */
     .empty-state {
         text-align: center;
         padding: 80px 20px;
-        background: #f8f9fa;
+        background: #f8fafc;
         border-radius: 12px;
     }
 
-        .empty-state i {
-            font-size: 80px;
-            color: #dee2e6;
-            margin-bottom: 20px;
-        }
-
-        .empty-state h4 {
-            color: #495057;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .empty-state p {
-            color: #6c757d;
-            margin-bottom: 25px;
-        }
-
-    @@media (max-width: 768px) {
-        .booking-tabs
-
-    {
-        flex-wrap: wrap;
+    .empty-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
     }
 
-    .booking-tabs .nav-link {
-        flex: 1 1 45%;
+        .empty-icon i {
+            font-size: 60px;
+            color: #94a3b8;
+        }
+
+    .empty-state h3 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 12px;
+    }
+
+    .empty-state p {
+        font-size: 15px;
+        color: #64748b;
+        margin-bottom: 28px;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 28px;
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        color: white;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
+        transition: all 0.3s;
+    }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+        }
+
+    /* Responsive */
+    @@media (max-width: 1200px) {
+        .bookings-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    @@media (max-width: 768px) {
+        .header-content
+
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-left {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-icon {
+        width: 64px;
+        height: 64px;
+        font-size: 32px;
+    }
+
+    .header-left h1 {
+        font-size: 28px;
+    }
+
+    .btn-new-booking {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-content {
+        padding: 20px;
+    }
+
+    .booking-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .tab-btn span:not(.count-badge) {
+        display: none;
+    }
+
+    }
+
+    @@media (max-width: 480px) {
+        .container
+
+    {
+        padding: 0 12px;
+    }
+
+    .stat-content h3 {
+        font-size: 28px;
     }
 
     }

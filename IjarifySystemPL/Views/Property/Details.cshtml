@@ -224,6 +224,28 @@
                                 <p class="agent-email"><i class="bi bi-envelope"></i> @Model.AgentEmail</p>
                             </div>
                         </div><!-- End Agent Info -->
+                        <!-- Book Property Button -->
+                        <div class="booking-action-card">
+                            <div class="booking-price">
+                                <span class="price-label">Book this property</span>
+                                <h3 class="price-value">$@Model.Price.ToString("N0")</h3>
+                                <small class="price-period">per month</small>
+                            </div>
+                            <a asp-controller="Booking"
+                               asp-action="Create"
+                               asp-route-propertyId="@Model.Id"
+                               class="btn-book-now">
+                                <i class="bi bi-calendar-check-fill"></i>
+                                Reserve Now
+                            </a>
+                            <p class="booking-note">
+                                <i class="bi bi-shield-check"></i>
+                                Free cancellation • Instant confirmation
+                            </p>
+                        </div>
+
+                        <!-- Contact Form -->
+                        <div class="contact-form">
                         <!-- Contact Form -->
                         <div class="contact-form">
                             <h4>Schedule a Tour</h4>
@@ -299,5 +321,84 @@
             </div>
         </div>
     </section>
+    <style>
+        .booking-action-card {
+            background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+            text-align: center;
+            color: white;
+        }
 
+        .booking-price {
+            margin-bottom: 20px;
+        }
+
+        .price-label {
+            display: block;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .price-value {
+            font-size: 42px;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .price-period {
+            display: block;
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .btn-book-now {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px 24px;
+            background: white;
+            color: #667eea;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-book-now:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            color: #764ba2;
+        }
+
+        .btn-book-now i {
+            font-size: 20px;
+        }
+
+        .booking-note {
+            margin-top: 15px;
+            margin-bottom: 0;
+            font-size: 13px;
+            opacity: 0.95;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .booking-note i {
+            font-size: 16px;
+        }
+    </style>
 </main>

@@ -1,38 +1,59 @@
 ﻿using IjarifySystemBLL.DTOs.Bookings;
 using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.Booking;
+using IjarifySystemDAL.Entities;
 using IjarifySystemDAL.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace IjarifySystemPL.Controllers
 {
-
     public class BookingController : Controller
     {
         private readonly IBookingService _bookingService;
+        private readonly UserManager<User> _userManager;
 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, UserManager<User> userManager)
         {
             _bookingService = bookingService;
+            _userManager = userManager;
         }
-        // 🔹 TEMP USER (بديل Identity)
-        // ===============================
-        private int GetCurrentUserId()
+
+        // ✅ Helper Method
+        private async Task<int?> GetCurrentUserIdAsync()
         {
-            // TODO: Replace with Identity later
-            return 4; // user وهمي للتجربة
+            var currentUser = await _userManager.GetUserAsync(User);
+            return currentUser?.Id;
         }
+
         // GET: Booking/Create/5
         [HttpGet]
-        public IActionResult Create(int propertyId)
+        [Authorize]
+        public async Task<IActionResult> Create(int propertyId)
         {
+            if (propertyId == 0)
+            {
+                TempData["Error"] = "Property not found";
+                return RedirectToAction("Index", "Property");
+            }
+
+            var property = await _bookingService.GetPropertyBasicInfo(propertyId);
+
+            if (property == null)
+            {
+                TempData["Error"] = "Property not found";
+                return RedirectToAction("Index", "Property");
+            }
+
             var viewModel = new BookingCreateViewModel
             {
                 PropertyID = propertyId,
+                PropertyTitle = property.Title,
+                PricePerNight = property.Price,
                 Check_In = DateTime.Today.AddDays(1),
-                Check_Out = DateTime.Today.AddDays(2)
+                Check_Out = DateTime.Today.AddDays(2),
+                TotalPrice = property.Price
             };
 
             return View(viewModel);
@@ -41,18 +62,25 @@ namespace IjarifySystemPL.Controllers
         // POST: Booking/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create(BookingCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
+                TempData["Error"] = "Please fill all required fields correctly";
                 return View(viewModel);
             }
 
             try
             {
-                //int userId = 4;
-                //var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-                int userId = GetCurrentUserId();
+                var userId = await GetCurrentUserIdAsync();
+
+                if (userId == null)
+                {
+                    TempData["Error"] = "Please login to continue";
+                    return RedirectToAction("Login", "Account");
+                }
+
                 var createDto = new BookingCreateDto
                 {
                     PropertyID = viewModel.PropertyID,
@@ -61,27 +89,31 @@ namespace IjarifySystemPL.Controllers
                     TotalPrice = viewModel.TotalPrice
                 };
 
-                var booking = await _bookingService.CreateBookingAsync(createDto, userId);
+                var booking = await _bookingService.CreateBookingAsync(createDto, userId.Value);
 
                 TempData["Success"] = "Booking created successfully! Waiting for approval.";
-                return RedirectToAction(nameof(Details), new { id = booking.Id });
+                return RedirectToAction("Details", new { id = booking.Id });
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                TempData["Error"] = $"Error: {ex.Message}";
                 return View(viewModel);
             }
         }
 
         // GET: Booking/MyBookings
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> MyBookings()
         {
-            int userId = GetCurrentUserId();
-            //int userId = 4;
-            //    var userId = User.FindFirst(ClaimTypes.NameIdentifier) is null? 0
-            //                                                         : int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var bookings = await _bookingService.GetUserBookingsAsync(userId);
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var bookings = await _bookingService.GetUserBookingsAsync(userId.Value);
 
             var viewModel = new MyBookingsViewModel
             {
@@ -111,17 +143,20 @@ namespace IjarifySystemPL.Controllers
 
         // GET: Booking/Details/5
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             var booking = await _bookingService.GetBookingByIdAsync(id);
+
             if (booking == null)
             {
                 TempData["Error"] = "Booking not found";
                 return RedirectToAction(nameof(MyBookings));
             }
-            int userId = GetCurrentUserId();
-            //var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            if (booking.UserID != userId)
+
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null || booking.UserID != userId.Value)
             {
                 TempData["Error"] = "You don't have permission to view this booking";
                 return RedirectToAction(nameof(MyBookings));
@@ -134,17 +169,20 @@ namespace IjarifySystemPL.Controllers
         // POST: Booking/Cancel/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Cancel(int id)
         {
             var booking = await _bookingService.GetBookingByIdAsync(id);
+
             if (booking == null)
             {
                 TempData["Error"] = "Booking not found";
                 return RedirectToAction(nameof(MyBookings));
             }
-            int userId = GetCurrentUserId();
-            //var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            if (booking.UserID != userId)
+
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null || booking.UserID != userId.Value)
             {
                 TempData["Error"] = "You don't have permission to cancel this booking";
                 return RedirectToAction(nameof(MyBookings));
@@ -159,6 +197,92 @@ namespace IjarifySystemPL.Controllers
             await _bookingService.DeleteBookingAsync(id);
             TempData["Success"] = "Booking cancelled successfully";
             return RedirectToAction(nameof(MyBookings));
+        }
+
+        // GET: Booking/MyRequests
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> MyRequests()
+        {
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var viewModel = await _bookingService.GetPropertyOwnerRequestsAsync(userId.Value);
+            return View(viewModel);
+        }
+
+        // POST: Booking/Approve/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Approve(int id)
+        {
+            try
+            {
+                var userId = await GetCurrentUserIdAsync();
+
+                if (userId == null)
+                {
+                    TempData["Error"] = "Please login to continue";
+                    return RedirectToAction("Login", "Account");
+                }
+
+                await _bookingService.ApproveBookingAsync(id, userId.Value);
+                TempData["Success"] = "Booking approved successfully!";
+            }
+            catch (KeyNotFoundException)
+            {
+                TempData["Error"] = "Booking not found";
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+
+            return RedirectToAction(nameof(MyRequests));
+        }
+
+        // POST: Booking/Reject/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Reject(int id)
+        {
+            try
+            {
+                var userId = await GetCurrentUserIdAsync();
+
+                if (userId == null)
+                {
+                    TempData["Error"] = "Please login to continue";
+                    return RedirectToAction("Login", "Account");
+                }
+
+                await _bookingService.RejectBookingAsync(id, userId.Value);
+                TempData["Success"] = "Booking rejected successfully!";
+            }
+            catch (KeyNotFoundException)
+            {
+                TempData["Error"] = "Booking not found";
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+
+            return RedirectToAction(nameof(MyRequests));
         }
 
         // Mapping Methods

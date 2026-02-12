@@ -1,463 +1,1099 @@
-﻿
-@{
-    ViewData["Title"] = "Details";
-}
-
-@model IjarifySystemBLL.ViewModels.Booking.BookingDetailsViewModel
+﻿@model IjarifySystemBLL.ViewModels.Booking.BookingDetailsViewModel
 
 @{
-    ViewData["Title"] = "Booking Details";
+    ViewData["Title"] = "Booking Details - Ijarify";
 }
 
-<main class="main">
-    <!-- Page Title -->
-    <div class="page-title">
-        <div class="heading">
-            <div class="container">
-                <div class="row d-flex justify-content-center text-center">
-                    <div class="col-lg-8">
-                        <h1 class="heading-title">Booking Details</h1>
-                        <p class="mb-0">
-                            Complete information about your booking reservation.
-                        </p>
-                    </div>
-                </div>
-            </div>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="booking-details-wrapper">
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <nav class="breadcrumb-nav">
+                <a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Home</a>
+                <i class="bi bi-chevron-right"></i>
+                <a asp-action="MyBookings">My Bookings</a>
+                <i class="bi bi-chevron-right"></i>
+                <span>Booking #@Model.Id</span>
+            </nav>
         </div>
-        <nav class="breadcrumbs">
-            <div class="container">
-                <ol>
-                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-action="MyBookings">My Bookings</a></li>
-                    <li class="current">Booking Details</li>
-                </ol>
-            </div>
-        </nav>
     </div>
 
-    <!-- Booking Details Section -->
-    <section id="booking-details" class="booking-details section">
-        <div class="container" data-aos="fade-up">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
+    <div class="container">
 
-                    <!-- Booking Header Card -->
-                    <div class="details-header-card">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h3><i class="bi bi-receipt"></i> Booking #@Model.Id</h3>
-                                <p class="mb-0">
-                                    <i class="bi bi-calendar"></i>
-                                    Booked on @Model.CreatedAt.ToString("dd MMMM yyyy, hh:mm tt")
-                                </p>
-                            </div>
-                            <div class="col-md-4 text-md-end">
-                                <span class="status-badge @Model.StatusBadgeClass">
-                                    @Model.Status
-                                </span>
-                            </div>
+        <!-- Header Card -->
+        <div class="details-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="booking-icon">
+                        <i class="bi bi-receipt-cutoff"></i>
+                    </div>
+                    <div>
+                        <h1>Booking Confirmation</h1>
+                        <div class="booking-meta">
+                            <span class="booking-id">
+                                <i class="bi bi-hash"></i> @Model.Id
+                            </span>
+                            <span class="booking-date">
+                                <i class="bi bi-calendar3"></i>
+                                Booked on @Model.CreatedAt.ToString("dd MMMM yyyy")
+                            </span>
                         </div>
                     </div>
+                </div>
+                <div class="header-right">
+                    <span class="status-badge @Model.StatusBadgeClass">
+                        <i class="bi @(Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Approved ? "bi-check-circle-fill" :
+                                                                  Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Pending ? "bi-clock-fill" :
+                                                                  "bi-x-circle-fill")"></i>
+                        @Model.Status
+                    </span>
+                </div>
+            </div>
+        </div>
 
-                    <div class="row gy-4">
-                        <!-- Left Column -->
-                        <div class="col-lg-8">
+        <div class="details-grid">
 
-                            <!-- Property Information -->
-                            <div class="details-card">
-                                <div class="card-header">
-                                    <h4><i class="bi bi-house-door"></i> Property Information</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="property-info-item">
-                                        <span class="info-label">Property Name:</span>
-                                        <span class="info-value">
-                                            <a asp-controller="Property" asp-action="Details" asp-route-id="@Model.PropertyID">
-                                                @Model.PropertyTitle
-                                            </a>
-                                        </span>
-                                    </div>
-                                    @if (Model.PropertyType.HasValue)
-                                    {
-                                        <div class="property-info-item">
-                                            <span class="info-label">Property Type:</span>
-                                            <span class="info-value">
-                                                <i class="@Model.PropertyTypeIcon"></i>
-                                                <span class="badge @Model.PropertyTypeBadgeClass ms-2">
-                                                    @Model.PropertyTypeDisplay
-                                                </span>
-                                            </span>
-                                        </div>
-                                    }
-                                    @if (!string.IsNullOrEmpty(Model.PropertyAddress))
-                                    {
-                                        <div class="property-info-item">
-                                            <span class="info-label">Location:</span>
-                                            <span class="info-value">
-                                                <i class="bi bi-geo-alt text-danger"></i>
-                                                @Model.PropertyAddress
-                                            </span>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
+            <!-- Main Content -->
+            <div class="main-content">
 
-                            <!-- Stay Details -->
-                            <div class="details-card">
-                                <div class="card-header">
-                                    <h4><i class="bi bi-calendar-range"></i> Stay Details</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="stay-dates">
-                                        <div class="date-box check-in">
-                                            <i class="bi bi-calendar-check"></i>
-                                            <div>
-                                                <small>Check-In</small>
-                                                <strong>@Model.Check_In.ToString("dd MMM yyyy")</strong>
-                                                <span class="time">After 2:00 PM</span>
-                                            </div>
-                                        </div>
-                                        <div class="duration-info">
-                                            <i class="bi bi-moon"></i>
-                                            <span>@Model.TotalNights nights</span>
-                                        </div>
-                                        <div class="date-box check-out">
-                                            <i class="bi bi-calendar-x"></i>
-                                            <div>
-                                                <small>Check-Out</small>
-                                                <strong>@Model.Check_Out.ToString("dd MMM yyyy")</strong>
-                                                <span class="time">Before 11:00 AM</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Guest Information -->
-                            <div class="details-card">
-                                <div class="card-header">
-                                    <h4><i class="bi bi-person"></i> Guest Information</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="property-info-item">
-                                        <span class="info-label">Name:</span>
-                                        <span class="info-value">@Model.UserName</span>
-                                    </div>
-                                    <div class="property-info-item">
-                                        <span class="info-label">Email:</span>
-                                        <span class="info-value">
-                                            <i class="bi bi-envelope"></i> @Model.UserEmail
-                                        </span>
-                                    </div>
-                                    @if (!string.IsNullOrEmpty(Model.UserPhone))
-                                    {
-                                        <div class="property-info-item">
-                                            <span class="info-label">Phone:</span>
-                                            <span class="info-value">
-                                                <i class="bi bi-telephone"></i> @Model.UserPhone
-                                            </span>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
+                <!-- Property Card -->
+                <div class="info-card property-card">
+                    <div class="card-header">
+                        <div class="header-icon">
+                            <i class="bi bi-building"></i>
                         </div>
-
-                        <!-- Right Column -->
-                        <div class="col-lg-4">
-
-                            <!-- Payment Summary -->
-                            <div class="details-card sticky-card">
-                                <div class="card-header">
-                                    <h4><i class="bi bi-cash-stack"></i> Payment Summary</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="price-breakdown">
-                                        <div class="price-item">
-                                            <span>@Model.TotalNights night(s)</span>
-                                            <span>@Model.TotalPrice.ToString("C")</span>
-                                        </div>
-                                        <div class="price-divider"></div>
-                                        <div class="price-item total">
-                                            <span>Total</span>
-                                            <span>@Model.TotalPrice.ToString("C")</span>
-                                        </div>
+                        <h3>Property Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="property-showcase">
+                            <div class="property-main-info">
+                                <h4 class="property-name">
+                                    <a asp-controller="Property" asp-action="Details" asp-route-id="@Model.PropertyID">
+                                        @Model.PropertyTitle
+                                    </a>
+                                </h4>
+                                @if (Model.PropertyType.HasValue)
+                                {
+                                    <div class="property-type-badge">
+                                        <i class="@Model.PropertyTypeIcon"></i>
+                                        <span>@Model.PropertyTypeDisplay</span>
                                     </div>
+                                }
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.PropertyAddress))
+                            {
+                                <div class="property-location">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                    <span>@Model.PropertyAddress</span>
+                                </div>
+                            }
+                            <a asp-controller="Property" asp-action="Details" asp-route-id="@Model.PropertyID"
+                               class="view-property-btn">
+                                <i class="bi bi-eye"></i>
+                                View Property Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-                                    @if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Approved)
-                                    {
-                                        <div class="alert alert-success mt-3">
-                                            <i class="bi bi-check-circle"></i>
-                                            <strong>Confirmed!</strong>
-                                            <p class="mb-0 small">Your booking has been confirmed.</p>
-                                        </div>
-                                    }
-                                    else if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Pending)
-                                    {
-                                        <div class="alert alert-warning mt-3">
-                                            <i class="bi bi-clock"></i>
-                                            <strong>Pending Review</strong>
-                                            <p class="mb-0 small">Awaiting confirmation from property owner.</p>
-                                        </div>
-                                    }
-                                    else if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Rejected)
-                                    {
-                                        <div class="alert alert-danger mt-3">
-                                            <i class="bi bi-x-circle"></i>
-                                            <strong>Rejected</strong>
-                                            <p class="mb-0 small">This booking request was not approved.</p>
-                                        </div>
-                                    }
+                <!-- Stay Details Card -->
+                <div class="info-card">
+                    <div class="card-header">
+                        <div class="header-icon">
+                            <i class="bi bi-calendar-range"></i>
+                        </div>
+                        <h3>Your Stay</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="stay-timeline">
+                            <div class="timeline-item check-in">
+                                <div class="timeline-icon">
+                                    <i class="bi bi-calendar-check-fill"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <span class="timeline-label">Check-In</span>
+                                    <div class="timeline-date">@Model.Check_In.ToString("dddd, dd MMMM yyyy")</div>
+                                    <div class="timeline-time">After 2:00 PM</div>
                                 </div>
                             </div>
 
-                            <!-- Action Buttons -->
-                            <div class="action-buttons">
-                                <a asp-action="MyBookings" class="btn btn-secondary btn-block">
-                                    <i class="bi bi-arrow-left"></i> Back to Bookings
-                                </a>
+                            <div class="timeline-connector">
+                                <div class="connector-line"></div>
+                                <div class="duration-badge">
+                                    <i class="bi bi-moon-stars"></i>
+                                    <span>@Model.TotalNights night@(Model.TotalNights > 1 ? "s" : "")</span>
+                                </div>
+                            </div>
 
-                                @if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Pending)
-                                {
-                                    <form asp-action="Cancel" asp-route-id="@Model.Id" method="post"
-                                          onsubmit="return confirm('Are you sure you want to cancel this booking?');"
-                                          class="mt-2">
-                                        @Html.AntiForgeryToken()
-                                        <button type="submit" class="btn btn-danger btn-block">
-                                            <i class="bi bi-x-circle"></i> Cancel Booking
-                                        </button>
-                                    </form>
-                                }
+                            <div class="timeline-item check-out">
+                                <div class="timeline-icon">
+                                    <i class="bi bi-calendar-x-fill"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <span class="timeline-label">Check-Out</span>
+                                    <div class="timeline-date">@Model.Check_Out.ToString("dddd, dd MMMM yyyy")</div>
+                                    <div class="timeline-time">Before 11:00 AM</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Guest Information Card -->
+                <div class="info-card">
+                    <div class="card-header">
+                        <div class="header-icon">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                        <h3>Guest Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="guest-info-grid">
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="bi bi-person-fill"></i>
+                                </div>
+                                <div class="info-details">
+                                    <span class="info-label">Full Name</span>
+                                    <span class="info-value">@Model.UserName</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="bi bi-envelope-fill"></i>
+                                </div>
+                                <div class="info-details">
+                                    <span class="info-label">Email Address</span>
+                                    <span class="info-value">@Model.UserEmail</span>
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.UserPhone))
+                            {
+                                <div class="info-item">
+                                    <div class="info-icon">
+                                        <i class="bi bi-telephone-fill"></i>
+                                    </div>
+                                    <div class="info-details">
+                                        <span class="info-label">Phone Number</span>
+                                        <span class="info-value">@Model.UserPhone</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+
+                <!-- Payment Summary Card -->
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <i class="bi bi-credit-card"></i>
+                        <h3>Payment Summary</h3>
+                    </div>
+
+                    <div class="summary-body">
+                        <div class="price-breakdown">
+                            <div class="price-row">
+                                <span class="price-label">
+                                    <i class="bi bi-moon"></i>
+                                    @Model.TotalNights night@(Model.TotalNights > 1 ? "s" : "")
+                                </span>
+                                <span class="price-value">@Model.TotalPrice.ToString("C")</span>
+                            </div>
+
+                            <div class="price-divider"></div>
+
+                            <div class="price-row total">
+                                <span class="price-label">Total Amount</span>
+                                <span class="price-value">@Model.TotalPrice.ToString("C")</span>
+                            </div>
+                        </div>
+
+                        <!-- Status Message -->
+                        @if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Approved)
+                        {
+                            <div class="status-alert success">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <div>
+                                    <strong>Booking Confirmed!</strong>
+                                    <p>Your reservation has been approved. You'll receive a confirmation email shortly.</p>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Pending)
+                        {
+                            <div class="status-alert warning">
+                                <i class="bi bi-hourglass-split"></i>
+                                <div>
+                                    <strong>Awaiting Confirmation</strong>
+                                    <p>Your booking is being reviewed by the property owner. We'll notify you soon.</p>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Rejected)
+                        {
+                            <div class="status-alert error">
+                                <i class="bi bi-x-circle-fill"></i>
+                                <div>
+                                    <strong>Booking Declined</strong>
+                                    <p>Unfortunately, this booking request was not approved by the property owner.</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="summary-actions">
+                        <a asp-action="MyBookings" class="btn-secondary">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to Bookings
+                        </a>
+
+                        @if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Pending)
+                        {
+                            <form asp-action="Cancel" asp-route-id="@Model.Id" method="post"
+                                  onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn-danger">
+                                    <i class="bi bi-x-circle"></i>
+                                    Cancel Booking
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+
+                <!-- Help Card -->
+                <div class="help-card">
+                    <div class="help-icon">
+                        <i class="bi bi-headset"></i>
+                    </div>
+                    <h4>Need Assistance?</h4>
+                    <p>Our support team is available 24/7 to help you with any questions.</p>
+                    <a href="tel:+201234567890" class="help-link">
+                        <i class="bi bi-telephone-fill"></i>
+                        +20 123 456 7890
+                    </a>
+                    <a href="mailto:support@ijarify.com" class="help-link">
+                        <i class="bi bi-envelope-fill"></i>
+                        support@ijarify.com
+                    </a>
+                </div>
+
+                <!-- Important Info -->
+                <div class="info-box">
+                    <div class="info-box-header">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <strong>Important Information</strong>
+                    </div>
+                    <ul class="info-list">
+                        <li><i class="bi bi-check2"></i> Valid ID required at check-in</li>
+                        <li><i class="bi bi-check2"></i> No smoking inside the property</li>
+                        <li><i class="bi bi-check2"></i> Pets allowed with prior approval</li>
+                        <li><i class="bi bi-check2"></i> Damage deposit may be required</li>
+                    </ul>
+                </div>
+
             </div>
         </div>
-    </section>
-</main>
+    </div>
+</div>
 
-@section Styles {
-    <style>
-        .details-header-card {
-            background: var(--accent-color);
-            color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 25px rgba(42, 82, 152, 0.2);
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f8fafc;
+    }
+
+    /* Wrapper */
+    .booking-details-wrapper {
+        min-height: 100vh;
+        padding-bottom: 60px;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    /* Breadcrumbs */
+    .breadcrumb-section {
+        background: white;
+        padding: 16px 0;
+        border-bottom: 1px solid #e2e8f0;
+        margin-bottom: 30px;
+    }
+
+    .breadcrumb-nav {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+    }
+
+        .breadcrumb-nav a {
+            color: #64748b;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
         }
 
-            .details-header-card h3 {
-                margin-bottom: 10px;
-                font-weight: 700;
+            .breadcrumb-nav a:hover {
+                color: #0d9488;
             }
 
-            .details-header-card p {
-                opacity: 0.9;
-            }
+        .breadcrumb-nav i.bi-chevron-right {
+            color: #cbd5e1;
+            font-size: 12px;
+        }
 
-        .status-badge {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 25px;
+        .breadcrumb-nav > span {
+            color: #0f172a;
             font-weight: 600;
+        }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Header */
+    .details-header {
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        border-radius: 20px;
+        padding: 32px 40px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 40px rgba(13, 148, 136, 0.25);
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .booking-icon {
+        width: 64px;
+        height: 64px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        color: white;
+    }
+
+    .header-left h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 8px;
+    }
+
+    .booking-meta {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+        .booking-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 14px;
         }
 
-        .details-card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
-            margin-bottom: 20px;
-            overflow: hidden;
+        .booking-meta i {
+            font-size: 16px;
         }
 
-            .details-card .card-header {
-                background: #f8f9fa;
-                padding: 20px 25px;
-                border-bottom: 1px solid #dee2e6;
-            }
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 15px;
+        background: white;
+        color: #0f172a;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 
-                .details-card .card-header h4 {
-                    margin: 0;
-                    font-size: 18px;
-                    font-weight: 600;
-                    color: var(--accent-color);
-                }
-
-                .details-card .card-header i {
-                    margin-right: 8px;
-                }
-
-            .details-card .card-body {
-                padding: 25px;
-            }
-
-        .property-info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #f1f1f1;
+        .status-badge i {
+            font-size: 18px;
         }
 
-            .property-info-item:last-child {
-                border-bottom: none;
-            }
+    /* Grid Layout */
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 30px;
+    }
 
-        .info-label {
-            font-weight: 600;
-            color: #6c757d;
+    /* Cards */
+    .info-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        margin-bottom: 24px;
+    }
+
+    .card-header {
+        background: #f8fafc;
+        padding: 20px 24px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .header-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+    }
+
+    .card-header h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+    }
+
+    .card-body {
+        padding: 28px;
+    }
+
+    /* Property Card */
+    .property-showcase {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .property-main-info {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .property-name {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+        .property-name a {
+            color: #0f172a;
+            text-decoration: none;
+            transition: color 0.2s;
         }
 
-        .info-value {
-            color: #212529;
+            .property-name a:hover {
+                color: #0d9488;
+            }
+
+    .property-type-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: #f0fdfa;
+        color: #0d9488;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        align-self: flex-start;
+    }
+
+    .property-location {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        color: #64748b;
+        font-size: 15px;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 10px;
+    }
+
+        .property-location i {
+            color: #ef4444;
+            font-size: 18px;
+            margin-top: 2px;
         }
 
-            .info-value a {
-                color: #2a5298;
-                text-decoration: none;
-                font-weight: 600;
-            }
+    .view-property-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        background: #f1f5f9;
+        color: #475569;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.2s;
+    }
 
-                .info-value a:hover {
-                    text-decoration: underline;
-                }
-
-        .stay-dates {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
+        .view-property-btn:hover {
+            background: #e2e8f0;
+            transform: translateY(-1px);
         }
 
-        .date-box {
-            flex: 1;
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+    /* Stay Timeline */
+    .stay-timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .timeline-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .timeline-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .timeline-item.check-in .timeline-icon {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+
+    .timeline-item.check-out .timeline-icon {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .timeline-content {
+        flex: 1;
+    }
+
+    .timeline-label {
+        display: block;
+        font-size: 13px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+
+    .timeline-date {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 4px;
+    }
+
+    .timeline-time {
+        font-size: 14px;
+        color: #64748b;
+    }
+
+    .timeline-connector {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 0 16px 24px;
+    }
+
+    .connector-line {
+        width: 2px;
+        height: 40px;
+        background: linear-gradient(to bottom, #dcfce7 0%, #fee2e2 100%);
+    }
+
+    .duration-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: #f0f9ff;
+        color: #0369a1;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    /* Guest Info Grid */
+    .guest-info-grid {
+        display: grid;
+        gap: 20px;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 10px;
+    }
+
+    .info-icon {
+        width: 44px;
+        height: 44px;
+        background: #e0f2fe;
+        color: #0369a1;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    .info-details {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .info-label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-size: 15px;
+        color: #0f172a;
+        font-weight: 600;
+    }
+
+    /* Sidebar */
+    .summary-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        position: sticky;
+        top: 20px;
+    }
+
+    .summary-header {
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        padding: 20px 24px;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .summary-header i {
+            font-size: 24px;
         }
 
-            .date-box i {
-                font-size: 32px;
-                color: #2a5298;
-            }
-
-            .date-box.check-in i {
-                color: #28a745;
-            }
-
-            .date-box.check-out i {
-                color: #dc3545;
-            }
-
-            .date-box small {
-                display: block;
-                color: #6c757d;
-                font-size: 11px;
-                margin-bottom: 3px;
-            }
-
-            .date-box strong {
-                display: block;
-                color: #212529;
-                font-size: 15px;
-                margin-bottom: 3px;
-            }
-
-            .date-box .time {
-                display: block;
-                color: #6c757d;
-                font-size: 12px;
-            }
-
-        .duration-info {
-            text-align: center;
-            color: #2a5298;
-            font-weight: 600;
-        }
-
-            .duration-info i {
-                display: block;
-                font-size: 24px;
-                margin-bottom: 5px;
-            }
-
-        .price-breakdown {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .price-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-        }
-
-        .price-divider {
-            height: 2px;
-            background: #dee2e6;
-            margin: 15px 0;
-        }
-
-        .price-item.total {
-            font-size: 20px;
+        .summary-header h3 {
+            font-size: 18px;
             font-weight: 700;
-            color: #2a5298;
-            padding-top: 15px;
+            margin: 0;
         }
 
-        .sticky-card {
-            position: sticky;
-            top: 100px;
+    .summary-body {
+        padding: 24px;
+    }
+
+    .price-breakdown {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .price-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+        .price-label i {
+            color: #0d9488;
+            font-size: 16px;
         }
 
-        .action-buttons .btn-block {
+    .price-value {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .price-divider {
+        height: 1px;
+        background: #e2e8f0;
+        margin: 12px 0;
+    }
+
+    .price-row.total {
+        padding-top: 16px;
+        border-top: 2px solid #cbd5e1;
+        margin-top: 8px;
+    }
+
+        .price-row.total .price-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .price-row.total .price-value {
+            font-size: 24px;
+            color: #0d9488;
+        }
+
+    /* Status Alerts */
+    .status-alert {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+        .status-alert i {
+            font-size: 24px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .status-alert strong {
             display: block;
-            width: 100%;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
         }
 
-        .btn-secondary {
-            background: #6c757d;
-            border: none;
-            color: #fff;
+        .status-alert p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.5;
         }
 
-            .btn-secondary:hover {
-                background: #5a6268;
-                color: #fff;
+        .status-alert.success {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+        }
+
+            .status-alert.success i {
+                color: #16a34a;
             }
 
-        .btn-danger {
-            background: #dc3545;
-            border: none;
-            color: #fff;
-        }
-
-            .btn-danger:hover {
-                background: #c82333;
+            .status-alert.success strong {
+                color: #15803d;
             }
-        @@media (max-width: 991px) {
-            .stay-dates
 
-        {
-            flex-direction: column;
+            .status-alert.success p {
+                color: #166534;
+            }
+
+        .status-alert.warning {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
         }
 
-        .sticky-card {
-            position: relative;
-            top: 0;
+            .status-alert.warning i {
+                color: #d97706;
+            }
+
+            .status-alert.warning strong {
+                color: #b45309;
+            }
+
+            .status-alert.warning p {
+                color: #92400e;
+            }
+
+        .status-alert.error {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
         }
 
+            .status-alert.error i {
+                color: #dc2626;
+            }
+
+            .status-alert.error strong {
+                color: #b91c1c;
+            }
+
+            .status-alert.error p {
+                color: #991b1b;
+            }
+
+    /* Summary Actions */
+    .summary-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 0 24px 24px;
+    }
+
+    .btn-secondary,
+    .btn-danger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-secondary {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            transform: translateY(-1px);
         }
 
-        
-    </style>
-}
+    .btn-danger {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+    }
 
+        .btn-danger:hover {
+            background: #fee2e2;
+            border-color: #fca5a5;
+        }
+
+    /* Help Card */
+    .help-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        margin-bottom: 20px;
+    }
+
+    .help-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 28px;
+        margin: 0 auto 16px;
+    }
+
+    .help-card h4 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 8px;
+    }
+
+    .help-card p {
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .help-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px;
+        background: #f8fafc;
+        border-radius: 10px;
+        color: #0d9488;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 10px;
+        transition: all 0.2s;
+    }
+
+        .help-link:last-child {
+            margin-bottom: 0;
+        }
+
+        .help-link:hover {
+            background: #f0fdfa;
+            transform: translateX(4px);
+        }
+
+    /* Info Box */
+    .info-box {
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        border-radius: 12px;
+        padding: 20px;
+    }
+
+    .info-box-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+        color: #0369a1;
+        font-size: 15px;
+    }
+
+        .info-box-header i {
+            font-size: 20px;
+        }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .info-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 13px;
+            color: #075985;
+        }
+
+            .info-list li i {
+                font-size: 16px;
+                color: #0ea5e9;
+                margin-top: 1px;
+                flex-shrink: 0;
+            }
+
+    /* Responsive */
+    @@media (max-width: 1024px) {
+        .details-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        position: static;
+    }
+
+    }
+
+    @@media (max-width: 768px) {
+        .details-header
+
+    {
+        padding: 24px 20px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-left {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .booking-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 28px;
+    }
+
+    .header-left h1 {
+        font-size: 24px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .timeline-connector {
+        padding-left: 20px;
+    }
+
+    }
+
+    @@media (max-width: 480px) {
+        .container
+
+    {
+        padding: 0 12px;
+    }
+
+    .booking-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    }
+</style>

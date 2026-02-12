@@ -1,4 +1,5 @@
-﻿using IjarifySystemBLL.ViewModels.PropertyViewModels;
+﻿using IjarifySystemBLL.ViewModels.HomeViewModels;
+using IjarifySystemBLL.ViewModels.PropertyViewModels;
 
 namespace IjarifySystemBLL.Services.Interfaces
 {
@@ -8,7 +9,8 @@ namespace IjarifySystemBLL.Services.Interfaces
         Task<PropertyDetailsViewModel?> GetPropertyDetails(int id, int? currentUserId = null);
         Task CreatePropertyAsync(CreatePropertyViewModel model, int userId);
         Task UpdatePropertyAsync(int id, CreatePropertyViewModel model, int userId);
-        Task DeletePropertyAsync(int id);
+        Task<bool> DeletePropertyAsync(int id, int userId);
         Task<CreatePropertyViewModel?> GetPropertyForEditAsync(int id);
+        Task<List<LocationCardViewModel>> GetTopLocationsAsync(int count);
     }
 }

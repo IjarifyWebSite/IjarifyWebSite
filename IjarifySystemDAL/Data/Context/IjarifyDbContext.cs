@@ -1,5 +1,7 @@
 ﻿using IjarifySystemDAL.Entities;
 using IjarifySystemDAL.Entities.Enums;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemDAL.Data.Context
 {
-    public class IjarifyDbContext : DbContext
+    public class IjarifyDbContext : IdentityDbContext<User ,IdentityRole<int> ,int>
     {
         public IjarifyDbContext(DbContextOptions<IjarifyDbContext> options) : base(options)
         {
@@ -18,6 +20,18 @@ namespace IjarifySystemDAL.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<IdentityUserLogin<int>>(b => {b.HasKey(l => new { l.LoginProvider, l.ProviderKey });});
+
+            modelBuilder.Entity<IdentityUserRole<int>>(b => {b.HasKey(r => new { r.UserId, r.RoleId });});
+
+            modelBuilder.Entity<IdentityUserToken<int>>(b => {b.HasKey(t => new { t.UserId, t.LoginProvider, t.Name });});
+
+            modelBuilder.Entity<IdentityUserClaim<int>>(b => {b.HasKey(c => c.Id);});
+
+            modelBuilder.Entity<IdentityRoleClaim<int>>(b => {b.HasKey(c => c.Id);});
+
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             SeedData(modelBuilder);
@@ -30,57 +44,62 @@ namespace IjarifySystemDAL.Data.Context
                 new User
                 {
                     Id = 1,
-                    Name = "Ahmed Hassan",
-                    Email = "ahmed.hassan@example.com",
-                    Password = "AQAAAAEAACcQAAAAEH8zQK", // Hashed password placeholder
-                    Phone = "01012345678",
-                    Role = "User",
-                    ImageUrl = "https://i.pravatar.cc/150?img=12",
-                    CreatedAt = new DateTime(2024, 1, 15, 10, 0, 0)
-                },
-                new User
-                {
-                    Id = 2,
-                    Name = "Sara Mohamed",
-                    Email = "sara.mohamed@example.com",
-                    Password = "AQAAAAEAACcQAAAAEH8zQK",
-                    Phone = "01123456789",
-                    Role = "User",
-                    ImageUrl = "https://i.pravatar.cc/150?img=45",
-                    CreatedAt = new DateTime(2024, 2, 10, 14, 30, 0)
-                },
-                new User
-                {
-                    Id = 3,
                     Name = "Omar Ali",
                     Email = "omar.ali@example.com",
-                    Password = "AQAAAAEAACcQAAAAEH8zQK",
-                    Phone = "01234567890",
-                    Role = "Owner",
+                    //Password = "AQAAAAEAACcQAAAAEH8zQK",
+                    //Phone = "01234567890",
+                    //Role = "Owner",
+                    Address = "15 El Nile Street, Maadi, Cairo",
                     ImageUrl = "https://i.pravatar.cc/150?img=33",
                     CreatedAt = new DateTime(2024, 1, 20, 9, 15, 0)
                 },
                 new User
                 {
-                    Id = 4,
+                    Id = 2,
                     Name = "Nour Ibrahim",
                     Email = "nour.ibrahim@example.com",
-                    Password = "AQAAAAEAACcQAAAAEH8zQK",
-                    Phone = "01098765432",
-                    Role = "Owner",
+                    //Password = "AQAAAAEAACcQAAAAEH8zQK",
+                    //Phone = "01098765432",
+                    //Role = "Owner",
+                    Address = "28 Tahrir Street, Downtown, Cairo",
                     ImageUrl = "https://i.pravatar.cc/150?img=27",
                     CreatedAt = new DateTime(2024, 3, 5, 11, 45, 0)
                 },
                 new User
                 {
-                    Id = 5,
+                    Id = 3,
                     Name = "Khaled Mahmoud",
                     Email = "khaled.mahmoud@example.com",
-                    Password = "AQAAAAEAACcQAAAAEH8zQK",
-                    Phone = "01187654321",
-                    Role = "User",
+                    //Password = "AQAAAAEAACcQAAAAEH8zQK",
+                    //Phone = "01187654321",
+                    //Role = "User",
+                    Address = "42 Nasr Road, Nasr City, Cairo",
                     ImageUrl = "https://i.pravatar.cc/150?img=51",
                     CreatedAt = new DateTime(2024, 2, 28, 16, 20, 0)
+                },
+                new User
+                {
+                    Id = 4,
+                    Name = "Ahmed Hassan",
+                    Email = "ahmed.hassan@example.com",
+                    //Password = "AQAAAAEAACcQAAAAEH8zQK",
+                    //Phone = "01012345678",
+                    //Role = "Owner",
+                    Address = "10 Tahrir Square, Cairo",
+                    ImageUrl = "https://i.pravatar.cc/150?img=12",
+                    CreatedAt = new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified)
+                },
+                new User
+                {
+                    Id = 5,
+                    Name = "Fatima Mohamed",
+                    Email = "fatima.mohamed@example.com",
+                    //Password = "AQAAAAEAACcQAAAAEH8zQK",
+                    //Phone = "01123456789",
+                    //Role = "User",
+                    Address = "25 Alexandria Road, Cairo",
+                    ImageUrl = "https://i.pravatar.cc/150?img=45",
+                    CreatedAt = new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified)
                 }
             );
 
