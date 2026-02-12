@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,13 +22,24 @@ namespace IjarifySystemDAL.Repositories.Classes
         }
 
         // Read Operations
-        public async Task<IEnumerable<Booking>> GetAllAsync()
+        public async Task<IEnumerable<Booking>> GetAllAsync(Expression<Func<Booking, bool>>? Condition = null)
         {
+            if (Condition == null)
+            {
+                return await _context.bookings
+                    .Include(b => b.Property)
+                        .ThenInclude(p => p.Location)
+                    .Include(b => b.user)
+                    .ToListAsync();
+            }
             return await _context.bookings
-                .Include(b => b.Property)
-                    .ThenInclude(p => p.Location)
-                .Include(b => b.user)
-                .ToListAsync();
+                .Where(Condition)
+                     .Include(b => b.Property)
+                         .ThenInclude(p => p.Location)
+                     .Include(b => b.user)
+                     .ToListAsync();
+
+
         }
 
         public async Task<Booking?> GetByIdAsync(int id)
@@ -110,5 +122,6 @@ namespace IjarifySystemDAL.Repositories.Classes
             return await _context.SaveChangesAsync();
         }
 
+        
     }
 }

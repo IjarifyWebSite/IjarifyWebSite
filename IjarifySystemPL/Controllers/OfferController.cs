@@ -1,6 +1,7 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using IjarifySystemBLL.ViewModels.OfferViewModels;
+using IjarifySystemDAL.Entities;
 namespace IjarifySystemPL.Controllers
 {
     public class OfferController : Controller
@@ -48,7 +49,7 @@ namespace IjarifySystemPL.Controllers
             bool IsCreated= _offerService.CreateOffer(request);
             if(IsCreated)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("MyOffers");
             }
 
             var fakeUserId = 1;
@@ -80,6 +81,52 @@ namespace IjarifySystemPL.Controllers
             var fakeUserId = 1;
             var properties = _propertyService.GetByLocationAndUser(locationId, fakeUserId);
             return Json(properties);
+        }
+
+        public IActionResult MyOffers()
+        {
+            var fakeUserId = 1;
+            var offers= _offerService.GetUserOffers(fakeUserId);
+            return View(offers);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int offerId)
+        {
+            var fakeuUserId = 1;
+            var offer = _offerService.GetOfferForUpdate(offerId,fakeuUserId);
+            
+            return View("Create",offer);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(CreateOfferViewModel request)
+        {
+            ModelState.Remove("properties");
+            ModelState.Remove("locations");
+            if(!ModelState.IsValid)
+            {
+                return View("Create",request);
+            }
+            bool IsUpdated = _offerService.UpdateOffer(request);
+            if(IsUpdated)
+            {
+                return RedirectToAction("MyOffers");
+            }
+            ModelState.AddModelError("", "Something went wrong while Editing the offer. Please try again.");
+            return View("Create",request);
+
+        }
+        [HttpPost]
+        public async Task <IActionResult> Delete(int id)
+        {
+            bool IsDeleted= await _offerService.DeleteOffer(id);
+            if (IsDeleted)
+            {
+                return RedirectToAction("MyOffers");
+            }
+            ModelState.AddModelError("", "Something went wrong while creating the offer. Please try again.");
+            return RedirectToAction("MyOffers");
         }
     } 
 }
