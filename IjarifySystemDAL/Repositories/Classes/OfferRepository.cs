@@ -30,7 +30,9 @@ namespace IjarifySystemDAL.Repositories.Classes
 
         public Offer? GetById(int id)
         {
-            return _Dbcontext.Offers.AsNoTracking().FirstOrDefault(o => o.Id == id);
+            return _Dbcontext.Offers.AsNoTracking()
+                .Include(o=>o.Property)
+                .FirstOrDefault(o => o.Id == id);
         }
 
         public void Update(Offer offer) => _Dbcontext.Offers.Update(offer);
@@ -53,7 +55,13 @@ namespace IjarifySystemDAL.Repositories.Classes
 
         public IEnumerable<Offer> GetOffersWithPropertyAndLocation(Expression<Func<Offer, bool>>? Condition = null, string? Search = null, List<string>? Areas = null, List<string>? Compounds = null, List<decimal>? HotOffers = null)
         { 
-            var query = _Dbcontext.Offers.AsNoTracking().Include(o => o.Property).ThenInclude(p => p.Location).Include(l => l.Property).ThenInclude(p => p.PropertyImages).AsNoTracking().AsQueryable();
+            var query = _Dbcontext.Offers.AsNoTracking()
+                .Include(o => o.Property).
+                ThenInclude(p => p.Location).
+                Include(l => l.Property).
+                ThenInclude(p => p.PropertyImages).
+                AsNoTracking().
+                AsQueryable();
             if (Condition != null)
             {
                 query = query.Where(Condition);
@@ -76,6 +84,14 @@ namespace IjarifySystemDAL.Repositories.Classes
                 query = query.Where(o => HotOffers.Contains((int)(o.DiscountPercentage)));
             }
             return query.ToList();
+        }
+
+        public IEnumerable<Offer> GetByUserId(int UserId)
+        {
+            return _Dbcontext.Offers.
+                Include(o=>o.Property).
+                ThenInclude(o=>o.Location)
+                .Where(o => o.Property.UserId == UserId).ToList();
         }
     }
 }

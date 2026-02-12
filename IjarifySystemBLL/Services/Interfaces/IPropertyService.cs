@@ -1,5 +1,9 @@
+
+﻿using IjarifySystemBLL.ViewModels.PropertyViewModels;
+using IjarifySystemDAL.Entities;
 ﻿using IjarifySystemBLL.ViewModels.HomeViewModels;
-using IjarifySystemBLL.ViewModels.PropertyViewModels;
+
+
 
 namespace IjarifySystemBLL.Services.Interfaces
 {
@@ -11,6 +15,8 @@ namespace IjarifySystemBLL.Services.Interfaces
         Task UpdatePropertyAsync(int id, CreatePropertyViewModel model, int userId);
         Task<bool> DeletePropertyAsync(int id, int userId);
         Task<CreatePropertyViewModel?> GetPropertyForEditAsync(int id);
+        List<Property>GetPropertyByuser(int userId);
+        public List<Property> GetByLocationAndUser(int locationId, int userId);
         Task<List<LocationCardViewModel>> GetTopLocationsAsync(int count);
     }
 }

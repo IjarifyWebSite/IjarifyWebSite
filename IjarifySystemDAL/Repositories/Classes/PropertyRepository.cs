@@ -55,6 +55,15 @@ namespace IjarifySystemDAL.Repositories.Classes
         {
             return await _context.amenities.FirstOrDefaultAsync(a => a.Name.ToLower() == name.ToLower());
         }
+        public List<Property> GetByUser(int userId)
+        {
+            return _context.Properties.Where(p=>p.UserId==userId).ToList();
+        }
+
+        public List<Property> GetByLocationAndUser(int locationId,int userId)
+        {
+            return _context.Properties.Where(p=>p.LocationId==locationId && p.UserId==userId).ToList();
+        }
         public async Task<List<Location>> GetTopLocationsWithPropertyCountAsync(int count)
         {
             return await _context.Locations

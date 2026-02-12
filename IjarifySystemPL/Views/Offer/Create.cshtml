@@ -1,0 +1,411 @@
+﻿@using IjarifySystemBLL.ViewModels.OfferViewModels;
+@model CreateOfferViewModel
+@{
+    ViewData["Title"] = "Create Offer";
+     SelectList properties  = new SelectList(Model.properties, "Id", "Title");
+    SelectList Locations = new SelectList(Model.locations, "Id", "City");
+}
+
+<div class="page-title">
+<div class="offer-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="header-icon">
+            <i class="bi bi-percent"></i>
+        </div>
+        
+        <h1>@(Model.Id>0? "Edit Special Offer" : "Create Special Offer")</h1>
+        <p>Set up exclusive deals to attract more customers</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card">
+        <form asp-action="@(Model.Id>0?"Edit":"Create")" asp-controller="Offer" method="post">
+
+            <!-- Basic Information -->
+            <div class="form-section">
+                <div class="section-label">
+                    <i class="bi bi-tag-fill"></i>
+                    Offer Details
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="Title">
+                        Offer Title <span class="required">*</span>
+                    </label>
+                    <input type="text"
+                           asp-for="Title"
+                           class="form-control"
+                           placeholder="e.g., Summer Sale - Limited Time Offer">
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <p class="form-helper">Make it catchy and clear</p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="DiscountPercentage">
+                            Discount Percentage <span class="required">*</span>
+                        </label>
+                        <input type="number"
+                               asp-for="DiscountPercentage"
+                               class="form-control"
+                               placeholder="e.g., 20"
+                               min="0"
+                               max="100"
+                               step="1">
+                        <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+                        <p class="form-helper">Enter percentage between 0-100</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" asp-for="LoctionId">
+                            Location <span class="required">*</span>
+                        </label>
+                        <select asp-for="LoctionId"
+                                asp-items="Locations"
+                                class="form-select"
+                                id="locationSelect"
+                                >
+                            <option value="">Select Location</option>
+                        </select>
+                        <span asp-validation-for="LoctionId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="PropertyId">
+                        Select Property <span class="required">*</span>
+                    </label>
+                    <select asp-for="PropertyId"
+                            asp-items="properties"
+                            class="form-select"
+                            id="propertySelect">
+                        <option value=""> First select a location</option>
+                    </select>
+                    <span asp-validation-for="PropertyId" class="text-danger"></span>
+                    <p class="form-helper">This offer will apply to the selected property</p>
+                </div>
+            </div>
+
+            <!-- Date Range -->
+            <div class="form-section">
+                <div class="section-label">
+                    <i class="bi bi-calendar-range"></i>
+                    Offer Duration
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="StartDate">
+                            Start Date <span class="required">*</span>
+                        </label>
+                        <input type="date"
+                               asp-for="StartDate"
+                               class="form-control"
+                               min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" asp-for="EndDate">
+                            End Date <span class="required">*</span>
+                        </label>
+                        <input type="date"
+                               asp-for="EndDate"
+                               class="form-control"
+                               min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a asp-action="MyOffers" asp-controller="Offer" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i>
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i>
+                   @(Model.Id>0? "Save Changes":"Create Offer")
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById('locationSelect').addEventListener('change', function () {
+            const locationId = this.value;
+            const propertySelect = document.getElementById('propertySelect');
+
+            // Reset property dropdown
+            propertySelect.innerHTML = '<option value="">Loading...</option>';
+            propertySelect.disabled = true;
+
+            if (!locationId) {
+                propertySelect.innerHTML = '<option value="">First select a location</option>';
+                propertySelect.disabled = false;
+                return;
+            }
+
+            fetch(`/Offer/GetPropertiesByLocation?locationId=${locationId}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Failed to load properties');
+                    return res.json();
+                })
+                .then(data => {
+                    propertySelect.innerHTML = '<option value="">Choose a property</option>';
+                    if (data.length === 0) {
+                        propertySelect.innerHTML = '<option value="">No properties found for this location</option>';
+                    } else {
+                        data.forEach(p => {
+                            const option = document.createElement('option');
+                            option.value = p.id;
+                            option.textContent = p.title;
+                            propertySelect.appendChild(option);
+                        });
+                    }
+                    propertySelect.disabled = false;
+                })
+                .catch(() => {
+                    propertySelect.innerHTML = '<option value="">Error loading properties. Try again.</option>';
+                    propertySelect.disabled = false;
+                });
+        });
+       
+    </script>
+    </div>
+}
+
+
+<style>
+
+    .offer-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .header-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #2c7a7b 0%, #0d9488 100%);
+        border-radius: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 20px rgba(44, 122, 123, 0.25);
+    }
+
+        .header-icon i {
+            font-size: 36px;
+            color: white;
+        }
+
+    .page-header h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 8px;
+    }
+
+    .page-header p {
+        color: #64748b;
+        font-size: 16px;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+
+    .form-section {
+        margin-bottom: 35px;
+    }
+
+    .section-label {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .section-label i {
+            color: #2c7a7b;
+            font-size: 22px;
+        }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+    }
+
+        .form-label .required {
+            color: #ef4444;
+            margin-left: 2px;
+        }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        padding: 13px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 15px;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.2s;
+        background: #f8fafc;
+    }
+
+        .form-control:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #2c7a7b;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(44, 122, 123, 0.1);
+        }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-helper {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 5px;
+    }
+
+    .text-danger {
+        color: #ef4444;
+        font-size: 13px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 2px solid #f1f5f9;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 14px 30px;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #2c7a7b 0%, #0d9488 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(44, 122, 123, 0.3);
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(44, 122, 123, 0.4);
+        }
+
+    .btn-secondary {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            color:black;
+        }
+
+    .reload-note {
+        background: #fef3c7;
+        border: 2px solid #fbbf24;
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-top: 8px;
+        font-size: 13px;
+        color: #92400e;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .reload-note i {
+            color: #f59e0b;
+            font-size: 16px;
+        }
+
+        .reload-note button {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+            .reload-note button:hover {
+                background: #d97706;
+            }
+
+    @@media (max-width: 768px) {
+        .offer-container {
+            padding: 20px 15px;
+        }
+
+        .form-card {
+            padding: 25px 20px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
+</style>

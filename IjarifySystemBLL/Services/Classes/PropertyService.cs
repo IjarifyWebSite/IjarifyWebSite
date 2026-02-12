@@ -443,6 +443,18 @@ namespace IjarifySystemBLL.Services.Classes
             }
         }
 
+        // related to offers
+        public List<Property> GetPropertyByuser(int userId)
+        {
+            return _repo.GetByUser(userId);
+        }
+
+        public List<Property> GetByLocationAndUser(int locationId, int userId)
+        {
+            return _repo.GetByLocationAndUser(locationId, userId);
+        }
+
+
         public async Task<List<LocationCardViewModel>> GetTopLocationsAsync(int count)
         {
             var locations = await _repo.GetTopLocationsWithPropertyCountAsync(count);
@@ -455,6 +467,7 @@ namespace IjarifySystemBLL.Services.Classes
                 ImageUrl = l.ImageUrl ?? "assets/img/real-estate/default-location.webp",
                 PropertyCount = l.Properties?.Count ?? 0
             }).ToList();
+
         }
     }
 }

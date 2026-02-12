@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace IjarifySystemDAL.Repositories.Interfaces
     public interface IBookingRepository
     {
         // Read Operations
-        Task<IEnumerable<Booking>> GetAllAsync();
+        Task<IEnumerable<Booking>> GetAllAsync(Expression<Func<Booking, bool>>? Condition = null);
         Task<Booking?> GetByIdAsync(int id);
         Task<IEnumerable<Booking>> GetUserBookingsAsync(int userId);
         Task<IEnumerable<Booking>> GetPropertyBookingsAsync(int propertyId);

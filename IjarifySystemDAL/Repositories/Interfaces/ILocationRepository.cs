@@ -1,4 +1,5 @@
 ﻿using IjarifySystemDAL.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace IjarifySystemDAL.Repositories.Interfaces
 {
     public interface ILocationRepository
     {
+        public List<Location> GetAll();
         Location? GetByCity(string city);
     }
 }
