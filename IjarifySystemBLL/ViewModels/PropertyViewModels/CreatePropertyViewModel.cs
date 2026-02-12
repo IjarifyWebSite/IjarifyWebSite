@@ -1,15 +1,17 @@
-﻿using System;
+﻿using IjarifySystemDAL.Entities.Enums;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace IjarifySystemBLL.ViewModels.PropertyViewModels
 {
     public class CreatePropertyViewModel
     {
+        public int? Id { get; set; } // Add this
         //Property Info
         [Required(ErrorMessage = "Property title is required")]
         [StringLength(150, MinimumLength = 5, ErrorMessage = "Title must be between 5 and 150 characters")]
@@ -72,7 +74,7 @@ namespace IjarifySystemBLL.ViewModels.PropertyViewModels
     public class AmenityInput
     {
         public string Name { get; set; } = null!;
-        public string Category { get; set; } = null!; // Interior or Exterior
+        public AminityCategory Category { get; set; }  // Interior or Exterior
     }
     #endregion
 }
