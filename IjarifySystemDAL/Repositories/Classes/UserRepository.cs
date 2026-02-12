@@ -27,5 +27,7 @@ namespace IjarifySystemDAL.Repositories.Classes
         public int SaveChanges() => dbContext.SaveChanges();
 
         public void Delete(User user) => dbContext.Users.Remove(user);
+
+        public User? GetByPhoneNumber(string phoneNumber) => dbContext.Users.Find(phoneNumber);
     }
 }

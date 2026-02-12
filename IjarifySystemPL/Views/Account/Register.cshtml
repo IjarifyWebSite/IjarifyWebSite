@@ -32,35 +32,71 @@
             <h2>Create Account</h2>
             <p>Join our community and start exploring.</p>
 
+            @if (!ViewData.ModelState.IsValid)
+            {
+                var generalErrors = ViewData.ModelState
+                    .Where(x => string.IsNullOrEmpty(x.Key))
+                    .SelectMany(x => x.Value.Errors)
+                    .ToList();
+
+                if (generalErrors.Any())
+                {
+                    <div class="alert alert-error">
+                        <i class="bi bi-exclamation-circle"></i>
+                        <div>
+                            @foreach (var error in generalErrors)
+                            {
+                                <div>@error.ErrorMessage</div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+
             <form asp-action="Register" asp-controller="Account" method="post">
                 @Html.AntiForgeryToken()
 
-                <div asp-validation-summary="ModelOnly"></div>
-
                 <div class="input-row">
                     <div class="field">
-                        <label asp-for="Name"></label>
-                        <input asp-for="Name" />
+                        <label asp-for="Name">Full Name</label>
+                        <input asp-for="Name" placeholder="Enter your full name" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
                     <div class="field">
-                        <label asp-for="UserName"></label>
-                        <input asp-for="UserName" />
+                        <label asp-for="UserName">Username</label>
+                        <input asp-for="UserName" placeholder="Choose a username" />
                         <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="field">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" />
+                    <label asp-for="Email">Email Address</label>
+                    <input asp-for="Email" placeholder="you@example.com" />
                     <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="PhoneNumber">Phone Number</label>
+                    <input asp-for="PhoneNumber" placeholder="01234567890" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Address">Address</label>
+                    <input asp-for="Address" placeholder="City, Country" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
 
                 <div class="input-row">
                     <div class="field">
-                        <label asp-for="Password"></label>
-                        <input asp-for="Password" type="password" id="passwordInput" />
+                        <label asp-for="Password">Password</label>
+                        <div class="password-wrapper">
+                            <input asp-for="Password" type="password" id="passwordInput" placeholder="Create password" />
+                            <button type="button" class="toggle-password" onclick="togglePassword('passwordInput', 'eyeIcon1')">
+                                <i class="bi bi-eye" id="eyeIcon1"></i>
+                            </button>
+                        </div>
                         <div class="password-strength">
                             <div id="strengthBar"></div>
                         </div>
@@ -69,19 +105,19 @@
                     </div>
 
                     <div class="field">
-                        <label asp-for="ConfirmPassword"></label>
-                        <input asp-for="ConfirmPassword" type="password" />
+                        <label asp-for="ConfirmPassword">Confirm Password</label>
+                        <div class="password-wrapper">
+                            <input asp-for="ConfirmPassword" type="password" id="confirmPasswordInput" placeholder="Confirm password" />
+                            <button type="button" class="toggle-password" onclick="togglePassword('confirmPasswordInput', 'eyeIcon2')">
+                                <i class="bi bi-eye" id="eyeIcon2"></i>
+                            </button>
+                        </div>
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="field">
-                    <label asp-for="PhoneNumber"></label>
-                    <input asp-for="PhoneNumber" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                </div>
-
                 <button type="submit" class="btn-gradient">
+                    <i class="bi bi-person-check"></i>
                     Create Account
                 </button>
 
@@ -166,11 +202,13 @@ html,body{
     font-size:3.8rem;
     margin-bottom:25px;
     font-weight:800;
+    line-height: 1.1;
 }
 
 .hero-text p{
     font-size:1.2rem;
     opacity:.9;
+    line-height: 1.6;
 }
 
 .right-side{
@@ -180,61 +218,130 @@ html,body{
     align-items:center;
     justify-content:center;
     padding:60px;
+    overflow-y: auto;
 }
 
 .form-box{
     width:100%;
-    max-width:480px;
+    max-width:520px;
 }
 
 .form-box h2{
     font-size:2.2rem;
     margin-bottom:10px;
+    font-weight: 800;
 }
 
 .form-box p{
     color:#718096;
-    margin-bottom:20px;
+    margin-bottom:25px;
+}
+
+.alert {
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.alert i {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.alert > div {
+    flex: 1;
+}
+
+.alert > div > div {
+    margin-bottom: 4px;
+}
+
+.alert > div > div:last-child {
+    margin-bottom: 0;
 }
 
 .input-row{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:20px;
+    gap:18px;
 }
 
 .field{
-    margin-bottom:18px;
+    margin-bottom:16px;
 }
 
 .field label{
     display:block;
     font-size:.85rem;
     font-weight:700;
-    margin-bottom:6px;
+    margin-bottom:7px;
+    color: #1a202c;
 }
 
 .field input{
     width:100%;
-    padding:14px;
+    padding:13px 14px;
     border-radius:12px;
     border:2px solid #edf2f7;
     background:#f8fafc;
     transition:.3s;
+    font-size: 15px;
 }
 
 .field input:focus{
     outline:none;
     border-color:var(--primary);
     background:white;
-    box-shadow:0 0 0 4px rgba(56,178,172,.15);
+    box-shadow:0 0 0 4px rgba(56,178,172,.12);
+}
+
+.field input::placeholder {
+    color: #a0aec0;
+}
+
+/* Password Wrapper */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.toggle-password:hover {
+    color: var(--primary);
 }
 
 .password-strength{
-    height:6px;
+    height:5px;
     background:#e2e8f0;
     border-radius:10px;
-    margin-top:6px;
+    margin-top:7px;
     overflow:hidden;
 }
 
@@ -244,75 +351,142 @@ html,body{
     transition:.3s;
 }
 
+#strengthText {
+    display: block;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    font-weight: 600;
+}
+
 .btn-gradient{
     width:100%;
-    padding:16px;
+    padding:15px;
     border:none;
     border-radius:12px;
     background:var(--brand-gradient);
     color:white;
     font-weight:700;
+    font-size: 16px;
     cursor:pointer;
-    margin-top:10px;
+    margin-top:12px;
     transition:.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 14px rgba(56, 178, 172, 0.3);
 }
 
 .btn-gradient:hover{
-    transform:translateY(-4px);
+    transform:translateY(-3px);
+    box-shadow: 0 6px 20px rgba(56, 178, 172, 0.4);
+}
+
+.btn-gradient i {
+    font-size: 20px;
 }
 
 .text-danger{
     font-size:.8rem;
     color:#e53e3e;
-    margin-top:4px;
+    margin-top:5px;
     display:block;
+    font-weight: 500;
 }
 
-.validation-summary-errors{
-    color:#e53e3e;
-    padding:10px;
-    margin-bottom:15px;
-    font-size:.9rem;
+/* Responsive */
+@@media (max-width: 992px) {
+    .left-side {
+        display: none;
+    }
+    
+    .right-side {
+        flex: 1;
+    }
 }
 
+@@media (max-width: 768px) {
+    .input-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .right-side {
+        padding: 40px 30px;
+    }
+    
+    .form-box h2 {
+        font-size: 1.8rem;
+    }
+}
 </style>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
 <script>
+// Password Strength Checker
 const passwordInput = document.getElementById("passwordInput");
 const strengthBar = document.getElementById("strengthBar");
 const strengthText = document.getElementById("strengthText");
 
-passwordInput.addEventListener("input", function () {
-    const val = this.value;
-    let strength = 0;
+if (passwordInput) {
+    passwordInput.addEventListener("input", function () {
+        const val = this.value;
+        let strength = 0;
 
-    if (val.length >= 6) strength++;
-    if (/[A-Z]/.test(val)) strength++;
-    if (/[0-9]/.test(val)) strength++;
-    if (/[^A-Za-z0-9]/.test(val)) strength++;
+        if (val.length >= 6) strength++;
+        if (/[A-Z]/.test(val)) strength++;
+        if (/[0-9]/.test(val)) strength++;
+        if (/[^A-Za-z0-9]/.test(val)) strength++;
 
-    if (strength <= 1) {
-        strengthBar.style.width = "25%";
-        strengthBar.style.background = "red";
-        strengthText.innerText = "Weak";
+        if (val.length === 0) {
+            strengthBar.style.width = "0%";
+            strengthText.innerText = "";
+        }
+        else if (strength <= 1) {
+            strengthBar.style.width = "25%";
+            strengthBar.style.background = "#ef4444";
+            strengthText.innerText = "Weak";
+            strengthText.style.color = "#ef4444";
+        }
+        else if (strength == 2) {
+            strengthBar.style.width = "50%";
+            strengthBar.style.background = "#f59e0b";
+            strengthText.innerText = "Fair";
+            strengthText.style.color = "#f59e0b";
+        }
+        else if (strength == 3) {
+            strengthBar.style.width = "75%";
+            strengthBar.style.background = "#38b2ac";
+            strengthText.innerText = "Good";
+            strengthText.style.color = "#38b2ac";
+        }
+        else {
+            strengthBar.style.width = "100%";
+            strengthBar.style.background = "#10b981";
+            strengthText.innerText = "Strong";
+            strengthText.style.color = "#10b981";
+        }
+    });
+}
+
+// Toggle Password Visibility
+function togglePassword(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
     }
-    else if (strength == 2) {
-        strengthBar.style.width = "50%";
-        strengthBar.style.background = "orange";
-        strengthText.innerText = "Fair";
-    }
-    else if (strength == 3) {
-        strengthBar.style.width = "75%";
-        strengthBar.style.background = "#38b2ac";
-        strengthText.innerText = "Good";
-    }
-    else {
-        strengthBar.style.width = "100%";
-        strengthBar.style.background = "green";
-        strengthText.innerText = "Strong";
-    }
-});
+}
 </script>
-
 </body>
 </html>

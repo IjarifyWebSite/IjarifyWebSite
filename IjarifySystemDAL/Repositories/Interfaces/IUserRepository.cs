@@ -12,6 +12,7 @@ namespace IjarifySystemDAL.Repositories.Interfaces
         public User? GetById(int id);
         public void Update(User user);
         public void Add(User user);
+        public User? GetByPhoneNumber(string phoneNumber);
         public void Delete(User user);
         public int SaveChanges();
     }

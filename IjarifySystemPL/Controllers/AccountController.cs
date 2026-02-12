@@ -309,6 +309,17 @@ namespace IjarifySystemPL.Controllers
                     return View(newUser);
                 }
 
+                // Check if phone number already exists
+                if (!string.IsNullOrEmpty(newUser.PhoneNumber))
+                {
+                    var existingPhone = _userService.GetUserByPhoneNumber(newUser.PhoneNumber);
+                    if (existingPhone != null)
+                    {
+                        ModelState.AddModelError("PhoneNumber", "This phone number is already registered. Please use a different number.");
+                        return View(newUser);
+                    }
+                }
+
                 // Create new user
                 User user = new User
                 {
