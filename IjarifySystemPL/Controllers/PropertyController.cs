@@ -9,6 +9,7 @@ using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.Services.Classes;
 using Microsoft.AspNetCore.Identity;
 using IjarifySystemDAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IjarifySystemPL.Controllers
 {
@@ -35,6 +36,7 @@ namespace IjarifySystemPL.Controllers
         }
 
         // GET: PropertyController/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -43,7 +45,7 @@ namespace IjarifySystemPL.Controllers
         // POST: PropertyController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        
+        [Authorize]
         public async Task<ActionResult> Create(CreatePropertyViewModel model)
         {
             if (!ModelState.IsValid)
@@ -54,7 +56,8 @@ namespace IjarifySystemPL.Controllers
             try
             {
                 // Get current logged-in user ID (adjust based on your authentication)
-                int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var user = await _userManager.GetUserAsync(User);
+                int userId = user.Id;
 
                 if (userId == 0)
                 {
@@ -74,6 +77,7 @@ namespace IjarifySystemPL.Controllers
         }
 
         // GET: PropertyController/Edit/5
+        [Authorize]
         public async Task<ActionResult> Edit(int id)
         {
             var model = await _propertyService.GetPropertyForEditAsync(id);
@@ -96,7 +100,7 @@ namespace IjarifySystemPL.Controllers
             return View(model);
         }
 
-        // POST: PropertyController/Edit/5
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, CreatePropertyViewModel model)
@@ -128,10 +132,9 @@ namespace IjarifySystemPL.Controllers
         }
 
 
-        // POST: PropertyController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         // GET: PropertyController/Delete/5
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int id)
         {
             var property = await _propertyService.GetPropertyDetails(id);
@@ -143,6 +146,11 @@ namespace IjarifySystemPL.Controllers
 
             // Check if current user owns the property
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
 
             if (property.AgentId != userId)
             {
@@ -161,6 +169,11 @@ namespace IjarifySystemPL.Controllers
             try
             {
                 int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+                if (userId == 0)
+                {
+                    return Unauthorized();
+                }
 
                 bool deleted = await _propertyService.DeletePropertyAsync(id, userId);
 

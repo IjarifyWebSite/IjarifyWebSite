@@ -97,7 +97,7 @@
                             <h5>What will be deleted:</h5>
                             <ul>
                                 <li><i class="bi bi-x-circle text-danger"></i> Property information and description</li>
-                                <li><i class="bi bi-x-circle text-danger"></i> All property images (@Model.Images?.Count ?? 0 images)</li>
+                                <li><i class="bi bi-x-circle text-danger"></i> All property images (@(Model.Images?.Count ?? 0) images)</li>
                                 <li><i class="bi bi-x-circle text-danger"></i> Property amenities and features</li>
                                 <li><i class="bi bi-x-circle text-danger"></i> All inquiries and messages</li>
                                 <li><i class="bi bi-x-circle text-danger"></i> All bookings and reservations</li>
@@ -107,9 +107,8 @@
                         </div>
 
                         <!-- Action Buttons -->
-                        <form asp-action="DeleteConfirmed" method="post" class="delete-form">
+                        <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post" class="delete-form">
                             @Html.AntiForgeryToken()
-                            <input type="hidden" asp-for="Id" />
 
                             <div class="action-buttons">
                                 <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary btn-lg">
@@ -155,16 +154,17 @@
         animation: pulse 2s infinite;
     }
 
-    .warning-icon i {
-        font-size: 50px;
-        color: white;
-    }
+        .warning-icon i {
+            font-size: 50px;
+            color: white;
+        }
 
     @@keyframes pulse {
         0%, 100% {
             transform: scale(1);
             box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
         }
+
         50% {
             transform: scale(1.05);
             box-shadow: 0 0 0 20px rgba(255, 107, 107, 0);
@@ -225,10 +225,10 @@
         font-size: 15px;
     }
 
-    .detail-item i {
-        color: #2c7a7b;
-        font-size: 18px;
-    }
+        .detail-item i {
+            color: #2c7a7b;
+            font-size: 18px;
+        }
 
     .property-badges .badge {
         font-size: 13px;
@@ -245,37 +245,37 @@
         text-align: left;
     }
 
-    .warning-list h5 {
-        font-size: 18px;
-        font-weight: 700;
-        color: #dc2626;
-        margin-bottom: 20px;
-    }
+        .warning-list h5 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #dc2626;
+            margin-bottom: 20px;
+        }
 
-    .warning-list ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
+        .warning-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-    .warning-list li {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 0;
-        border-bottom: 1px solid #fee2e2;
-        color: #475569;
-        font-size: 15px;
-    }
+        .warning-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #fee2e2;
+            color: #475569;
+            font-size: 15px;
+        }
 
-    .warning-list li:last-child {
-        border-bottom: none;
-    }
+            .warning-list li:last-child {
+                border-bottom: none;
+            }
 
-    .warning-list li i {
-        font-size: 20px;
-        flex-shrink: 0;
-    }
+            .warning-list li i {
+                font-size: 20px;
+                flex-shrink: 0;
+            }
 
     .action-buttons {
         display: flex;
@@ -301,12 +301,12 @@
         border: 2px solid #e2e8f0;
     }
 
-    .btn-secondary:hover {
-        background: #e2e8f0;
-        border-color: #cbd5e1;
-        color: #334155;
-        transform: translateY(-2px);
-    }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+            color: #334155;
+            transform: translateY(-2px);
+        }
 
     .btn-danger {
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
@@ -314,10 +314,10 @@
         border: none;
     }
 
-    .btn-danger:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
-    }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
 
     @@media (max-width: 768px) {
         .delete-confirmation-card {
