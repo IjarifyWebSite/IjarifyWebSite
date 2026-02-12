@@ -1,5 +1,7 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.InquiryViewModels;
+using IjarifySystemDAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IjarifySystemPL.Controllers
@@ -7,22 +9,31 @@ namespace IjarifySystemPL.Controllers
     public class InquiryController : Controller
     {
         private readonly IInquiryService _inquiryService;
+        private readonly UserManager<User> _userManager;
 
-        public InquiryController(IInquiryService inquiryService)
+        public InquiryController(IInquiryService inquiryService, UserManager<User> userManager)
         {
             _inquiryService = inquiryService;
+            _userManager = userManager;
+        }
+
+        private async Task<int?> GetCurrentUserIdAsync()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            return currentUser?.Id;
         }
 
         //   /Inquiry/Index
-        public IActionResult Index(int userId)
+        public async Task<IActionResult> Index()
         {
-            
-            if (userId == 0)
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null)
             {
-                userId = 1; // test  
+                return RedirectToAction("Login", "Account"); 
             }
 
-            var viewModel = _inquiryService.GetUserInquiries(userId);
+            var viewModel = _inquiryService.GetUserInquiries(userId.Value);
             return View(viewModel);
         }
 
@@ -39,7 +50,6 @@ namespace IjarifySystemPL.Controllers
         }
 
         //  /Inquiry/Details/{id}
-       
         public IActionResult Details(int id)
         {
             var viewModel = _inquiryService.GetInquiryDetails(id);
@@ -53,35 +63,47 @@ namespace IjarifySystemPL.Controllers
         }
 
         //  /Inquiry/Create
-        
-        public IActionResult Create(int propertyId)
+        public async Task<IActionResult> Create(int propertyId)
         {
             if (propertyId == 0)
             {
                 return RedirectToAction("Index", "Property");
             }
 
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account", new { returnUrl = Url.Action("Create", new { propertyId }) });
+            }
+
             var model = new CreateInquiryViewModel
             {
                 PropertyId = propertyId,
-                UserId = 1 
+                UserId = userId.Value 
             };
 
             return View(model);
         }
 
         //   /Inquiry/Create
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateInquiryViewModel model)
+        public async Task<IActionResult> Create(CreateInquiryViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            model.UserId = 1;
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null)
+            {
+                 return RedirectToAction("Login", "Account");
+            }
+
+            model.UserId = userId.Value;
 
             try
             {
@@ -105,17 +127,17 @@ namespace IjarifySystemPL.Controllers
         }
 
         //   /Inquiry/Delete/{id}
-       
         [HttpPost]
-        public IActionResult Delete(int id, int userId)
+        public async Task<IActionResult> Delete(int id)
         {
+            var userId = await GetCurrentUserIdAsync();
            
-            if (userId == 0)
+            if (userId == null)
             {
-                userId = 1;
+                return Json(new { success = false, message = "Unauthorized" });
             }
 
-            var result = _inquiryService.DeleteInquiry(id, userId);
+            var result = _inquiryService.DeleteInquiry(id, userId.Value);
 
             if (result)
             {
@@ -124,7 +146,5 @@ namespace IjarifySystemPL.Controllers
 
             return Json(new { success = false, message = "Failed to delete inquiry" });
         }
-
-    
     }
 }

@@ -1,40 +1,51 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
+using IjarifySystemDAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IjarifySystemPL.Controllers
 {
     public class FavouriteController : Controller
     {
-
-
-
         private readonly IFavouriteService _favouriteService;
+        private readonly UserManager<User> _userManager;
 
-        public FavouriteController(IFavouriteService favouriteService)
+        public FavouriteController(IFavouriteService favouriteService, UserManager<User> userManager)
         {
             _favouriteService = favouriteService;
+            _userManager = userManager;
         }
 
-
-        public IActionResult Index(int UserId)
+        private async Task<int?> GetCurrentUserIdAsync()
         {
-            if (UserId == 0)
+            var currentUser = await _userManager.GetUserAsync(User);
+            return currentUser?.Id;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null)
             {
-                UserId = 1; // مؤقت للتجربة
+                return RedirectToAction("Login", "Account");
             }
 
-            var viewModel = _favouriteService.GetUserFavourites(UserId);
+            var viewModel = _favouriteService.GetUserFavourites(userId.Value);
             return View(viewModel);
         }
 
-
-
-
-
         [HttpPost]
-        public IActionResult Add(int userId, int propertyId, string returnUrl = "")
+        public async Task<IActionResult> Add(int propertyId, string returnUrl = "")
         {
-            var result = _favouriteService.AddToFavourites(userId, propertyId);
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var result = _favouriteService.AddToFavourites(userId.Value, propertyId);
 
             if (result)
             {
@@ -45,58 +56,51 @@ namespace IjarifySystemPL.Controllers
                 TempData["ErrorMessage"] = "Failed to add to favourites.";
             }
 
-            // ارجع للصفحة اللي جاي منها
+            // Return to the previous page
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 return Redirect(returnUrl);
             }
 
-            return RedirectToAction("Index", new { userId = userId });
+            return RedirectToAction("Index");
         }
 
-
-
-
         [HttpPost]
-        public IActionResult Remove(int userId, int propertyId, string returnUrl = "")
+        public async Task<IActionResult> Remove(int propertyId)
         {
-            var result = _favouriteService.RemoveFromFavourites(userId, propertyId);
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null)
+            {
+                return Json(new { success = false, message = "Unauthorized" });
+            }
+
+            var result = _favouriteService.RemoveFromFavourites(userId.Value, propertyId);
 
             if (result)
             {
-                TempData["SuccessMessage"] = "Removed from favourites successfully!";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Failed to remove from favourites.";
+                return Json(new { success = true, message = "Removed from favourites successfully!" });
             }
 
-            // ارجع للصفحة اللي جاي منها
-            if (!string.IsNullOrEmpty(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-
-            return RedirectToAction("Index", new { userId = userId });
+            return Json(new { success = false, message = "Failed to remove from favourites." });
         }
 
-
-
-
         [HttpPost]
-        public IActionResult Toggle(int userId, int propertyId, string returnUrl = "")
+        public async Task<IActionResult> Toggle(int propertyId, string returnUrl = "")
         {
-            if (userId == 0)
+            var userId = await GetCurrentUserIdAsync();
+
+            if (userId == null)
             {
-                TempData["ErrorMessage"] = "User not found";
-                return RedirectToAction("Index", "Home");
+                TempData["ErrorMessage"] = "Please login to add favorites";
+                return RedirectToAction("Login", "Account", new { returnUrl });
             }
 
-            var result = _favouriteService.ToggleFavourite(userId, propertyId);
+            var result = _favouriteService.ToggleFavourite(userId.Value, propertyId);
 
             if (result)
             {
-                var isFavourite = _favouriteService.IsPropertyFavourite(userId, propertyId);
+                var isFavourite = _favouriteService.IsPropertyFavourite(userId.Value, propertyId);
                 if (isFavourite)
                 {
                     TempData["SuccessMessage"] = "Added to favourites!";
@@ -111,15 +115,12 @@ namespace IjarifySystemPL.Controllers
                 TempData["ErrorMessage"] = "Failed to update favourite";
             }
 
-            // ارجع للصفحة اللي جاي منها
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 return Redirect(returnUrl);
             }
 
-            return RedirectToAction("Index", new { userId = userId });
+            return RedirectToAction("Index");
         }
     }
 }
-
- 

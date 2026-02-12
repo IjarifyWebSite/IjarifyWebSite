@@ -92,7 +92,7 @@ namespace IjarifySystemBLL.Services.Classes
                 InquiryId = inquiry.Id,
                 PropertyId = inquiry.PropertyId,
                 PropertyTitle = inquiry.Property?.Title ?? "Unknown Property",
-              
+                PropertyImage = inquiry.Property?.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "/images/no-image.jpg",
                 PropertyLocation = $"{inquiry.Property?.Location?.City}, {inquiry.Property?.Location?.Regoin}",
                 PropertyPrice = inquiry.Property?.Price ?? 0,
                 SenderId = inquiry.UserId,

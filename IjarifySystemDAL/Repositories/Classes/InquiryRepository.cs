@@ -57,6 +57,8 @@ namespace IjarifySystemDAL.Repositories.Classes
                         .ThenInclude(p => p.Location)
                     .Include(i => i.Property)
                         .ThenInclude(p => p.User)
+                    .Include(i => i.Property)
+                        .ThenInclude(p => p.PropertyImages)
                     .Where(i => i.UserId == userId)
                     .OrderByDescending(i => i.CreatedAt)
                     .ToList();
@@ -69,6 +71,8 @@ namespace IjarifySystemDAL.Repositories.Classes
                         .ThenInclude(p => p.Location)
                     .Include(i => i.Property)
                         .ThenInclude(p => p.User)
+                    .Include(i => i.Property)
+                        .ThenInclude(p => p.PropertyImages)
                     .Where(i => i.UserId == userId)
                     .Where(Condition)
                     .OrderByDescending(i => i.CreatedAt)
@@ -113,6 +117,8 @@ namespace IjarifySystemDAL.Repositories.Classes
                     .ThenInclude(p => p.Location)
                 .Include(i => i.Property)
                     .ThenInclude(p => p.User)
+                .Include(i => i.Property)
+                    .ThenInclude(p => p.PropertyImages)
                 .FirstOrDefault(i => i.Id == id);
         }
 

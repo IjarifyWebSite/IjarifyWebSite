@@ -2,7 +2,9 @@
 using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.PropertyViewModels;
+using IjarifySystemDAL.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using IjarifySystemBLL.Services.Interfaces;
@@ -15,11 +17,28 @@ namespace IjarifySystemPL.Controllers
 {
     public class PropertyController(IPropertyService _propertyService, UserManager<User> _userManager) : Controller
     {
+        private readonly IPropertyService _propertyService;
+        private readonly IFavouriteService _favouriteService;
+        private readonly UserManager<User> _userManager;
+
+        public PropertyController(IPropertyService propertyService, IFavouriteService favouriteService, UserManager<User> userManager)
+        {
+            _propertyService = propertyService;
+            _favouriteService = favouriteService;
+            _userManager = userManager;
+        }
+
+        private async Task<int?> GetCurrentUserIdAsync()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            return currentUser?.Id;
+        }
 
         // GET: PropertyController
         public async Task<ActionResult> Index(PropertyFilterViewModel filter, int page = 1)
         {
-            var pageViewModel = await _propertyService.GetPagination(4, page, filter);
+            var userId = await GetCurrentUserIdAsync();
+            var pageViewModel = await _propertyService.GetPagination(4, page, filter, userId);
             ViewBag.CurrentPage = pageViewModel.CurrentPage;
             ViewBag.TotalPages = pageViewModel.TotalPages;
             return View(pageViewModel);
@@ -32,7 +51,7 @@ namespace IjarifySystemPL.Controllers
             int? userId = currentUser?.Id;
             var vmModel = await _propertyService.GetPropertyDetails(id , userId);
 
-            return View("Details",vmModel);
+            return View("Details", vmModel);
         }
 
         // GET: PropertyController/Create
