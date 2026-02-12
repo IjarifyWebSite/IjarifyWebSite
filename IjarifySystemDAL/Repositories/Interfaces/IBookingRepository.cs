@@ -17,6 +17,7 @@ namespace IjarifySystemDAL.Repositories.Interfaces
         Task<Booking?> GetBookingWithDetailsAsync(int bookingId);
         Task<IEnumerable<Booking>> GetActiveBookingsAsync();
         Task<Property?> GetPropertyBasicInfo(int propertyId);
+        Task<IEnumerable<Booking>> GetPropertyOwnerBookingsAsync(int userId);
 
         // Write Operations
         Task AddAsync(Booking booking);

@@ -1,5 +1,6 @@
 ﻿using IjarifySystemBLL.DTOs.Bookings;
 using IjarifySystemBLL.Services.Interfaces;
+using IjarifySystemBLL.ViewModels.Booking;
 using IjarifySystemDAL.Entities;
 using IjarifySystemDAL.Entities.Enums;
 using IjarifySystemDAL.Repositories.Interfaces;
@@ -88,6 +89,9 @@ namespace IjarifySystemBLL.Services.Classes
             if (booking == null)
                 return false;
 
+            if (booking.Status != BookingStatus.Pending)
+                throw new InvalidOperationException("Only pending bookings can be cancelled");
+
             _bookingRepository.Delete(booking);
             await _bookingRepository.SaveChangesAsync();
 
@@ -141,8 +145,6 @@ namespace IjarifySystemBLL.Services.Classes
             throw new NotImplementedException();
         }
 
-        
-
         public Task<bool> ApproveBookingAsync(int id)
         {
             throw new NotImplementedException();
@@ -152,5 +154,74 @@ namespace IjarifySystemBLL.Services.Classes
         {
             throw new NotImplementedException();
         }
+        // ✅ Get Property Owner Requests
+        public async Task<MyRequestsViewModel> GetPropertyOwnerRequestsAsync(int userId)
+        {
+            var bookings = await _bookingRepository.GetPropertyOwnerBookingsAsync(userId);
+            var bookingDtos = bookings.Select(MapToReadDtoSync).ToList();
+
+            return new  MyRequestsViewModel
+            {
+                PendingRequests = bookingDtos
+                    .Where(b => b.Status == BookingStatus.Pending)
+                    .ToList(),
+
+                ApprovedRequests = bookingDtos
+                    .Where(b => b.Status == BookingStatus.Approved)
+                    .ToList(),
+
+                RejectedRequests = bookingDtos
+                    .Where(b => b.Status == BookingStatus.Rejected)
+                    .ToList()
+            };
+        }
+
+        // ✅ Approve Booking
+        public async Task<bool> ApproveBookingAsync(int bookingId, int propertyOwnerId)
+        {
+            var booking = await _bookingRepository.GetBookingWithDetailsAsync(bookingId);
+
+            if (booking == null)
+                throw new KeyNotFoundException("Booking not found");
+
+            if (booking.Property?.UserId != propertyOwnerId)
+                throw new UnauthorizedAccessException("You can only approve bookings on your own properties");
+
+            if (booking.Status != BookingStatus.Pending)
+                throw new InvalidOperationException("Only pending bookings can be approved");
+
+            booking.Status = BookingStatus.Approved;
+            _bookingRepository.Update(booking);
+            await _bookingRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> RejectBookingAsync(int bookingId, int propertyOwnerId)
+        {
+            var booking = await _bookingRepository.GetBookingWithDetailsAsync(bookingId);
+
+            if (booking == null)
+                throw new KeyNotFoundException("Booking not found");
+
+            if (booking.Property?.UserId != propertyOwnerId)
+                throw new UnauthorizedAccessException("You can only reject bookings on your own properties");
+
+            if (booking.Status != BookingStatus.Pending)
+                throw new InvalidOperationException("Only pending bookings can be rejected");
+
+            booking.Status = BookingStatus.Rejected;
+            _bookingRepository.Update(booking);
+            await _bookingRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        //Task<MyRequestsViewModel> IBookingService.GetPropertyOwnerRequestsAsync(int userId)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        
     }
 }

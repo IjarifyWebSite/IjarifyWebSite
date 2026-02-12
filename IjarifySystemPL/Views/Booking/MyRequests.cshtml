@@ -1,0 +1,1142 @@
+﻿@model IjarifySystemBLL.ViewModels.Booking.MyRequestsViewModel
+
+@{
+    ViewData["Title"] = "Property Requests - Ijarify";
+}
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="requests-wrapper">
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="header-icon">
+                        <i class="bi bi-inbox"></i>
+                    </div>
+                    <div>
+                        <h1>Property Requests</h1>
+                        <p>Manage booking requests on your properties</p>
+                    </div>
+                </div>
+                <a asp-controller="Property" asp-action="MyProperties" class="btn-manage">
+                    <i class="bi bi-buildings"></i>
+                    My Properties
+                </a>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert-box success">
+                <i class="bi bi-check-circle-fill"></i>
+                <div>
+                    <strong>Success!</strong>
+                    <p>@TempData["Success"]</p>
+                </div>
+                <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert-box error">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <div>
+                    <strong>Error!</strong>
+                    <p>@TempData["Error"]</p>
+                </div>
+                <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        }
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card pending">
+                <div class="stat-icon">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>@Model.PendingRequests.Count</h3>
+                    <p>Pending Requests</p>
+                </div>
+                <div class="stat-badge">Review</div>
+            </div>
+
+            <div class="stat-card approved">
+                <div class="stat-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>@Model.ApprovedRequests.Count</h3>
+                    <p>Approved Bookings</p>
+                </div>
+                <div class="stat-badge">Active</div>
+            </div>
+
+            <div class="stat-card rejected">
+                <div class="stat-icon">
+                    <i class="bi bi-x-circle-fill"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>@Model.RejectedRequests.Count</h3>
+                    <p>Declined Requests</p>
+                </div>
+                <div class="stat-badge">Closed</div>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs-container">
+            <nav class="request-tabs">
+                <button class="tab-btn active" data-tab="pending">
+                    <i class="bi bi-hourglass-split"></i>
+                    <span>Pending</span>
+                    @if (Model.PendingRequests.Any())
+                    {
+                        <span class="count-badge">@Model.PendingRequests.Count</span>
+                    }
+                </button>
+                <button class="tab-btn" data-tab="approved">
+                    <i class="bi bi-check-circle"></i>
+                    <span>Approved</span>
+                    @if (Model.ApprovedRequests.Any())
+                    {
+                        <span class="count-badge">@Model.ApprovedRequests.Count</span>
+                    }
+                </button>
+                <button class="tab-btn" data-tab="rejected">
+                    <i class="bi bi-x-octagon"></i>
+                    <span>Rejected</span>
+                    @if (Model.RejectedRequests.Any())
+                    {
+                        <span class="count-badge">@Model.RejectedRequests.Count</span>
+                    }
+                </button>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+
+                <!-- Pending Tab -->
+                <div class="tab-pane active" id="pending-tab">
+                    @if (Model.PendingRequests.Any())
+                    {
+                        <div class="requests-grid">
+                            @foreach (var request in Model.PendingRequests)
+                            {
+                                <div class="request-card">
+                                    <!-- Card Header -->
+                                    <div class="card-header-section">
+                                        <div class="header-left">
+                                            <div class="booking-number">
+                                                <i class="bi bi-receipt"></i>
+                                                <span>Request #@request.Id</span>
+                                            </div>
+                                        </div>
+                                        <div class="status-badge status-pending">
+                                            <i class="bi bi-hourglass-split"></i>
+                                            <span>Pending Review</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Guest Info -->
+                                    <div class="guest-section">
+                                        <div class="guest-icon">
+                                            <i class="bi bi-person-circle"></i>
+                                        </div>
+                                        <div class="guest-details">
+                                            <h4>@request.UserName</h4>
+                                            <div class="guest-contact">
+                                                <span><i class="bi bi-envelope"></i> @request.UserEmail</span>
+                                                @if (!string.IsNullOrEmpty(request.UserPhone))
+                                                {
+                                                    <span><i class="bi bi-telephone"></i> @request.UserPhone</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Property Info -->
+                                    <div class="property-info">
+                                        <i class="bi bi-building"></i>
+                                        <span>@request.PropertyTitle</span>
+                                    </div>
+
+                                    <!-- Dates -->
+                                    <div class="dates-section">
+                                        <div class="date-item">
+                                            <i class="bi bi-calendar-check"></i>
+                                            <div>
+                                                <small>Check-In</small>
+                                                <strong>@request.Check_In.ToString("dd MMM yyyy")</strong>
+                                            </div>
+                                        </div>
+                                        <div class="arrow">
+                                            <i class="bi bi-arrow-right"></i>
+                                            <span>@((request.Check_Out - request.Check_In).Days) nights</span>
+                                        </div>
+                                        <div class="date-item">
+                                            <i class="bi bi-calendar-x"></i>
+                                            <div>
+                                                <small>Check-Out</small>
+                                                <strong>@request.Check_Out.ToString("dd MMM yyyy")</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Price & Actions -->
+                                    <div class="card-footer">
+                                        <div class="price-info">
+                                            <small>Total Amount</small>
+                                            <h3>@request.TotalPrice.ToString("C")</h3>
+                                        </div>
+                                        <div class="action-buttons">
+                                            <form asp-action="Approve" asp-route-id="@request.Id" method="post" style="display:inline;" onsubmit="return confirm('Approve this booking request?');">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn-approve">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                    Approve
+                                                </button>
+                                            </form>
+
+                                            <form asp-action="Reject" asp-route-id="@request.Id" method="post" style="display:inline;" onsubmit="return confirm('Reject this booking request?');">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn-reject">
+                                                    <i class="bi bi-x-circle-fill"></i>
+                                                    Reject
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="bi bi-inbox"></i>
+                            </div>
+                            <h3>No Pending Requests</h3>
+                            <p>You don't have any booking requests waiting for review.</p>
+                        </div>
+                    }
+                </div>
+
+                <!-- Approved Tab -->
+                <div class="tab-pane" id="approved-tab">
+                    @if (Model.ApprovedRequests.Any())
+                    {
+                        <div class="requests-grid">
+                            @foreach (var request in Model.ApprovedRequests)
+                            {
+                                <div class="request-card approved">
+                                    <div class="card-header-section">
+                                        <div class="header-left">
+                                            <div class="booking-number">
+                                                <i class="bi bi-receipt"></i>
+                                                <span>Request #@request.Id</span>
+                                            </div>
+                                        </div>
+                                        <div class="status-badge status-approved">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            <span>Approved</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="guest-section">
+                                        <div class="guest-icon">
+                                            <i class="bi bi-person-circle"></i>
+                                        </div>
+                                        <div class="guest-details">
+                                            <h4>@request.UserName</h4>
+                                            <div class="guest-contact">
+                                                <span><i class="bi bi-envelope"></i> @request.UserEmail</span>
+                                                @if (!string.IsNullOrEmpty(request.UserPhone))
+                                                {
+                                                    <span><i class="bi bi-telephone"></i> @request.UserPhone</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="property-info">
+                                        <i class="bi bi-building"></i>
+                                        <span>@request.PropertyTitle</span>
+                                    </div>
+
+                                    <div class="dates-section">
+                                        <div class="date-item">
+                                            <i class="bi bi-calendar-check"></i>
+                                            <div>
+                                                <small>Check-In</small>
+                                                <strong>@request.Check_In.ToString("dd MMM yyyy")</strong>
+                                            </div>
+                                        </div>
+                                        <div class="arrow">
+                                            <i class="bi bi-arrow-right"></i>
+                                            <span>@((request.Check_Out - request.Check_In).Days) nights</span>
+                                        </div>
+                                        <div class="date-item">
+                                            <i class="bi bi-calendar-x"></i>
+                                            <div>
+                                                <small>Check-Out</small>
+                                                <strong>@request.Check_Out.ToString("dd MMM yyyy")</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        <div class="price-info">
+                                            <small>Total Amount</small>
+                                            <h3>@request.TotalPrice.ToString("C")</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <h3>No Approved Requests</h3>
+                            <p>You haven't approved any booking requests yet.</p>
+                        </div>
+                    }
+                </div>
+
+                <!-- Rejected Tab -->
+                <div class="tab-pane" id="rejected-tab">
+                    @if (Model.RejectedRequests.Any())
+                    {
+                        <div class="requests-grid">
+                            @foreach (var request in Model.RejectedRequests)
+                            {
+                                <div class="request-card rejected">
+                                    <div class="card-header-section">
+                                        <div class="header-left">
+                                            <div class="booking-number">
+                                                <i class="bi bi-receipt"></i>
+                                                <span>Request #@request.Id</span>
+                                            </div>
+                                        </div>
+                                        <div class="status-badge status-rejected">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                            <span>Rejected</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="guest-section">
+                                        <div class="guest-icon">
+                                            <i class="bi bi-person-circle"></i>
+                                        </div>
+                                        <div class="guest-details">
+                                            <h4>@request.UserName</h4>
+                                            <div class="guest-contact">
+                                                <span><i class="bi bi-envelope"></i> @request.UserEmail</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="property-info">
+                                        <i class="bi bi-building"></i>
+                                        <span>@request.PropertyTitle</span>
+                                    </div>
+
+                                    <div class="dates-section">
+                                        <div class="date-item">
+                                            <i class="bi bi-calendar-check"></i>
+                                            <div>
+                                                <small>Check-In</small>
+                                                <strong>@request.Check_In.ToString("dd MMM yyyy")</strong>
+                                            </div>
+                                        </div>
+                                        <div class="arrow">
+                                            <i class="bi bi-arrow-right"></i>
+                                            <span>@((request.Check_Out - request.Check_In).Days) nights</span>
+                                        </div>
+                                        <div class="date-item">
+                                            <i class="bi bi-calendar-x"></i>
+                                            <div>
+                                                <small>Check-Out</small>
+                                                <strong>@request.Check_Out.ToString("dd MMM yyyy")</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        <div class="price-info">
+                                            <small>Total Amount</small>
+                                            <h3>@request.TotalPrice.ToString("C")</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="bi bi-emoji-smile"></i>
+                            </div>
+                            <h3>No Rejected Requests</h3>
+                            <p>You haven't rejected any booking requests.</p>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Tab switching
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+
+                    this.classList.add('active');
+                    document.getElementById(targetTab + '-tab').classList.add('active');
+                });
+            });
+        });
+    </script>
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f8fafc;
+    }
+
+    .requests-wrapper {
+        margin-top:100px;
+        min-height: 100vh;
+        padding: 40px 0 80px;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Page Header */
+    .page-header {
+        margin-bottom: 40px;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .header-icon {
+        width: 72px;
+        height: 72px;
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        color: white;
+        box-shadow: 0 8px 24px rgba(13, 148, 136, 0.25);
+    }
+
+    .header-left h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 6px;
+    }
+
+    .header-left p {
+        color: #64748b;
+        font-size: 15px;
+        margin: 0;
+    }
+
+    .btn-manage {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 28px;
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        color: white;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
+        transition: all 0.3s;
+    }
+
+        .btn-manage:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+        }
+
+    /* Alert Box */
+    .alert-box {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+        .alert-box i:first-child {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .alert-box.success {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+        }
+
+            .alert-box.success i {
+                color: #16a34a;
+            }
+
+        .alert-box.error {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+        }
+
+            .alert-box.error i {
+                color: #dc2626;
+            }
+
+        .alert-box strong {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+
+        .alert-box p {
+            margin: 0;
+            font-size: 14px;
+            color: #475569;
+        }
+
+    .alert-close {
+        margin-left: auto;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        color: #94a3b8;
+        padding: 0;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .stat-card.pending::before {
+            background: linear-gradient(to bottom, #f59e0b, #fbbf24);
+        }
+
+        .stat-card.approved::before {
+            background: linear-gradient(to bottom, #10b981, #34d399);
+        }
+
+        .stat-card.rejected::before {
+            background: linear-gradient(to bottom, #ef4444, #f87171);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.12);
+        }
+
+    .stat-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        flex-shrink: 0;
+    }
+
+    .stat-card.pending .stat-icon {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #f59e0b;
+    }
+
+    .stat-card.approved .stat-icon {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #10b981;
+    }
+
+    .stat-card.rejected .stat-icon {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #ef4444;
+    }
+
+    .stat-content {
+        flex: 1;
+    }
+
+        .stat-content h3 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+
+        .stat-content p {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+            margin: 0;
+        }
+
+    .stat-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-card.pending .stat-badge {
+        background: #fef3c7;
+        color: #f59e0b;
+    }
+
+    .stat-card.approved .stat-badge {
+        background: #d1fae5;
+        color: #10b981;
+    }
+
+    .stat-card.rejected .stat-badge {
+        background: #fee2e2;
+        color: #ef4444;
+    }
+
+    /* Tabs */
+    .tabs-container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+    }
+
+    .request-tabs {
+        display: flex;
+        background: #f8fafc;
+        padding: 8px;
+        gap: 6px;
+        border-bottom: 1px solid #e2e8f0;
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 24px;
+        background: transparent;
+        border: none;
+        border-radius: 10px;
+        color: #64748b;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+
+        .tab-btn i {
+            font-size: 18px;
+        }
+
+        .tab-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+        }
+
+    .count-badge {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .tab-btn:not(.active) .count-badge {
+        background: #cbd5e1;
+        color: #475569;
+    }
+
+    /* Tab Content */
+    .tab-content {
+        padding: 32px;
+    }
+
+    .tab-pane {
+        display: none;
+    }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+    /* Requests Grid */
+    .requests-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+        gap: 24px;
+    }
+
+    /* Request Card */
+    .request-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s;
+    }
+
+        .request-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.12);
+        }
+
+    .card-header-section {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        padding: 20px 24px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .booking-number {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+        .booking-number i {
+            color: #0d9488;
+            font-size: 18px;
+        }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+        .status-badge i {
+            font-size: 16px;
+        }
+
+    .status-pending {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #92400e;
+        border: 1px solid #fcd34d;
+    }
+
+    .status-approved {
+        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+        color: #166534;
+        border: 1px solid #86efac;
+    }
+
+    .status-rejected {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #991b1b;
+        border: 1px solid #fca5a5;
+    }
+
+    /* Guest Section */
+    .guest-section {
+        padding: 24px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .guest-icon {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #3b82f6;
+        font-size: 28px;
+        flex-shrink: 0;
+    }
+
+    .guest-details h4 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 8px 0;
+    }
+
+    .guest-contact {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .guest-contact span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .guest-contact i {
+            font-size: 15px;
+            color: #0d9488;
+        }
+
+    /* Property Info */
+    .property-info {
+        padding: 16px 24px;
+        background: #f8fafc;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+        color: #475569;
+        font-weight: 600;
+    }
+
+        .property-info i {
+            color: #0d9488;
+            font-size: 18px;
+        }
+
+    /* Dates Section */
+    .dates-section {
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .date-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .date-item i {
+            font-size: 24px;
+        }
+
+        .date-item:first-child i {
+            color: #10b981;
+        }
+
+        .date-item:last-child i {
+            color: #ef4444;
+        }
+
+        .date-item small {
+            display: block;
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 2px;
+        }
+
+        .date-item strong {
+            display: block;
+            font-size: 14px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+    .arrow {
+        text-align: center;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+        .arrow i {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+    /* Card Footer */
+    .card-footer {
+        padding: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .price-info small {
+        display: block;
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .price-info h3 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0d9488;
+        margin: 0;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-approve,
+    .btn-reject {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-approve {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+        .btn-approve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+    .btn-reject {
+        background: #fee2e2;
+        color: #dc2626;
+        border: 1px solid #fca5a5;
+    }
+
+        .btn-reject:hover {
+            background: #fecaca;
+            transform: translateY(-2px);
+        }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        background: #f8fafc;
+        border-radius: 12px;
+    }
+
+    .empty-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+
+        .empty-icon i {
+            font-size: 60px;
+            color: #94a3b8;
+        }
+
+    .empty-state h3 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 12px;
+    }
+
+    .empty-state p {
+        font-size: 15px;
+        color: #64748b;
+    }
+
+    /* Responsive */
+    @@media (max-width: 1200px) {
+        .requests-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    @@media (max-width: 768px) {
+        .header-content
+
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-left {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-manage {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-content {
+        padding: 20px;
+    }
+
+    .dates-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .arrow {
+        transform: rotate(90deg);
+    }
+
+    .card-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .action-buttons {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .btn-approve,
+    .btn-reject {
+        width: 100%;
+        justify-content: center;
+    }
+
+    }
+</style>
+
+
