@@ -1,6 +1,7 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.AccountViewModels;
 using IjarifySystemDAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -34,14 +35,20 @@ namespace IjarifySystemPL.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Profile() 
         {
-            int userId = 4;
-            var user = _userService.GetUserById(userId);
+            var currentUser = await userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return RedirectToAction("Login");
+            }
 
-            var reviews = _reviewService.GetReviewsByUser(userId);
+            var user = _userService.GetUserById(currentUser.Id);
 
-            var allBookings = await _bookingService.GetUserBookingsAsync(userId);
+            var reviews = _reviewService.GetReviewsByUser(currentUser.Id);
+
+            var allBookings = await _bookingService.GetUserBookingsAsync(currentUser.Id);
 
             var profile = new ProfileViewModel
             {
@@ -49,8 +56,8 @@ namespace IjarifySystemPL.Controllers
                 Email = user.Email,
                 Address = user.Address ?? "Cairo, Egypt",
                 ProfileImageUrl = user.ImageUrl ?? "/images/default-avatar.jpg",
-                //PhoneNumber = user.Phone,
-                //WhatsApp = user.Phone,
+                PhoneNumber = user.PhoneNumber,
+                WhatsApp = user.PhoneNumber,
                 Reviews = reviews,
                 RecentBookings = allBookings
                     .OrderByDescending(b => b.Check_In)
@@ -74,11 +81,17 @@ namespace IjarifySystemPL.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditProfile()
+        [Authorize]
+        public async Task<IActionResult> EditProfile()
         {
-            int userId = 4;
+             var currentUser = await userManager.GetUserAsync(User);
 
-            var user = _userService.GetUserById(userId);
+             if (currentUser == null)
+             {
+                 return RedirectToAction("Login");
+             }
+
+            var user = _userService.GetUserById(currentUser.Id);
 
             if (user == null)
             {
@@ -90,8 +103,8 @@ namespace IjarifySystemPL.Controllers
                 FullName = user.Name,
                 Email = user.Email,
                 Address = user.Address,
-                //PhoneNumber = user.Phone,
-                //WhatsApp = user.Phone,
+                PhoneNumber = user.PhoneNumber,
+                WhatsApp = user.PhoneNumber,
                 ProfileImageUrl = user.ImageUrl ?? "/images/default-avatar.jpg"
             };
 
@@ -100,6 +113,7 @@ namespace IjarifySystemPL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> EditProfile(EditProfileViewModel editModel)
         {
             if (!ModelState.IsValid)
@@ -107,7 +121,12 @@ namespace IjarifySystemPL.Controllers
                 return View(editModel);
             }
 
-            int userId = 4;
+            var currentUser = await userManager.GetUserAsync(User);
+
+            if (currentUser == null)
+            {
+                return RedirectToAction("Login");
+            }
 
             try
             {
@@ -117,7 +136,7 @@ namespace IjarifySystemPL.Controllers
                 if (editModel.ProfileImage != null)
                 {
                     // Delete old image if exists
-                    var user = _userService.GetUserById(userId);
+                    var user = _userService.GetUserById(currentUser.Id);
                     if (user != null && !string.IsNullOrEmpty(user.ImageUrl))
                     {
                         DeleteImageFile(user.ImageUrl);
@@ -126,7 +145,7 @@ namespace IjarifySystemPL.Controllers
                     newImagePath = await SaveProfileImageAsync(editModel.ProfileImage);
                 }
 
-                bool isUpdated = _userService.UpdateUserProfile(editModel, userId, newImagePath);
+                bool isUpdated = _userService.UpdateUserProfile(editModel, currentUser.Id, newImagePath);
 
                 if (isUpdated)
                 {
@@ -147,17 +166,23 @@ namespace IjarifySystemPL.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteProfileImage()
+        [Authorize]
+        public async Task<IActionResult> DeleteProfileImage()
         {
-            int userId = 4;
+            var currentUser = await userManager.GetUserAsync(User);
+
+            if (currentUser == null)
+            {
+                return RedirectToAction("Login");
+            }
 
             try
             {
-                var user = _userService.GetUserById(userId);
+                var user = _userService.GetUserById(currentUser.Id);
                 if (user != null && !string.IsNullOrEmpty(user.ImageUrl))
                     DeleteImageFile(user.ImageUrl);
 
-                bool isDeleted = _userService.DeleteProfileImage(userId);
+                bool isDeleted = _userService.DeleteProfileImage(currentUser.Id);
 
                 if (isDeleted)
                 {
@@ -218,6 +243,10 @@ namespace IjarifySystemPL.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View("Login");
         }
 
@@ -225,26 +254,33 @@ namespace IjarifySystemPL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel loginUser)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                User user = await userManager.FindByNameAsync(loginUser.UserName);
-                if (user != null)
-                {
-                    //  check password
-                    bool IsExsits = await userManager.CheckPasswordAsync(user, loginUser.Password);
-                    if (IsExsits)
-                    {
-                        // Create Cookie
-                        await signInManager.SignInAsync(user, loginUser.RememberMe);
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-
-                ModelState.AddModelError(string.Empty, "Invalid Login Data");
+                return View(loginUser);
             }
-            return View("Login", loginUser);
-        }
 
+            User user = await userManager.FindByNameAsync(loginUser.UserName);
+
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid username or password");
+                return View(loginUser);
+            }
+
+            bool isPasswordCorrect = await userManager.CheckPasswordAsync(user, loginUser.Password);
+
+            if (!isPasswordCorrect)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid username or password");
+                return View(loginUser);
+            }
+
+            await signInManager.SignInAsync(user, loginUser.RememberMe);
+
+            TempData["SuccessMessage"] = $"Welcome back, {user.Name}!";
+            return RedirectToAction("Index", "Home");
+        }
+      
         [HttpGet]
         public IActionResult Register()
         {
@@ -316,42 +352,6 @@ namespace IjarifySystemPL.Controllers
             TempData["SuccessMessage"] = "You have been logged out successfully";
             return RedirectToAction("Index", "Home");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
