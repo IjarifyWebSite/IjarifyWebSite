@@ -129,7 +129,7 @@ namespace IjarifySystemBLL.Services.Classes
             }
             catch (Exception ex)
             {
-                // Throw with inner exception message for better debugging
+            
                 var errorMsg = ex.InnerException?.Message ?? ex.Message;
                 throw new Exception($"Failed to create inquiry: {errorMsg}", ex);
             }

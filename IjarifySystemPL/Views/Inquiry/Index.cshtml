@@ -3,8 +3,7 @@
 @{
     ViewData["Title"] = "My Inquiries";
 }
-
-<!-- ===== PAGE HEADER ===== -->
+ 
 <section class="page-header" style="margin-top: 100px;">
     <div class="container">
         <div class="row">
@@ -21,12 +20,12 @@
     </div>
 </section>
 
-<!-- ===== INQUIRIES LIST ===== -->
+ 
 <section class="inquiries-section py-5">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <!-- Header with count -->
+                
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3>You have <span class="text-primary" id="inquiriesCount">@Model.TotalCount</span> inquiries</h3>
                     <a href="@Url.Action("Index", "Property")" class="btn btn-primary">
@@ -34,7 +33,7 @@
                     </a>
                 </div>
 
-                <!-- Success/Error Messages -->
+               
                 @if (TempData["SuccessMessage"] != null)
                 {
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -51,7 +50,7 @@
                     </div>
                 }
 
-                <!-- Inquiries List -->
+              
                 @if (Model.Inquiries.Any())
                 {
                     <div class="inquiries-list">
@@ -61,12 +60,12 @@
                                 <div class="card shadow-sm">
                                     <div class="card-body">
                                         <div class="row">
-                                            <!-- Property Image -->
+                                        
                                             <div class="col-md-3">
                                                 <img src="@inquiry.PropertyImage" alt="@inquiry.PropertyTitle" class="img-fluid rounded">
                                             </div>
 
-                                            <!-- Inquiry Details -->
+                                      
                                             <div class="col-md-9">
                                                 <div class="d-flex justify-content-between align-items-start mb-3">
                                                     <div>
@@ -89,12 +88,11 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- Message -->
+                                               
                                                 <div class="inquiry-message bg-light p-3 rounded mb-3">
                                                     <p class="mb-0">@inquiry.Message</p>
                                                 </div>
-
-                                                <!-- Property Owner Info -->
+ 
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div>
                                                         <small class="text-muted">Property Owner:</small>
@@ -119,7 +117,7 @@
                 }
                 else
                 {
-                    <!-- Empty State -->
+                   
                     <div class="text-center py-5">
                         <div class="mb-4">
                             <i class="bi bi-envelope-x" style="font-size: 4rem; color: #ccc;"></i>
@@ -136,7 +134,7 @@
     </div>
 </section>
 
-<!-- Delete Confirmation Modal -->
+ 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
@@ -176,7 +174,7 @@
             deleteModal.show();
         }
 
-        // Handle confirm delete button click
+   
         document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
             if (deleteInquiryId === null) return;
 
@@ -193,15 +191,15 @@
                     modal.hide();
                     
                     if (response.success) {
-                        // Hide the card with animation
+                      
                         $('[data-inquiry-id="' + deleteInquiryId + '"]').fadeOut(400, function() {
                             $(this).remove();
 
-                            // Update count
+                           
                             var currentCount = parseInt($('#inquiriesCount').text());
                             $('#inquiriesCount').text(currentCount - 1);
 
-                            // If no inquiries left, reload to show empty state
+                           
                             if (currentCount - 1 === 0) {
                                 location.reload();
                             }

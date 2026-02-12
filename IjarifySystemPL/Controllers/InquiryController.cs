@@ -13,20 +13,19 @@ namespace IjarifySystemPL.Controllers
             _inquiryService = inquiryService;
         }
 
-        //   /Inquiry/Index
+  
         public IActionResult Index(int userId)
         {
             
             if (userId == 0)
             {
-                userId = 1; // test  
+                userId = 1;  
             }
 
             var viewModel = _inquiryService.GetUserInquiries(userId);
             return View(viewModel);
         }
-
-        //   /Inquiry/Property/{propertyId}
+ 
         public IActionResult Property(int propertyId)
         {
             if (propertyId == 0)
@@ -37,8 +36,7 @@ namespace IjarifySystemPL.Controllers
             var viewModel = _inquiryService.GetPropertyInquiries(propertyId);
             return View(viewModel);
         }
-
-        //  /Inquiry/Details/{id}
+ 
        
         public IActionResult Details(int id)
         {
@@ -51,9 +49,7 @@ namespace IjarifySystemPL.Controllers
 
             return View(viewModel);
         }
-
-        //  /Inquiry/Create
-        // صفحة إنشاء inquiry جديد
+ 
         public IActionResult Create(int propertyId)
         {
             if (propertyId == 0)
@@ -64,13 +60,13 @@ namespace IjarifySystemPL.Controllers
             var model = new CreateInquiryViewModel
             {
                 PropertyId = propertyId,
-                UserId = 1 // TODO: استبدل بالـ logged-in user
+                UserId = 1  
             };
 
             return View(model);
         }
 
-        //   /Inquiry/Create
+   
        
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -81,7 +77,7 @@ namespace IjarifySystemPL.Controllers
                 return View(model);
             }
 
-            // TODO: استبدل بالـ logged-in user
+        
             model.UserId = 1;
 
             try
@@ -99,13 +95,13 @@ namespace IjarifySystemPL.Controllers
             }
             catch (Exception ex)
             {
-                // Show the actual error message to help debugging
+                
                 TempData["ErrorMessage"] = $"Error: {ex.Message}";
                 return View(model);
             }
         }
 
-        //   /Inquiry/Delete/{id}
+         
        
         [HttpPost]
         public IActionResult Delete(int id, int userId)

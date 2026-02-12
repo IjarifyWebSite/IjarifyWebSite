@@ -29,7 +29,7 @@ namespace IjarifySystemDAL.Repositories.Classes
                     .Include(i => i.Property)
                         .ThenInclude(p => p.Location)
                     .Include(i => i.Property)
-                        .ThenInclude(p => p.User) // Property owner
+                        .ThenInclude(p => p.User) 
                     .OrderByDescending(i => i.CreatedAt)
                     .ToList();
             }

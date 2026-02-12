@@ -18,7 +18,7 @@ namespace IjarifySystemDAL.Repositories.Interfaces
         
         IEnumerable<Inquiry> GetAllByUserId(int userId, Expression<Func<Inquiry, bool>>? Condition = null);
 
-        // inquiry for a specific property (اللي استقبلها)
+       
         IEnumerable<Inquiry> GetAllByPropertyId(int propertyId, Expression<Func<Inquiry, bool>>? Condition = null);
 
        
