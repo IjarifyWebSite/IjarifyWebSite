@@ -61,9 +61,14 @@
                     </div>
                     <div class="action-buttons">
                         <button type="button" class="btn-cancel" onclick="collapseForm(this)">Cancel</button>
-                        <button type="submit" class="btn-post">
-                            <i class="bi bi-send me-1"></i> Post
-                        </button>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <button type="submit" class="btn-post">Post</button>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "Account")" class="btn-post">Login to add review</a>
+                        }
                     </div>
                 </div>
             </form>

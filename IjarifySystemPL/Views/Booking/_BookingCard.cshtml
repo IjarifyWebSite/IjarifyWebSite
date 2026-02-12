@@ -1,64 +1,86 @@
 ﻿@model IjarifySystemBLL.ViewModels.Booking.BookingListViewModel
 
-<div class="booking-card-modern">
-    <div class="booking-header-modern">
-        <div class="booking-id-section">
-            <span class="booking-id">#@Model.Id</span>
-            <span class="booking-status-badge @GetStatusClass()">
-                @Html.Raw(GetStatusIcon()) @Model.StatusText
-            </span>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="booking-card">
+
+    <!-- Card Header with Status -->
+    <div class="card-header-section">
+        <div class="header-left">
+            <div class="booking-number">
+                <i class="bi bi-receipt"></i>
+                <span>Booking #@Model.Id</span>
+            </div>
+        </div>
+        <div class="status-badge @GetStatusClass()">
+            @Html.Raw(GetStatusIcon())
+            <span>@Model.StatusText</span>
         </div>
     </div>
 
-    <div class="booking-body-modern">
-        <div class="property-info-modern">
-            <h5 class="property-name">
+    <!-- Property Information -->
+    <div class="property-section">
+        <div class="property-header">
+            <div class="property-icon">
                 <i class="bi bi-building"></i>
-                @Model.PropertyTitle
-            </h5>
-        </div>
-
-        <div class="dates-section-modern">
-            <div class="date-box check-in">
-                <div class="date-icon">
-                    <i class="bi bi-calendar-check"></i>
-                </div>
-                <div class="date-details">
-                    <small>Check-In</small>
-                    <strong>@Model.Check_In.ToString("dd MMM")</strong>
-                    <span class="year">@Model.Check_In.ToString("yyyy")</span>
-                </div>
             </div>
-
-            <div class="duration-indicator">
-                <i class="bi bi-arrow-right"></i>
-                <span>@Model.TotalNights nights</span>
-            </div>
-
-            <div class="date-box check-out">
-                <div class="date-icon">
-                    <i class="bi bi-calendar-x"></i>
-                </div>
-                <div class="date-details">
-                    <small>Check-Out</small>
-                    <strong>@Model.Check_Out.ToString("dd MMM")</strong>
-                    <span class="year">@Model.Check_Out.ToString("yyyy")</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="booking-footer-modern">
-            <div class="price-section">
-                <small>Total Amount</small>
-                <h4 class="price">@Model.TotalPrice.ToString("C")</h4>
-            </div>
-            <div class="action-section">
-                <a asp-controller="Booking" asp-action="Details" asp-route-id="@Model.Id" class="btn-view-details">
-                    View Details <i class="bi bi-arrow-right"></i>
-                </a>
+            <div class="property-details">
+                <h4 class="property-title">@Model.PropertyTitle</h4>
             </div>
         </div>
     </div>
+
+    <!-- Stay Timeline -->
+    <div class="timeline-section">
+        <div class="timeline-item checkin">
+            <div class="timeline-icon">
+                <i class="bi bi-calendar-check-fill"></i>
+            </div>
+            <div class="timeline-content">
+                <span class="timeline-label">Check-In</span>
+                <div class="timeline-date">@Model.Check_In.ToString("ddd, dd MMM")</div>
+                <div class="timeline-year">@Model.Check_In.ToString("yyyy")</div>
+            </div>
+        </div>
+
+        <div class="timeline-connector">
+            <div class="connector-line"></div>
+            <div class="duration-badge">
+                <i class="bi bi-moon-stars-fill"></i>
+                <span>@Model.TotalNights</span>
+                <small>@(Model.TotalNights > 1 ? "nights" : "night")</small>
+            </div>
+        </div>
+
+        <div class="timeline-item checkout">
+            <div class="timeline-icon">
+                <i class="bi bi-calendar-x-fill"></i>
+            </div>
+            <div class="timeline-content">
+                <span class="timeline-label">Check-Out</span>
+                <div class="timeline-date">@Model.Check_Out.ToString("ddd, dd MMM")</div>
+                <div class="timeline-year">@Model.Check_Out.ToString("yyyy")</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Footer -->
+    <div class="card-footer-section">
+        <div class="price-container">
+            <span class="price-label">Total Amount</span>
+            <div class="price-value">@Model.TotalPrice.ToString("C")</div>
+        </div>
+        <div class="action-container">
+            <a asp-controller="Booking" asp-action="Details" asp-route-id="@Model.Id" class="btn-details">
+                <span>View Details</span>
+                <i class="bi bi-arrow-right-circle-fill"></i>
+            </a>
+        </div>
+    </div>
+
 </div>
 
 @functions {
@@ -77,220 +99,421 @@
     {
         return Model.Status switch
         {
-            IjarifySystemDAL.Entities.Enums.BookingStatus.Pending => "<i class='bi bi-clock-history'></i>",
+            IjarifySystemDAL.Entities.Enums.BookingStatus.Pending => "<i class='bi bi-hourglass-split'></i>",
             IjarifySystemDAL.Entities.Enums.BookingStatus.Approved => "<i class='bi bi-check-circle-fill'></i>",
             IjarifySystemDAL.Entities.Enums.BookingStatus.Rejected => "<i class='bi bi-x-circle-fill'></i>",
-            _ => "<i class='bi bi-question-circle'></i>"
+            _ => "<i class='bi bi-question-circle-fill'></i>"
         };
     }
 }
 
 <style>
-    .booking-card-modern {
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Booking Card */
+    .booking-card {
         background: white;
         border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        border: 1px solid #f0f0f0;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
-        .booking-card-modern:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-        }
-
-    .booking-header-modern {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        padding: 20px;
-        border-bottom: 2px solid #dee2e6;
+    .booking-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px rgba(15, 23, 42, 0.15);
+        border-color: #cbd5e1;
     }
 
-    .booking-id-section {
+    /* Card Header */
+    .card-header-section {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        padding: 20px 24px;
+        border-bottom: 1px solid #e2e8f0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
-
-    .booking-id {
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--accent-color);
-    }
-
-    .booking-status-badge {
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .status-pending {
-        background: #fff3cd;
-        color: #856404;
-    }
-
-    .status-approved {
-        background: #d4edda;
-        color: #155724;
-    }
-
-    .status-rejected {
-        background: #f8d7da;
-        color: #721c24;
-    }
-
-    .booking-body-modern {
-        padding: 25px;
-    }
-
-    .property-info-modern {
-        margin-bottom: 20px;
-    }
-
-    .property-name {
-        font-size: 20px;
-        font-weight: 700;
-        color: #2c3e50;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-        .property-name i {
-            color: var(--accent-color);
-            font-size: 22px;
-        }
-
-    .dates-section-modern {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: #f8f9fa;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-
-    .date-box {
-        display: flex;
-        align-items: center;
+        flex-wrap: wrap;
         gap: 12px;
     }
 
-    .date-icon {
-        width: 50px;
-        height: 50px;
+    .header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .booking-number {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .booking-number i {
+        color: #0d9488;
+        font-size: 18px;
+    }
+
+    /* Status Badge */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
         border-radius: 10px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    .status-badge i {
+        font-size: 16px;
+    }
+
+    .status-pending {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #92400e;
+        border: 1px solid #fcd34d;
+    }
+
+    .status-approved {
+        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+        color: #166534;
+        border: 1px solid #86efac;
+    }
+
+    .status-rejected {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #991b1b;
+        border: 1px solid #fca5a5;
+    }
+
+    .status-default {
+        background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+        color: #475569;
+        border: 1px solid #94a3b8;
+    }
+
+    /* Property Section */
+    .property-section {
+        padding: 24px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .property-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .property-icon {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 26px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+    }
+
+    .property-details {
+        flex: 1;
+    }
+
+    .property-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 8px 0;
+        line-height: 1.4;
+    }
+
+    /* Timeline Section */
+    .timeline-section {
+        padding: 24px;
+        background: #f8fafc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .timeline-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+    }
+
+    .timeline-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 24px;
-        color: white;
+        flex-shrink: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .date-box.check-in .date-icon {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .timeline-item.checkin .timeline-icon {
+        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+        color: #16a34a;
     }
 
-    .date-box.check-out .date-icon {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    .timeline-item.checkout .timeline-icon {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #dc2626;
     }
 
-    .date-details small {
-        display: block;
+    .timeline-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .timeline-label {
         font-size: 11px;
-        color: #6c757d;
-        margin-bottom: 3px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .date-details strong {
-        display: block;
-        font-size: 18px;
-        color: #2c3e50;
+    .timeline-date {
+        font-size: 15px;
         font-weight: 700;
+        color: #0f172a;
     }
 
-    .date-details .year {
-        display: block;
+    .timeline-year {
         font-size: 12px;
-        color: #6c757d;
+        color: #94a3b8;
+        font-weight: 500;
     }
 
-    .duration-indicator {
-        text-align: center;
-        color: #6c757d;
+    /* Timeline Connector */
+    .timeline-connector {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 0 12px;
     }
 
-        .duration-indicator i {
-            display: block;
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
+    .connector-line {
+        width: 2px;
+        height: 24px;
+        background: linear-gradient(to bottom, #bbf7d0 0%, #fecaca 100%);
+    }
 
-        .duration-indicator span {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-        }
+    .duration-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        padding: 8px 14px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e2e8f0;
+    }
 
-    .booking-footer-modern {
+    .duration-badge i {
+        font-size: 18px;
+        color: #0d9488;
+    }
+
+    .duration-badge span {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1;
+    }
+
+    .duration-badge small {
+        font-size: 10px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    /* Card Footer */
+    .card-footer-section {
+        padding: 24px;
+        background: white;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-top: 20px;
-        border-top: 1px solid #e9ecef;
+        gap: 20px;
     }
 
-    .price-section small {
-        display: block;
+    .price-container {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .price-label {
         font-size: 12px;
-        color: #6c757d;
-        margin-bottom: 5px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .price {
+    .price-value {
         font-size: 28px;
         font-weight: 700;
-        color: var(--accent-color);
-        margin: 0;
+        color: #0d9488;
+        line-height: 1;
     }
 
-    .btn-view-details {
-        background: var(--accent-color);
+    /* Action Button */
+    .action-container {
+        display: flex;
+    }
+
+    .btn-details {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 24px;
+        background:  linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
         color: white;
-        padding: 12px 24px;
-        border-radius: 8px;
+        border-radius: 12px;
         text-decoration: none;
         font-weight: 600;
         font-size: 14px;
-        transition: all 0.3s;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+        box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-        .btn-view-details:hover {
-            transform: translateX(5px);
-            color: white;
-            opacity: 0.9;
+    .btn-details:hover {
+        transform: translateX(4px);
+        box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+        color: white;
+    }
+
+    .btn-details i {
+        font-size: 20px;
+        transition: transform 0.3s;
+    }
+
+    .btn-details:hover i {
+        transform: translateX(3px);
         }
 
+    /* Responsive Design */
     @@media (max-width: 768px) {
-        .dates-section-modern
+        .card-header-section
 
-    {
-        flex-direction: column;
-        gap: 15px;
+        {
+            padding: 16px 20px;
+        }
+
+        .timeline-section {
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .timeline-item {
+            width: 100%;
+        }
+
+        .timeline-connector {
+            flex-direction: row;
+            width: 100%;
+            padding: 0;
+            justify-content: center;
+        }
+
+        .connector-line {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(to right, #bbf7d0 0%, #fecaca 100%);
+        }
+
+        .duration-badge {
+            flex-direction: row;
+            gap: 6px;
+        }
+
+        .duration-badge small {
+            display: inline;
+        }
+
+        .card-footer-section {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+            padding: 20px;
+        }
+
+        .price-container {
+            text-align: center;
+        }
+
+        .btn-details {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .property-section {
+            padding: 20px;
+        }
+
+        .property-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 24px;
+        }
+
+        .property-title {
+            font-size: 16px;
+        }
+
     }
 
-    .duration-indicator i {
-        transform: rotate(90deg);
-    }
+    @@media (max-width: 480px) {
+        .status-badge
 
-    }
+        {
+            padding: 8px 14px;
+            font-size: 11px;
+        }
+
+        .booking-number {
+            font-size: 14px;
+        }
+
+        .price-value {
+            font-size: 24px;
+        }
+
+        .timeline-date {
+            font-size: 14px;
+        }
+
+        .timeline-icon {
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
+        }
+}
 </style>

@@ -48,7 +48,8 @@
                      <li><a asp-controller="Offer" asp-action="FilterOffers">Offers</a></li>
                     <li><a asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-controller="Account" asp-action="Profile">Profile</a></li>
+
+
 
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -59,7 +60,7 @@
                                 <li><a asp-controller="Account" asp-action="Profile"><i class="bi bi-person"></i> My Profile</a></li>
                                 <li><a asp-controller="Booking" asp-action="MyBookings"><i class="bi bi-calendar-check"></i> My Bookings</a></li>
                                 <li><a asp-controller="Favourite" asp-action="MyFavorites"><i class="bi bi-heart"></i> My Favorites</a></li>
-                                <li><a asp-controller="Review" asp-action="MyReviews"><i class="bi bi-star"></i> My Reviews</a></li>
+
                                 <li><a asp-controller="Inquiry" asp-action="MyInquiries"><i class="bi bi-chat-dots"></i> My Inquiries</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>

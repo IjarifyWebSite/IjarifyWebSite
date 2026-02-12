@@ -16,6 +16,7 @@ namespace IjarifySystemDAL.Repositories.Classes
                 .Include(p => p.Location)
                 .Include(p => p.PropertyImages)
                 .Include(p => p.amenities)
+                .Include(p => p.Reviews!).ThenInclude(r => r.user)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -54,7 +55,6 @@ namespace IjarifySystemDAL.Repositories.Classes
         {
             return await _context.amenities.FirstOrDefaultAsync(a => a.Name.ToLower() == name.ToLower());
         }
-
         public List<Property> GetByUser(int userId)
         {
             return _context.Properties.Where(p=>p.UserId==userId).ToList();
@@ -64,7 +64,13 @@ namespace IjarifySystemDAL.Repositories.Classes
         {
             return _context.Properties.Where(p=>p.LocationId==locationId && p.UserId==userId).ToList();
         }
-
-       
+        public async Task<List<Location>> GetTopLocationsWithPropertyCountAsync(int count)
+        {
+            return await _context.Locations
+                .Include(l => l.Properties)
+                .OrderByDescending(l => l.Properties.Count)
+                .Take(count)
+                .ToListAsync();
+        }
     }
 }
