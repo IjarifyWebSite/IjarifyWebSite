@@ -31,6 +31,21 @@ namespace IjarifySystemDAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -57,20 +72,136 @@ namespace IjarifySystemDAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.CheckConstraint("CK_IjarifyUserValidEmail", "Email like '_%@_%._%'");
-                    table.CheckConstraint("CK_IjarifyUserValidPhone", "phone like '01%' and Phone not like '%[^0-9]%'");
+                    table.CheckConstraint("CK_IjarifyUserValidPhone", "PhoneNumber like '01%' and PhoneNumber not like '%[^0-9]%'");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,14 +438,14 @@ namespace IjarifySystemDAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Address", "CreatedAt", "Email", "ImageUrl", "Name", "Password", "Phone", "Role", "UpdatedAt" },
+                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "ImageUrl", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UserName" },
                 values: new object[,]
                 {
-                    { 1, "15 El Nile Street, Maadi, Cairo", new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", "https://i.pravatar.cc/150?img=33", "Omar Ali", "AQAAAAEAACcQAAAAEH8zQK", "01234567890", "Owner", null },
-                    { 2, "28 Tahrir Street, Downtown, Cairo", new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", "https://i.pravatar.cc/150?img=27", "Nour Ibrahim", "AQAAAAEAACcQAAAAEH8zQK", "01098765432", "Owner", null },
-                    { 3, "42 Nasr Road, Nasr City, Cairo", new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", "https://i.pravatar.cc/150?img=51", "Khaled Mahmoud", "AQAAAAEAACcQAAAAEH8zQK", "01187654321", "User", null },
-                    { 4, "10 Tahrir Square, Cairo", new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", "https://i.pravatar.cc/150?img=12", "Ahmed Hassan", "AQAAAAEAACcQAAAAEH8zQK", "01012345678", "Owner", null },
-                    { 5, "25 Alexandria Road, Cairo", new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), "fatima.mohamed@example.com", "https://i.pravatar.cc/150?img=45", "Fatima Mohamed", "AQAAAAEAACcQAAAAEH8zQK", "01123456789", "User", null }
+                    { 1, 0, "15 El Nile Street, Maadi, Cairo", "59ed719e-a815-480e-bac5-c2184b7f0f16", new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", false, "https://i.pravatar.cc/150?img=33", false, null, "Omar Ali", null, null, null, null, false, null, false, null, null },
+                    { 2, 0, "28 Tahrir Street, Downtown, Cairo", "12a075d6-b0bc-4387-893e-61144108d993", new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", false, "https://i.pravatar.cc/150?img=27", false, null, "Nour Ibrahim", null, null, null, null, false, null, false, null, null },
+                    { 3, 0, "42 Nasr Road, Nasr City, Cairo", "26cdf52f-9694-4684-8a41-ad30e90db61d", new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", false, "https://i.pravatar.cc/150?img=51", false, null, "Khaled Mahmoud", null, null, null, null, false, null, false, null, null },
+                    { 4, 0, "10 Tahrir Square, Cairo", "b30a7e18-6ab2-4044-8232-9fc685eee28a", new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", false, "https://i.pravatar.cc/150?img=12", false, null, "Ahmed Hassan", null, null, null, null, false, null, false, null, null },
+                    { 5, 0, "25 Alexandria Road, Cairo", "655d43e5-440b-40d6-b172-94d3db3b7dc3", new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), "fatima.mohamed@example.com", false, "https://i.pravatar.cc/150?img=45", false, null, "Fatima Mohamed", null, null, null, null, false, null, false, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -442,6 +573,33 @@ namespace IjarifySystemDAL.Migrations
                 column: "propertiesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_bookings_PropertyID",
                 table: "bookings",
                 column: "PropertyID");
@@ -502,16 +660,30 @@ namespace IjarifySystemDAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "Users",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
-                unique: true);
+                unique: true,
+                filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Phone",
+                name: "IX_Users_PhoneNumber",
                 table: "Users",
-                column: "Phone",
-                unique: true);
+                column: "PhoneNumber",
+                unique: true,
+                filter: "[PhoneNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "Users",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
         }
 
         /// <inheritdoc />
@@ -519,6 +691,21 @@ namespace IjarifySystemDAL.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AmenityProperty");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
                 name: "bookings");
@@ -540,6 +727,9 @@ namespace IjarifySystemDAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "amenities");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Properties");

@@ -23,46 +23,60 @@ namespace IjarifySystemBLL.Services.Classes
         // Using Directory.GetCurrentDirectory() to avoid hosting environment issues
         private readonly string _rootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
-       public async Task<PropertyIndexPageViewModel> GetPagination(int pageSize, int page, PropertyFilterViewModel filter)
-{
-    var query = _repo.GetQueryable()
-        .Include(p => p.User)
-        .Include(p => p.Location)
-        .Include(p => p.PropertyImages)
-        .Include(p => p.amenities)
-        .AsQueryable();
+        public async Task<PropertyIndexPageViewModel> GetPagination(int pageSize, int page, PropertyFilterViewModel filter)
+        {
+            var query = _repo.GetQueryable()
+                .Include(p => p.User)
+                .Include(p => p.Location)
+                .Include(p => p.PropertyImages)
+                .Include(p => p.amenities)
+                .Include(p => p.Reviews)
+                .AsQueryable();
 
-    // Apply filters...
-    if (!string.IsNullOrEmpty(filter?.PropertyType) && Enum.TryParse<PropertyType>(filter.PropertyType, out var propType))
-    {
-        query = query.Where(p => p.Type == propType);
-    }
+            // Apply filters...
+            if (!string.IsNullOrEmpty(filter?.PropertyType) && Enum.TryParse<PropertyType>(filter.PropertyType, out var propType))
+            {
+                query = query.Where(p => p.Type == propType);
+            }
 
-    if (!string.IsNullOrEmpty(filter?.ListingType) && Enum.TryParse<PropertyListingType>(filter.ListingType, out var listType))
-    {
-        query = query.Where(p => p.ListingType == listType);
-    }
+            if (!string.IsNullOrEmpty(filter?.ListingType) && Enum.TryParse<PropertyListingType>(filter.ListingType, out var listType))
+            {
+                query = query.Where(p => p.ListingType == listType);
+            }
 
-    if (filter?.MinPrice.HasValue == true)
-    {
-        query = query.Where(p => p.Price >= filter.MinPrice.Value);
-    }
+            if (filter?.MinPrice.HasValue == true)
+            {
+                query = query.Where(p => p.Price >= filter.MinPrice.Value);
+            }
 
-    if (filter?.MaxPrice.HasValue == true)
-    {
-        query = query.Where(p => p.Price <= filter.MaxPrice.Value);
-    }
+            if (filter?.MaxPrice.HasValue == true)
+            {
+                query = query.Where(p => p.Price <= filter.MaxPrice.Value);
+            }
 
-    if (filter?.MinBedrooms.HasValue == true)
-    {
-        query = query.Where(p => p.BedRooms >= filter.MinBedrooms.Value);
-    }
+            if (filter?.MinBedrooms.HasValue == true)
+            {
+                query = query.Where(p => p.BedRooms >= filter.MinBedrooms.Value);
+            }
 
-    if (filter?.MinBathrooms.HasValue == true)
-    {
-        query = query.Where(p => p.BathRooms >= filter.MinBathrooms.Value);
-    }
+            if (filter?.MinBathrooms.HasValue == true)
+            {
+                query = query.Where(p => p.BathRooms >= filter.MinBathrooms.Value);
+            }
 
+            // Calculate pagination variables
+            var totalCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            var currentPage = page;
+
+            // Get properties with pagination
+            var properties = await query
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Map to view models
             var propertyViewModels = properties.Select(p => new PropertyIndexViewModel
             {
                 Id = p.Id,
@@ -83,38 +97,13 @@ namespace IjarifySystemBLL.Services.Classes
                 Reviews = new PropertyReviewsViewModel
                 {
                     PropertyId = p.Id,
-                    AverageRating = p.Reviews != null && p.Reviews.Any()? p.Reviews.Average(r => r.Rating): 0,
+                    AverageRating = p.Reviews != null && p.Reviews.Any() ? p.Reviews.Average(r => r.Rating) : 0,
                     TotalReviews = p.Reviews?.Count ?? 0
                 }
             }).ToList();
 
-    var properties = await query
-        .OrderByDescending(p => p.CreatedAt)
-        .Skip((currentPage - 1) * pageSize)
-        .Take(pageSize)
-        .ToListAsync();
-
-    var propertyViewModels = properties.Select(p => new PropertyIndexViewModel
-    {
-        Id = p.Id,
-        Name = p.Title,
-        Price = p.Price,
-        Location = $"{p.Location.Street}, {p.Location.City}, {p.Location.Regoin}",
-        BedRooms = p.BedRooms,
-        BathRooms = p.BathRooms,
-        Area = p.Area,
-        ListingType = p.ListingType.ToString(),
-        PropertyType = p.Type.ToString(),
-        MainImage = p.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "assets/img/real-estate/default-property.webp",
-        TotalImages = p.PropertyImages?.Count ?? 0,
-        IsNew = (DateTime.Now - p.CreatedAt).TotalDays <= 30,
-        AgentName = p.User.Name,
-        AgentPhone = p.User.Phone,
-        AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp"
-    }).ToList();
-
-    // Map Amenities from List<Amenity> to List<AmenityViewModel>
-    var amenities = await _repo.GetAllAmenities();
+            // Map Amenities from List<Amenity> to List<AmenityViewModel>
+            var amenities = await _repo.GetAllAmenities();
             var amenityViewModels = amenities.Select(a => new AmenityViewModel
             {
                 Id = a.Id,
@@ -123,24 +112,24 @@ namespace IjarifySystemBLL.Services.Classes
                 Category = a.Category.ToString()
             }).ToList();
 
-    var cities = await _repo.GetAllCities();
-    var regions = await _repo.GetAllRegions();
+            var cities = await _repo.GetAllCities();
+            var regions = await _repo.GetAllRegions();
 
-    var pageViewModel = new PropertyIndexPageViewModel
-    {
-        Properties = propertyViewModels,
-        Filter = filter ?? new PropertyFilterViewModel(),
-        PropertyTypes = Enum.GetNames(typeof(PropertyType)).ToList(),
-        ListingTypes = Enum.GetNames(typeof(PropertyListingType)).ToList(),
-        Amenities = amenityViewModels,
-        Cities = cities,
-        Regions = regions,
-        CurrentPage = currentPage,
-        TotalPages = totalPages
-    };
+            var pageViewModel = new PropertyIndexPageViewModel
+            {
+                Properties = propertyViewModels,
+                Filter = filter ?? new PropertyFilterViewModel(),
+                PropertyTypes = Enum.GetNames(typeof(PropertyType)).ToList(),
+                ListingTypes = Enum.GetNames(typeof(PropertyListingType)).ToList(),
+                Amenities = amenityViewModels,
+                Cities = cities,
+                Regions = regions,
+                CurrentPage = currentPage,
+                TotalPages = totalPages
+            };
 
-    return pageViewModel;
-}
+            return pageViewModel;
+        }
 
         public async Task<PropertyDetailsViewModel?> GetPropertyDetails(int id, int? currentUserId = null)
         {
@@ -181,23 +170,23 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentId = property.UserId,
                 AgentName = property.User.Name,
                 AgentTitle = "Licensed Real Estate Agent",
-                //AgentPhone = property.User.Phone,
+                //AgentPhone = property.User.PhoneNumber,
                 AgentEmail = property.User.Email,
                 AgentAvatar = property.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
                 CreatedAt = property.CreatedAt,
                 IsNew = (DateTime.Now - property.CreatedAt).TotalDays <= 30,
 
-                 Reviews = property.Reviews?.Select(r => new ReviewItemViewModel
-                 {
-                     ReviewId = r.Id,
-                     Comment = r.Comment,
-                     Rating = r.Rating,
-                     UserName = r.user.Name,
-                     UserImage = r.user.ImageUrl,
-                     CreatedAt = r.CreatedAt,
-                     PropertyId = r.PropertyId,
-                     IsOwner = r.UserId == currentUserId
-                 }).ToList() ?? new List<ReviewItemViewModel>()
+                Reviews = property.Reviews?.Select(r => new ReviewItemViewModel
+                {
+                    ReviewId = r.Id,
+                    Comment = r.Comment,
+                    Rating = r.Rating,
+                    UserName = r.user.Name,
+                    UserImage = r.user.ImageUrl,
+                    CreatedAt = r.CreatedAt,
+                    PropertyId = r.PropertyId,
+                    IsOwner = r.UserId == currentUserId
+                }).ToList() ?? new List<ReviewItemViewModel>()
             };
         }
 
@@ -280,20 +269,19 @@ namespace IjarifySystemBLL.Services.Classes
                 }
                 catch (Exception)
                 {
-                   //later
+                    //later
                 }
             }
         }
 
         public async Task<CreatePropertyViewModel?> GetPropertyForEditAsync(int id)
         {
-
             var p = await _repo.GetByIdAsync(id);
             if (p == null) return null;
 
             return new CreatePropertyViewModel
             {
-                Id = p.Id, 
+                Id = p.Id,
                 Title = p.Title,
                 Description = p.Description,
                 Price = p.Price,
@@ -402,6 +390,7 @@ namespace IjarifySystemBLL.Services.Classes
                 }
             }
         }
+
         private async Task<string> SaveImageAsync(IFormFile image, string folder)
         {
             string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
@@ -417,12 +406,11 @@ namespace IjarifySystemBLL.Services.Classes
             return $"/uploads/{folder}/{fileName}";
         }
 
-      
-
         private string GetDefaultIcon(string category)
         {
             return category == "Interior" ? "bi-house-door" : "bi-building";
         }
+
         private async Task<string> SaveFile(IFormFile file)
         {
             string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
