@@ -1,6 +1,6 @@
 using IjarifySystemBLL.Services.Classes;
 using IjarifySystemBLL.Services.Interfaces;
-using IjarifySystemBLL.ViewModels.HomeViewModels;
+using IjarifySystemBLL.ViewModels;
 using IjarifySystemPL.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -20,15 +20,13 @@ namespace IjarifySystemPL.Controllers
             _HomeService = homeService;
             _propertyService = propertyService;
         }
-
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var viewModel = new HomeViewModel
+            var model = new HomeViewModel
             {
-                TopLocations = await _propertyService.GetTopLocationsAsync(6) // Get top 6 locations
+                TopLocations = _HomeService.GetTopLocations().ToList()
             };
-
-            return View(viewModel);
+            return View(model);
         }
 
         public IActionResult Privacy()
