@@ -1,4 +1,5 @@
 ﻿using IjarifySystemBLL.DTOs.Bookings;
+using IjarifySystemBLL.ViewModels.Booking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,10 @@ namespace IjarifySystemBLL.Services.Interfaces
         Task<IEnumerable<BookingReadDto>> GetPropertyBookingsAsync(int propertyId);
         Task<BookingReadDto> CreateBookingAsync(BookingCreateDto dto, int userId);
         Task<BookingReadDto?> UpdateBookingAsync(int id, BookingUpdateDto dto);
+        Task<PropertyBasicInfoDto?> GetPropertyBasicInfo(int propertyId);
+        Task<MyRequestsViewModel> GetPropertyOwnerRequestsAsync(int userId);
+        Task<bool> ApproveBookingAsync(int bookingId, int propertyOwnerId);
+        Task<bool> RejectBookingAsync(int bookingId, int propertyOwnerId);
         Task<bool> DeleteBookingAsync(int id);
         Task<bool> ApproveBookingAsync(int id);
         Task<bool> RejectBookingAsync(int id);

@@ -1,5 +1,6 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.AmenityViewModels;
+using IjarifySystemBLL.ViewModels.HomeViewModels;
 using IjarifySystemBLL.ViewModels.PropertyViewModels;
 using IjarifySystemBLL.ViewModels.ReviewsViewModels;
 using IjarifySystemDAL.Data.Context;
@@ -62,25 +63,30 @@ namespace IjarifySystemBLL.Services.Classes
         query = query.Where(p => p.BathRooms >= filter.MinBathrooms.Value);
     }
 
-    if (!string.IsNullOrEmpty(filter?.City))
-    {
-        query = query.Where(p => p.Location.City == filter.City);
-    }
-
-    if (!string.IsNullOrEmpty(filter?.Region))
-    {
-        query = query.Where(p => p.Location.Regoin == filter.Region);
-    }
-
-    if (filter?.AmenityIds != null && filter.AmenityIds.Any())
-    {
-        query = query.Where(p => p.amenities.Any(a => filter.AmenityIds.Contains(a.Id)));
-    }
-
-    int totalProperties = await query.CountAsync();
-    int totalPages = (int)Math.Ceiling(totalProperties / (double)pageSize);
-    totalPages = Math.Max(1, totalPages);
-    int currentPage = Math.Max(1, Math.Min(page, totalPages));
+            var propertyViewModels = properties.Select(p => new PropertyIndexViewModel
+            {
+                Id = p.Id,
+                Name = p.Title,
+                Price = p.Price,
+                Location = $"{p.Location.Street}, {p.Location.City}, {p.Location.Regoin}",
+                BedRooms = p.BedRooms,
+                BathRooms = p.BathRooms,
+                Area = p.Area,
+                ListingType = p.ListingType.ToString(),
+                PropertyType = p.Type.ToString(),
+                MainImage = p.PropertyImages?.FirstOrDefault()?.ImageUrl ?? "assets/img/real-estate/default-property.webp",
+                TotalImages = p.PropertyImages?.Count ?? 0,
+                IsNew = (DateTime.Now - p.CreatedAt).TotalDays <= 30,
+                AgentName = p.User.Name,
+                AgentPhone = p.User.PhoneNumber,
+                AgentAvatar = p.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
+                Reviews = new PropertyReviewsViewModel
+                {
+                    PropertyId = p.Id,
+                    AverageRating = p.Reviews != null && p.Reviews.Any()? p.Reviews.Average(r => r.Rating): 0,
+                    TotalReviews = p.Reviews?.Count ?? 0
+                }
+            }).ToList();
 
     var properties = await query
         .OrderByDescending(p => p.CreatedAt)
@@ -175,7 +181,7 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentId = property.UserId,
                 AgentName = property.User.Name,
                 AgentTitle = "Licensed Real Estate Agent",
-                AgentPhone = property.User.Phone,
+                //AgentPhone = property.User.Phone,
                 AgentEmail = property.User.Email,
                 AgentAvatar = property.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
                 CreatedAt = property.CreatedAt,
@@ -447,6 +453,20 @@ namespace IjarifySystemBLL.Services.Classes
                     File.Delete(fullPath);
                 }
             }
+        }
+
+        public async Task<List<LocationCardViewModel>> GetTopLocationsAsync(int count)
+        {
+            var locations = await _repo.GetTopLocationsWithPropertyCountAsync(count);
+
+            return locations.Select(l => new LocationCardViewModel
+            {
+                Id = l.Id,
+                City = l.City,
+                Region = l.Regoin,
+                ImageUrl = l.ImageUrl ?? "assets/img/real-estate/default-location.webp",
+                PropertyCount = l.Properties?.Count ?? 0
+            }).ToList();
         }
     }
 }

@@ -1,0 +1,398 @@
+﻿@model IjarifySystemBLL.DTOs.Bookings.BookingReadDto
+
+<div class="booking-request-card">
+    <!-- Header -->
+    <div class="request-header">
+        <div class="request-info">
+            <span class="booking-id">#@Model.Id</span>
+            <span class="booking-date">
+                <i class="bi bi-clock"></i>
+                @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+            </span>
+        </div>
+        <span class="status-badge status-@Model.Status.ToString().ToLower()">
+            @Model.Status.ToString()
+        </span>
+    </div>
+
+    <!-- Guest Info -->
+    <div class="guest-section">
+        <div class="guest-avatar">
+            <i class="bi bi-person-circle"></i>
+        </div>
+        <div class="guest-info">
+            <h4>@Model.UserName</h4>
+            <p class="guest-contact">
+                <i class="bi bi-envelope"></i> @Model.UserEmail
+                @if (!string.IsNullOrEmpty(Model.UserPhone))
+                {
+                    <span class="ms-3">
+                        <i class="bi bi-telephone"></i> @Model.UserPhone
+                    </span>
+                }
+            </p>
+        </div>
+    </div>
+
+    <!-- Property Info -->
+    <div class="property-section">
+        <div class="property-icon">
+            <i class="bi bi-house-door"></i>
+        </div>
+        <div class="property-details">
+            <h5>@Model.PropertyTitle</h5>
+            <p>@Model.PropertyAddress</p>
+        </div>
+    </div>
+
+    <!-- Booking Details -->
+    <div class="booking-details-grid">
+        <div class="detail-item">
+            <i class="bi bi-calendar-check text-success"></i>
+            <div>
+                <small>Check-In</small>
+                <strong>@Model.Check_In.ToString("dd MMM yyyy")</strong>
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <i class="bi bi-calendar-x text-danger"></i>
+            <div>
+                <small>Check-Out</small>
+                <strong>@Model.Check_Out.ToString("dd MMM yyyy")</strong>
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <i class="bi bi-moon-stars text-primary"></i>
+            <div>
+                <small>Duration</small>
+                <strong>@((Model.Check_Out - Model.Check_In).Days) nights</strong>
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <i class="bi bi-cash-stack text-warning"></i>
+            <div>
+                <small>Total Price</small>
+                <strong>$@Model.TotalPrice.ToString("N2")</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="request-actions">
+        @if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Pending)
+        {
+            <!-- ✅ زرار Approve -->
+            <form asp-controller="Booking"
+                  asp-action="Approve"
+                  asp-route-id="@Model.Id"
+                  method="post"
+                  class="action-form"
+                  onsubmit="return confirm('Are you sure you want to approve this booking request?')">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-approve">
+                    <i class="bi bi-check-circle-fill"></i>
+                    Approve Request
+                </button>
+            </form>
+
+            <!-- ❌ زرار Reject -->
+            <form asp-controller="Booking"
+                  asp-action="Reject"
+                  asp-route-id="@Model.Id"
+                  method="post"
+                  class="action-form"
+                  onsubmit="return confirm('Are you sure you want to reject this booking request?')">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-reject">
+                    <i class="bi bi-x-circle-fill"></i>
+                    Reject Request
+                </button>
+            </form>
+        }
+        else if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Approved)
+        {
+            <div class="status-message approved">
+                <i class="bi bi-check-circle-fill"></i>
+                You approved this booking
+            </div>
+        }
+        else if (Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Rejected)
+        {
+            <div class="status-message rejected">
+                <i class="bi bi-x-circle-fill"></i>
+                You rejected this booking
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .booking-request-card {
+        background: white;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s;
+        margin-bottom: 24px;
+    }
+
+        .booking-request-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+    .request-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #f1f5f9;
+    }
+
+    .request-info {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+    }
+
+    .booking-id {
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        color: white;
+        padding: 6px 16px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .booking-date {
+        color: #64748b;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .status-badge {
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-pending {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #92400e;
+    }
+
+    .status-approved {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
+    }
+
+    .status-rejected {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #991b1b;
+    }
+
+    .guest-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+        padding: 20px;
+        background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+        border-radius: 16px;
+    }
+
+    .guest-avatar {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 32px;
+    }
+
+    .guest-info h4 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 6px;
+    }
+
+    .guest-contact {
+        color: #64748b;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .property-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 12px;
+    }
+
+    .property-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+    }
+
+    .property-details h5 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 4px;
+    }
+
+    .property-details p {
+        color: #64748b;
+        font-size: 13px;
+        margin: 0;
+    }
+
+    .booking-details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: white;
+        border: 2px solid #f1f5f9;
+        border-radius: 12px;
+    }
+
+        .detail-item i {
+            font-size: 24px;
+        }
+
+        .detail-item small {
+            display: block;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .detail-item strong {
+            display: block;
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+    .request-actions {
+        display: flex;
+        gap: 12px;
+        padding-top: 24px;
+        border-top: 2px solid #f1f5f9;
+    }
+
+    .action-form {
+        flex: 1;
+    }
+
+    .btn-approve,
+    .btn-reject {
+        width: 100%;
+        padding: 16px 24px;
+        border: none;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-approve {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+    }
+
+        .btn-approve:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+        }
+
+    .btn-reject {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+    }
+
+        .btn-reject:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+        }
+
+    .status-message {
+        width: 100%;
+        padding: 16px 24px;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+        .status-message.approved {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+        }
+
+        .status-message.rejected {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+        }
+
+    @@media (max-width: 768px) {
+        .booking-details-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .request-actions {
+        flex-direction: column;
+    }
+
+    .guest-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    }
+</style>
+
+

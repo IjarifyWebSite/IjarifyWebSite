@@ -1,29 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.ReviewsViewModels;
+using IjarifySystemDAL.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IjarifyWeb.Controllers
 {
     public class ReviewController : Controller
     {
         private readonly IReviewService reviewService;
+        private readonly UserManager<User> userManager;
 
-        public ReviewController(IReviewService reviewService)
+        public ReviewController(IReviewService reviewService, UserManager<User> userManager)
         {
             this.reviewService = reviewService;
+            this.userManager = userManager;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ReviewFormViewModel createReview)
+        [Authorize]
+        public async Task<IActionResult> Create(ReviewFormViewModel createReview)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Details", "Property", new { id = createReview.PropertyId });
             }
 
-            int fakeUserId = 3;
-            bool isCreated = reviewService.CreateReview(createReview, fakeUserId);
+            var currentUser = await userManager.GetUserAsync(User);
+            bool isCreated = reviewService.CreateReview(createReview, currentUser.Id);
 
             if (isCreated)
             {
@@ -39,15 +45,16 @@ namespace IjarifyWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ReviewFormViewModel updateReview)
+        [Authorize]
+        public async Task<IActionResult> Edit(ReviewFormViewModel updateReview)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Details", "Property", new { id = updateReview.PropertyId });
             }
 
-            int fakeUserId = 3;
-            bool isUpdated = reviewService.UpdateReview(updateReview, fakeUserId, updateReview.ReviewId ?? 0);
+            var currentUser = await userManager.GetUserAsync(User);
+            bool isUpdated = reviewService.UpdateReview(updateReview, currentUser.Id, updateReview.ReviewId ?? 0);
 
             if (isUpdated)
             {
@@ -62,10 +69,11 @@ namespace IjarifyWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int id, int propertyId)
+        [Authorize]
+        public async Task<IActionResult> Delete(int id, int propertyId)
         {
-            int fakeUserId = 3;
-            bool isDeleted = reviewService.DeleteReview(id, fakeUserId);
+            var currentUser = await userManager.GetUserAsync(User);
+            bool isDeleted = reviewService.DeleteReview(id, currentUser.Id);
 
             if (isDeleted)
             {

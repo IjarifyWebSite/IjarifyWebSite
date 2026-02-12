@@ -1,0 +1,243 @@
+﻿@model IjarifySystemBLL.ViewModels.InquiryViewModels.UserInquiriesViewModel
+
+@{
+    ViewData["Title"] = "My Inquiries";
+}
+
+<!-- ===== PAGE HEADER ===== -->
+<section class="page-header" style="margin-top: 100px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="heading-title">My Inquiries</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">My Inquiries</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== INQUIRIES LIST ===== -->
+<section class="inquiries-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Header with count -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>You have <span class="text-primary" id="inquiriesCount">@Model.TotalCount</span> inquiries</h3>
+                    <a href="@Url.Action("Index", "Property")" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Browse Properties
+                    </a>
+                </div>
+
+                <!-- Success/Error Messages -->
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <!-- Inquiries List -->
+                @if (Model.Inquiries.Any())
+                {
+                    <div class="inquiries-list">
+                        @foreach (var inquiry in Model.Inquiries)
+                        {
+                            <div class="inquiry-card mb-4" data-inquiry-id="@inquiry.InquiryId">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <!-- Property Image -->
+                                            <div class="col-md-3">
+                                                <img src="@inquiry.PropertyImage" alt="@inquiry.PropertyTitle" class="img-fluid rounded">
+                                            </div>
+
+                                            <!-- Inquiry Details -->
+                                            <div class="col-md-9">
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <div>
+                                                        <h5 class="mb-1">
+                                                            <a href="@Url.Action("Details", "Property", new { id = inquiry.PropertyId })" class="text-decoration-none">
+                                                                @inquiry.PropertyTitle
+                                                            </a>
+                                                        </h5>
+                                                        <p class="text-muted mb-2">
+                                                            <i class="bi bi-geo-alt"></i> @inquiry.PropertyLocation
+                                                        </p>
+                                                        <p class="text-primary fw-bold mb-2">
+                                                            $@inquiry.PropertyPrice.ToString("N0")
+                                                        </p>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <p class="text-muted small mb-0">
+                                                            <i class="bi bi-clock"></i> @inquiry.CreatedAt.ToString("MMM dd, yyyy")
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Message -->
+                                                <div class="inquiry-message bg-light p-3 rounded mb-3">
+                                                    <p class="mb-0">@inquiry.Message</p>
+                                                </div>
+
+                                                <!-- Property Owner Info -->
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <small class="text-muted">Property Owner:</small>
+                                                        <span class="fw-bold ms-2">@inquiry.PropertyOwnerName</span>
+                                                    </div>
+                                                    <div>
+                                                        <a href="@Url.Action("Details", new { id = inquiry.InquiryId })" class="btn btn-sm btn-outline-primary me-2">
+                                                            <i class="bi bi-eye"></i> View Details
+                                                        </a>
+                                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteInquiry(@inquiry.InquiryId, @Model.UserId)">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <!-- Empty State -->
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <i class="bi bi-envelope-x" style="font-size: 4rem; color: #ccc;"></i>
+                        </div>
+                        <h4 class="text-muted mb-3">No inquiries yet!</h4>
+                        <p class="text-muted mb-4">You haven't sent any inquiries about properties.</p>
+                        <a href="@Url.Action("Index", "Property")" class="btn btn-primary">
+                            <i class="bi bi-search"></i> Browse Properties
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center px-4 pb-4">
+                <div class="mb-4">
+                    <div class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="bi bi-trash text-danger" style="font-size: 2.5rem;"></i>
+                    </div>
+                </div>
+                <h4 class="mb-3">Delete Inquiry?</h4>
+                <p class="text-muted mb-0">Are you sure you want to delete this inquiry? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center gap-2 pt-0 pb-4">
+                <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
+                    <i class="bi bi-trash me-1"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var deleteInquiryId = null;
+        var deleteUserId = null;
+
+        function deleteInquiry(inquiryId, userId) {
+            deleteInquiryId = inquiryId;
+            deleteUserId = userId;
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+
+        // Handle confirm delete button click
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            if (deleteInquiryId === null) return;
+
+            var modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+            
+            $.ajax({
+                url: '@Url.Action("Delete", "Inquiry")',
+                type: 'POST',
+                data: {
+                    id: deleteInquiryId,
+                    userId: deleteUserId
+                },
+                success: function(response) {
+                    modal.hide();
+                    
+                    if (response.success) {
+                        // Hide the card with animation
+                        $('[data-inquiry-id="' + deleteInquiryId + '"]').fadeOut(400, function() {
+                            $(this).remove();
+
+                            // Update count
+                            var currentCount = parseInt($('#inquiriesCount').text());
+                            $('#inquiriesCount').text(currentCount - 1);
+
+                            // If no inquiries left, reload to show empty state
+                            if (currentCount - 1 === 0) {
+                                location.reload();
+                            }
+                        });
+
+                        showNotification(response.message, 'success');
+                    } else {
+                        showNotification(response.message, 'error');
+                    }
+                    
+                    deleteInquiryId = null;
+                    deleteUserId = null;
+                },
+                error: function() {
+                    modal.hide();
+                    showNotification('An error occurred while deleting the inquiry', 'error');
+                    deleteInquiryId = null;
+                    deleteUserId = null;
+                }
+            });
+        });
+
+        function showNotification(message, type) {
+            var alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            var icon = type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle';
+
+            var notification = $('<div class="alert ' + alertClass + ' alert-dismissible fade show position-fixed" style="top: 20px; right: 20px; z-index: 9999; min-width: 300px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" role="alert">' +
+                '<i class="' + icon + ' me-2"></i>' + message +
+                '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>' +
+                '</div>');
+
+            $('body').append(notification);
+
+            setTimeout(function() {
+                notification.alert('close');
+            }, 3000);
+        }
+    </script>
+}
