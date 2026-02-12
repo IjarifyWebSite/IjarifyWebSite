@@ -95,5 +95,7 @@ namespace IjarifySystemBLL.Services.Classes
                 return false;
             }
         }
+
+        public User? GetUserByPhoneNumber(string phoneNumber) => _userRepository.GetByPhoneNumber(phoneNumber);
     }
 }

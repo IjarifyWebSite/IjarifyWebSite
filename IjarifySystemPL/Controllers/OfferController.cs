@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using IjarifySystemBLL.ViewModels.OfferViewModels;
 using IjarifySystemDAL.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 namespace IjarifySystemPL.Controllers
 {
     public class OfferController : Controller
@@ -9,24 +11,27 @@ namespace IjarifySystemPL.Controllers
         private readonly IOfferService _offerService;
         private readonly ILocationService _locationService;
         private readonly IPropertyService _propertyService;
+        private readonly UserManager<User> userManager;
 
-        public OfferController(IOfferService offerService,ILocationService locationService,IPropertyService propertyService)
+        public OfferController(IOfferService offerService,ILocationService locationService,IPropertyService propertyService,UserManager<User> userManager)
         {
             _offerService = offerService;
             _locationService = locationService;
             _propertyService = propertyService;
+            this.userManager = userManager;
         }
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Create()
+        [Authorize]
+        public async Task<IActionResult> Create()
         {
-            var FakeUserId = 1;
+            var currentUser = await userManager.GetUserAsync(User);
             var Model = new CreateOfferViewModel()
             {
-                properties = _propertyService.GetPropertyByuser(FakeUserId),
+                properties = _propertyService.GetPropertyByuser(currentUser.Id),
                 locations=_locationService.GetAllLocations()
 
             };
@@ -35,15 +40,16 @@ namespace IjarifySystemPL.Controllers
             return View(Model);
         }
         [HttpPost]
-        public IActionResult Create(CreateOfferViewModel request)
+        [Authorize]
+        public async Task<IActionResult> Create(CreateOfferViewModel request)
         {
             ModelState.Remove("properties");
             ModelState.Remove("locations");
             if (!ModelState.IsValid)
             {
-                var FakeUserId = 1;
+                var CurrentUser = await userManager.GetUserAsync(User);
                 request.locations = _locationService.GetAllLocations();
-                request.properties = _propertyService.GetPropertyByuser(FakeUserId);
+                request.properties = _propertyService.GetPropertyByuser(CurrentUser.Id);
                 return View(request);
             }
             bool IsCreated= _offerService.CreateOffer(request);
@@ -52,9 +58,9 @@ namespace IjarifySystemPL.Controllers
                 return RedirectToAction("MyOffers");
             }
 
-            var fakeUserId = 1;
+            var currentUser = await userManager.GetUserAsync(User);
             request.locations = _locationService.GetAllLocations();
-            request.properties = _propertyService.GetPropertyByuser(fakeUserId);
+            request.properties = _propertyService.GetPropertyByuser(currentUser.Id);
             ModelState.AddModelError("", "Something went wrong while creating the offer. Please try again.");
             return View(request);
         }
@@ -76,30 +82,33 @@ namespace IjarifySystemPL.Controllers
         }
 
         // for ajax call
-       public IActionResult GetPropertiesByLocation(int locationId)
+        public async Task<IActionResult> GetPropertiesByLocation(int locationId)
         {
-            var fakeUserId = 1;
-            var properties = _propertyService.GetByLocationAndUser(locationId, fakeUserId);
+            var currentUser = await userManager.GetUserAsync(User);
+            var properties = _propertyService.GetByLocationAndUser(locationId, currentUser.Id);
             return Json(properties);
         }
 
-        public IActionResult MyOffers()
+        [Authorize]
+        public async Task<IActionResult> MyOffers()
         {
-            var fakeUserId = 1;
-            var offers= _offerService.GetUserOffers(fakeUserId);
+            var currentUser = await userManager.GetUserAsync(User);
+            var offers= _offerService.GetUserOffers(currentUser.Id);
             return View(offers);
         }
 
         [HttpGet]
-        public IActionResult Edit(int offerId)
+        [Authorize]
+        public async Task<IActionResult> Edit(int offerId)
         {
-            var fakeuUserId = 1;
-            var offer = _offerService.GetOfferForUpdate(offerId,fakeuUserId);
+            var currentUser = await userManager.GetUserAsync(User);
+            var offer = _offerService.GetOfferForUpdate(offerId,currentUser.Id);
             
             return View("Create",offer);
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Edit(CreateOfferViewModel request)
         {
             ModelState.Remove("properties");
@@ -118,6 +127,7 @@ namespace IjarifySystemPL.Controllers
 
         }
         [HttpPost]
+        [Authorize]
         public async Task <IActionResult> Delete(int id)
         {
             bool IsDeleted= await _offerService.DeleteOffer(id);
