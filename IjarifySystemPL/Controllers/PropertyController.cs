@@ -1,13 +1,21 @@
-﻿using IjarifySystemBLL.Services.Interfaces;
+﻿using IjarifySystemBLL.Services.Classes;
+using IjarifySystemBLL.Services.Interfaces;
+using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels.PropertyViewModels;
 using IjarifySystemDAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using IjarifySystemBLL.Services.Interfaces;
+using IjarifySystemBLL.Services.Classes;
+using Microsoft.AspNetCore.Identity;
+using IjarifySystemDAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IjarifySystemPL.Controllers
 {
-    public class PropertyController : Controller
+    public class PropertyController(IPropertyService _propertyService, UserManager<User> _userManager) : Controller
     {
         private readonly IPropertyService _propertyService;
         private readonly IFavouriteService _favouriteService;
@@ -39,28 +47,15 @@ namespace IjarifySystemPL.Controllers
         // GET: PropertyController/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var userId = await GetCurrentUserIdAsync();
-            var vmModel = await _propertyService.GetPropertyDetails(id, userId ?? 0); // Service might expect 0 or handle null? Previous code passed int, let's check service.
-
-            // Just in case service handles 0 as guest
-            int effectiveUserId = userId ?? 0;
-
-            if (vmModel != null)
-            {
-                if (userId.HasValue)
-                {
-                    vmModel.IsFavourite = _favouriteService.IsPropertyFavourite(userId.Value, id);
-                }
-                else 
-                {
-                    vmModel.IsFavourite = false;
-                }
-            }
+            var currentUser = await _userManager.GetUserAsync(User);
+            int? userId = currentUser?.Id;
+            var vmModel = await _propertyService.GetPropertyDetails(id , userId);
 
             return View("Details", vmModel);
         }
 
         // GET: PropertyController/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -69,57 +64,156 @@ namespace IjarifySystemPL.Controllers
         // POST: PropertyController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [Authorize]
+        public async Task<ActionResult> Create(CreatePropertyViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             try
             {
+                // Get current logged-in user ID (adjust based on your authentication)
+                var user = await _userManager.GetUserAsync(User);
+                int userId = user.Id;
+
+                if (userId == 0)
+                {
+                    return Unauthorized();
+                }
+
+                await _propertyService.CreatePropertyAsync(model, userId);
+
+                TempData["Success"] = "Property created successfully!";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("", "An error occurred while creating the property: " + ex.Message);
+                return View(model);
             }
         }
 
         // GET: PropertyController/Edit/5
-        public ActionResult Edit(int id)
+        [Authorize]
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var model = await _propertyService.GetPropertyForEditAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            // Optional: Check if current user owns the property
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var property = await _propertyService.GetPropertyDetails(id);
+
+            if (property.AgentId != userId)
+            {
+                TempData["Error"] = "You don't have permission to edit this property.";
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            return View(model);
         }
 
-        // POST: PropertyController/Edit/5
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, CreatePropertyViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+                if (userId == 0)
+                {
+                    return Unauthorized();
+                }
+
+                await _propertyService.UpdatePropertyAsync(id, model, userId);
+
+                TempData["Success"] = "Property updated successfully!";
+                return RedirectToAction(nameof(Details), new { id });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("", "An error occurred while updating the property: " + ex.Message);
+                return View(model);
             }
         }
 
+
         // GET: PropertyController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var property = await _propertyService.GetPropertyDetails(id);
+
+            if (property == null)
+            {
+                return NotFound();
+            }
+
+            // Check if current user owns the property
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
+            if (property.AgentId != userId)
+            {
+                TempData["Error"] = "You don't have permission to delete this property.";
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            return View(property);
         }
 
         // POST: PropertyController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
             try
             {
+                int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+                if (userId == 0)
+                {
+                    return Unauthorized();
+                }
+
+                bool deleted = await _propertyService.DeletePropertyAsync(id, userId);
+
+                if (!deleted)
+                {
+                    TempData["Error"] = "Property not found.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                TempData["Success"] = "Property deleted successfully!";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (UnauthorizedAccessException ex)
             {
-                return View();
+                TempData["Error"] = ex.Message;
+                return RedirectToAction(nameof(Details), new { id });
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "An error occurred while deleting the property: " + ex.Message;
+                return RedirectToAction(nameof(Delete), new { id });
             }
         }
     }

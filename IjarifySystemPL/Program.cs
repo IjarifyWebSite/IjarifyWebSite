@@ -36,6 +36,7 @@ namespace IjarifySystemPL
             builder.Services.AddScoped<IInquiryService, InquiryService>();
             builder.Services.AddScoped<IFavouriteRepository, FavouriteRepository>();
             builder.Services.AddScoped<IFavouriteService, FavouriteService>();
+            builder.Services.AddScoped<ILocationService,LocationService>();
             builder.Services.AddDbContext<IjarifyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -63,7 +64,7 @@ namespace IjarifySystemPL
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

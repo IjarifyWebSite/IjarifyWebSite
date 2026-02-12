@@ -1,883 +1,492 @@
 ﻿@model IjarifySystemBLL.ViewModels.AccountViewModels.RegisterViewModel
 
 @{
-    ViewData["Title"] = "Register - Ijarify";
+    ViewData["Title"] = "Join Ijarify";
+    Layout = null;
 }
 
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join Ijarify</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
 
-<div class="register-wrapper">
-    <div class="register-container">
+<div class="full-page">
 
-        <!-- Left Hero Section -->
-        <div class="hero-section">
-            <div class="hero-content">
-                <div class="brand-section">
-                    <h1 class="brand-title">Ijarify</h1>
-                    <p class="brand-tagline">Your Trusted Real Estate Partner</p>
-                </div>
+    <div class="left-side">
+        <div class="brand">Ijarify.</div>
 
-                <div class="hero-headline">
-                    <h2>Join Egypt's Most Trusted Real Estate Platform</h2>
-                    <p>Start your property journey with confidence</p>
-                </div>
-
-                <div class="value-props">
-                    <div class="value-item">
-                        <i class="bi bi-check-circle-fill"></i>
-                        <span>Access 10,000+ verified properties</span>
-                    </div>
-                    <div class="value-item">
-                        <i class="bi bi-check-circle-fill"></i>
-                        <span>Connect with certified agents</span>
-                    </div>
-                    <div class="value-item">
-                        <i class="bi bi-check-circle-fill"></i>
-                        <span>Secure transactions & documentation</span>
-                    </div>
-                    <div class="value-item">
-                        <i class="bi bi-check-circle-fill"></i>
-                        <span>24/7 customer support</span>
-                    </div>
-                </div>
-
-                <div class="trust-indicators">
-                    <div class="trust-item">
-                        <i class="bi bi-people-fill"></i>
-                        <div>
-                            <strong>50,000+</strong>
-                            <span>Active Users</span>
-                        </div>
-                    </div>
-                    <div class="trust-item">
-                        <i class="bi bi-star-fill"></i>
-                        <div>
-                            <strong>4.8/5</strong>
-                            <span>User Rating</span>
-                        </div>
-                    </div>
-                    <div class="trust-item">
-                        <i class="bi bi-shield-check"></i>
-                        <div>
-                            <strong>Verified</strong>
-                            <span>Secure Platform</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="hero-text">
+            <h1>Discover<br>Your Perfect Stay.</h1>
+            <p>Modern real estate platform designed for seamless booking, trusted reviews, and secure living experiences.</p>
         </div>
-
-        <!-- Right Form Section -->
-        <div class="form-section">
-            <div class="form-card">
-
-                <!-- Form Header -->
-                <div class="form-header">
-                    <div class="form-icon">
-                        <i class="bi bi-person-plus-fill"></i>
-                    </div>
-                    <h2>Create Your Account</h2>
-                    <p>Start your property journey today</p>
-                </div>
-
-                <!-- Social Registration (Optional) -->
-                <div class="social-auth">
-                    <button type="button" class="social-btn google-btn">
-                        <i class="bi bi-google"></i>
-                        Continue with Google
-                    </button>
-                    <button type="button" class="social-btn facebook-btn">
-                        <i class="bi bi-facebook"></i>
-                        Continue with Facebook
-                    </button>
-                </div>
-
-                <div class="divider">
-                    <span>OR</span>
-                </div>
-
-                <!-- Registration Form -->
-                <form asp-action="Register" asp-controller="Account" method="post" id="registerForm">
-
-                    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
-
-                    <!-- Full Name -->
-                    <div class="form-group">
-                        <label asp-for="Name" class="form-label">
-                            <i class="bi bi-person"></i>
-                            Full Name
-                        </label>
-                        <input asp-for="Name" class="form-control" placeholder="Enter your full name" />
-                        <span asp-validation-for="Name" class="field-error"></span>
-                    </div>
-
-                    <!-- Username -->
-                    <div class="form-group">
-                        <label asp-for="UserName" class="form-label">
-                            <i class="bi bi-at"></i>
-                            Username
-                        </label>
-                        <input asp-for="UserName" class="form-control" placeholder="Choose a unique username" />
-                        <span asp-validation-for="UserName" class="field-error"></span>
-                        <span class="field-hint">This will be your public identifier</span>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="form-group">
-                        <label asp-for="Email" class="form-label">
-                            <i class="bi bi-envelope"></i>
-                            Email Address
-                        </label>
-                        <input asp-for="Email" class="form-control" placeholder="you@example.com" />
-                        <span asp-validation-for="Email" class="field-error"></span>
-                    </div>
-
-                    <!-- Password -->
-                    <div class="form-group">
-                        <label asp-for="Password" class="form-label">
-                            <i class="bi bi-lock"></i>
-                            Password
-                        </label>
-                        <div class="password-wrapper">
-                            <input asp-for="Password" class="form-control" placeholder="Create a strong password" type="password" id="password" />
-                            <button type="button" class="toggle-password" onclick="togglePassword('password')">
-                                <i class="bi bi-eye" id="password-icon"></i>
-                            </button>
-                        </div>
-                        <span asp-validation-for="Password" class="field-error"></span>
-                        <div class="password-strength" id="passwordStrength">
-                            <div class="strength-bar">
-                                <div class="strength-fill" id="strengthFill"></div>
-                            </div>
-                            <span class="strength-text" id="strengthText">Enter password</span>
-                        </div>
-                    </div>
-
-                    <!-- Confirm Password -->
-                    <div class="form-group">
-                        <label asp-for="ConfirmPassword" class="form-label">
-                            <i class="bi bi-check-circle"></i>
-                            Confirm Password
-                        </label>
-                        <div class="password-wrapper">
-                            <input asp-for="ConfirmPassword" class="form-control" placeholder="Re-enter your password" type="password" id="confirmPassword" />
-                            <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
-                                <i class="bi bi-eye" id="confirmPassword-icon"></i>
-                            </button>
-                        </div>
-                        <span asp-validation-for="ConfirmPassword" class="field-error"></span>
-                    </div>
-
-                    <!-- Address -->
-                    <div class="form-group">
-                        <label asp-for="Address" class="form-label">
-                            <i class="bi bi-geo-alt"></i>
-                            Address
-                        </label>
-                        <input asp-for="Address" class="form-control" placeholder="Enter your address" />
-                        <span asp-validation-for="Address" class="field-error"></span>
-                    </div>
-
-                    <!-- Phone Number -->
-                    <div class="form-group">
-                        <label asp-for="PhoneNumber" class="form-label">
-                            <i class="bi bi-phone"></i>
-                            Phone Number
-                        </label>
-                        <div class="phone-wrapper">
-                            <span class="country-code">+20</span>
-                            <input asp-for="PhoneNumber" class="form-control phone-input" placeholder="1012345678" />
-                        </div>
-                        <span asp-validation-for="PhoneNumber" class="field-error"></span>
-                        <span class="field-hint">Optional - for account recovery</span>
-                    </div>
-
-                    <!-- Terms Agreement -->
-                    <div class="terms-agreement">
-                        <label class="checkbox-label">
-                            <input type="checkbox" required />
-                            <span class="checkmark"></span>
-                            <span class="terms-text">
-                                I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
-                            </span>
-                        </label>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit" class="btn-submit">
-                        <i class="bi bi-person-check"></i>
-                        Create Account
-                    </button>
-
-                    <!-- Login Link -->
-                    <div class="form-footer">
-                        <span>Already have an account?</span>
-                        <a asp-action="Login" asp-controller="Account">Login here</a>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-
     </div>
-</div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <div class="right-side">
+        <div class="form-box">
+            <h2>Create Account</h2>
+            <p>Join our community and start exploring.</p>
 
-    <script>
-        // Toggle Password Visibility
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(inputId + '-icon');
+            @if (!ViewData.ModelState.IsValid)
+            {
+                var generalErrors = ViewData.ModelState
+                    .Where(x => string.IsNullOrEmpty(x.Key))
+                    .SelectMany(x => x.Value.Errors)
+                    .ToList();
 
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
-            }
-        }
-
-        // Password Strength Checker
-        document.getElementById('password')?.addEventListener('input', function(e) {
-            const password = e.target.value;
-            const strengthFill = document.getElementById('strengthFill');
-            const strengthText = document.getElementById('strengthText');
-
-            let strength = 0;
-            let text = '';
-            let color = '';
-
-            if (password.length === 0) {
-                strength = 0;
-                text = 'Enter password';
-                color = '#cbd5e1';
-            } else if (password.length < 6) {
-                strength = 25;
-                text = 'Weak';
-                color = '#ef4444';
-            } else if (password.length < 8) {
-                strength = 50;
-                text = 'Fair';
-                color = '#f59e0b';
-            } else {
-                // Check for mixed case, numbers, special chars
-                let score = 50;
-                if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score += 15;
-                if (/[0-9]/.test(password)) score += 15;
-                if (/[^a-zA-Z0-9]/.test(password)) score += 20;
-
-                strength = score;
-                if (score < 75) {
-                    text = 'Good';
-                    color = '#10b981';
-                } else {
-                    text = 'Strong';
-                    color = '#059669';
+                if (generalErrors.Any())
+                {
+                    <div class="alert alert-error">
+                        <i class="bi bi-exclamation-circle"></i>
+                        <div>
+                            @foreach (var error in generalErrors)
+                            {
+                                <div>@error.ErrorMessage</div>
+                            }
+                        </div>
+                    </div>
                 }
             }
 
-            strengthFill.style.width = strength + '%';
-            strengthFill.style.backgroundColor = color;
-            strengthText.textContent = text;
-            strengthText.style.color = color;
-        });
-    </script>
-}
+            <form asp-action="Register" asp-controller="Account" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="input-row">
+                    <div class="field">
+                        <label asp-for="Name">Full Name</label>
+                        <input asp-for="Name" placeholder="Enter your full name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="field">
+                        <label asp-for="UserName">Username</label>
+                        <input asp-for="UserName" placeholder="Choose a username" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Email">Email Address</label>
+                    <input asp-for="Email" placeholder="you@example.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="PhoneNumber">Phone Number</label>
+                    <input asp-for="PhoneNumber" placeholder="01234567890" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Address">Address</label>
+                    <input asp-for="Address" placeholder="City, Country" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <div class="input-row">
+                    <div class="field">
+                        <label asp-for="Password">Password</label>
+                        <div class="password-wrapper">
+                            <input asp-for="Password" type="password" id="passwordInput" placeholder="Create password" />
+                            <button type="button" class="toggle-password" onclick="togglePassword('passwordInput', 'eyeIcon1')">
+                                <i class="bi bi-eye" id="eyeIcon1"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div id="strengthBar"></div>
+                        </div>
+                        <small id="strengthText"></small>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="field">
+                        <label asp-for="ConfirmPassword">Confirm Password</label>
+                        <div class="password-wrapper">
+                            <input asp-for="ConfirmPassword" type="password" id="confirmPasswordInput" placeholder="Confirm password" />
+                            <button type="button" class="toggle-password" onclick="togglePassword('confirmPasswordInput', 'eyeIcon2')">
+                                <i class="bi bi-eye" id="eyeIcon2"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-gradient">
+                    <i class="bi bi-person-check"></i>
+                    Create Account
+                </button>
+
+                <div style="text-align:center; margin-top:18px; font-size:.9rem; color:#718096;">
+                    Already have an account?
+                    <a asp-action="Login" asp-controller="Account"  
+                       style="color: #2c7a7b; font-weight:600; text-decoration:none;">
+                        Login
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
 
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+:root{
+    --brand-gradient: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+    --primary: #38b2ac;
+    --dark: #2c7a7b;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+html,body{
+    height:100%;
+}
+
+.full-page{
+    display:flex;
+    height:100vh;
+}
+
+.left-side{
+    flex:1.1;
+    background: var(--brand-gradient);
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:80px;
+    color:white;
+    overflow:hidden;
+}
+
+.left-side::before,
+.left-side::after{
+    content:"";
+    position:absolute;
+    width:500px;
+    height:500px;
+    background:rgba(255,255,255,0.07);
+    border-radius:50%;
+    filter:blur(80px);
+    animation: float 10s infinite ease-in-out alternate;
+}
+
+.left-side::before{ top:-150px; left:-150px; }
+.left-side::after{ bottom:-150px; right:-150px; animation-delay:3s; }
+
+@@keyframes float{
+    from{ transform:translateY(0px); }
+    to{ transform:translateY(40px); }
+}
+
+.brand{
+    position:absolute;
+    top:40px;
+    left:80px;
+    font-size:1.8rem;
+    font-weight:800;
+}
+
+.hero-text h1{
+    font-size:3.8rem;
+    margin-bottom:25px;
+    font-weight:800;
+    line-height: 1.1;
+}
+
+.hero-text p{
+    font-size:1.2rem;
+    opacity:.9;
+    line-height: 1.6;
+}
+
+.right-side{
+    flex:1;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:60px;
+    overflow-y: auto;
+}
+
+.form-box{
+    width:100%;
+    max-width:520px;
+}
+
+.form-box h2{
+    font-size:2.2rem;
+    margin-bottom:10px;
+    font-weight: 800;
+}
+
+.form-box p{
+    color:#718096;
+    margin-bottom:25px;
+}
+
+.alert {
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.alert i {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.alert > div {
+    flex: 1;
+}
+
+.alert > div > div {
+    margin-bottom: 4px;
+}
+
+.alert > div > div:last-child {
+    margin-bottom: 0;
+}
+
+.input-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.field{
+    margin-bottom:16px;
+}
+
+.field label{
+    display:block;
+    font-size:.85rem;
+    font-weight:700;
+    margin-bottom:7px;
+    color: #1a202c;
+}
+
+.field input{
+    width:100%;
+    padding:13px 14px;
+    border-radius:12px;
+    border:2px solid #edf2f7;
+    background:#f8fafc;
+    transition:.3s;
+    font-size: 15px;
+}
+
+.field input:focus{
+    outline:none;
+    border-color:var(--primary);
+    background:white;
+    box-shadow:0 0 0 4px rgba(56,178,172,.12);
+}
+
+.field input::placeholder {
+    color: #a0aec0;
+}
+
+/* Password Wrapper */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.toggle-password:hover {
+    color: var(--primary);
+}
+
+.password-strength{
+    height:5px;
+    background:#e2e8f0;
+    border-radius:10px;
+    margin-top:7px;
+    overflow:hidden;
+}
+
+#strengthBar{
+    height:100%;
+    width:0%;
+    transition:.3s;
+}
+
+#strengthText {
+    display: block;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    font-weight: 600;
+}
+
+.btn-gradient{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:var(--brand-gradient);
+    color:white;
+    font-weight:700;
+    font-size: 16px;
+    cursor:pointer;
+    margin-top:12px;
+    transition:.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 14px rgba(56, 178, 172, 0.3);
+}
+
+.btn-gradient:hover{
+    transform:translateY(-3px);
+    box-shadow: 0 6px 20px rgba(56, 178, 172, 0.4);
+}
+
+.btn-gradient i {
+    font-size: 20px;
+}
+
+.text-danger{
+    font-size:.8rem;
+    color:#e53e3e;
+    margin-top:5px;
+    display:block;
+    font-weight: 500;
+}
+
+/* Responsive */
+@@media (max-width: 992px) {
+    .left-side {
+        display: none;
     }
-
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-
-    /* Main Wrapper */
-    .register-wrapper {
-        margin-top:100px;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        padding: 20px;
-    }
-
-    .register-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-        align-items: center;
-        min-height: calc(100vh - 40px);
-    }
-
-    /* Hero Section */
-    .hero-section {
-        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
-        border-radius: 24px;
-        padding: 60px 50px;
-        color: white;
-        box-shadow: 0 20px 60px rgba(13, 148, 136, 0.3);
-        position: relative;
-        overflow: hidden;
-    }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        }
-
-    .hero-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .brand-section {
-        margin-bottom: 40px;
-    }
-
-    .brand-title {
-        font-size: 42px;
-        font-weight: 700;
-        margin-bottom: 8px;
-        letter-spacing: -0.5px;
-    }
-
-    .brand-tagline {
-        font-size: 16px;
-        opacity: 0.9;
-        font-weight: 500;
-    }
-
-    .hero-headline {
-        margin-bottom: 40px;
-    }
-
-        .hero-headline h2 {
-            font-size: 32px;
-            font-weight: 700;
-            line-height: 1.3;
-            margin-bottom: 12px;
-        }
-
-        .hero-headline p {
-            font-size: 16px;
-            opacity: 0.95;
-        }
-
-    .value-props {
-        margin-bottom: 40px;
-    }
-
-    .value-item {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        margin-bottom: 16px;
-        font-size: 15px;
-    }
-
-        .value-item i {
-            font-size: 20px;
-            color: #5eead4;
-        }
-
-    .trust-indicators {
-        display: flex;
-        gap: 24px;
-        flex-wrap: wrap;
-        padding-top: 30px;
-        border-top: 1px solid rgba(255,255,255,0.2);
-    }
-
-    .trust-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-        .trust-item i {
-            font-size: 28px;
-            color: #5eead4;
-        }
-
-        .trust-item div {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .trust-item strong {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .trust-item span {
-            font-size: 12px;
-            opacity: 0.85;
-        }
-
-    /* Form Section */
-    .form-section {
-        display: flex;
-        justify-content: center;
-    }
-
-    .form-card {
-        background: white;
-        padding: 48px 40px;
-        border-radius: 20px;
-        width: 100%;
-        max-width: 500px;
-        box-shadow: 0 8px 32px rgba(15, 23, 42, 0.1);
-        border: 1px solid #e2e8f0;
-    }
-
-    .form-header {
-        text-align: center;
-        margin-bottom: 32px;
-    }
-
-    .form-icon {
-        width: 64px;
-        height: 64px;
-        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
-        border-radius: 16px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-        box-shadow: 0 8px 24px rgba(13, 148, 136, 0.25);
-    }
-
-        .form-icon i {
-            font-size: 30px;
-            color: white;
-        }
-
-    .form-header h2 {
-        font-size: 28px;
-        font-weight: 700;
-        color: #0f172a;
-        margin-bottom: 8px;
-    }
-
-    .form-header p {
-        color: #64748b;
-        font-size: 15px;
-    }
-
-    /* Social Auth */
-    .social-auth {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 24px;
-    }
-
-    .social-btn {
-        padding: 12px 16px;
-        border-radius: 10px;
-        border: 1.5px solid #e2e8f0;
-        background: white;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
-
-        .social-btn:hover {
-            border-color: #cbd5e1;
-            background: #f8fafc;
-            transform: translateY(-1px);
-        }
-
-    .google-btn {
-        color: #ea4335;
-    }
-
-    .facebook-btn {
-        color: #1877f2;
-    }
-
-    .divider {
-        text-align: center;
-        margin: 24px 0;
-        position: relative;
-    }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 45%;
-            height: 1px;
-            background: #e2e8f0;
-        }
-
-        .divider::before {
-            left: 0;
-        }
-
-        .divider::after {
-            right: 0;
-        }
-
-        .divider span {
-            background: white;
-            padding: 0 12px;
-            color: #94a3b8;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-    /* Form Groups */
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 600;
-        font-size: 14px;
-        color: #0f172a;
-        margin-bottom: 8px;
-    }
-
-        .form-label i {
-            font-size: 16px;
-            color: #0d9488;
-        }
-
-    .form-control {
-        width: 100%;
-        padding: 13px 16px;
-        border: 1.5px solid #cbd5e1;
-        border-radius: 10px;
-        font-size: 15px;
-        background: white;
-        transition: all 0.2s;
-        font-family: inherit;
-    }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #0d9488;
-            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
-        }
-
-        .form-control::placeholder {
-            color: #94a3b8;
-        }
-
-    /* Password Wrapper */
-    .password-wrapper {
-        position: relative;
-    }
-
-        .password-wrapper .form-control {
-            padding-right: 45px;
-        }
-
-    .toggle-password {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: #64748b;
-        font-size: 18px;
-        padding: 4px;
-        transition: color 0.2s;
-    }
-
-        .toggle-password:hover {
-            color: #0d9488;
-        }
-
-    /* Phone Wrapper */
-    .phone-wrapper {
-        display: flex;
-        gap: 8px;
-    }
-
-    .country-code {
-        display: flex;
-        align-items: center;
-        padding: 13px 16px;
-        background: #f1f5f9;
-        border: 1.5px solid #cbd5e1;
-        border-radius: 10px;
-        font-weight: 600;
-        color: #475569;
-        font-size: 15px;
-    }
-
-    .phone-input {
+    
+    .right-side {
         flex: 1;
     }
+}
 
-    /* Password Strength */
-    .password-strength {
-        margin-top: 8px;
-    }
-
-    .strength-bar {
-        height: 4px;
-        background: #e2e8f0;
-        border-radius: 2px;
-        overflow: hidden;
-        margin-bottom: 6px;
-    }
-
-    .strength-fill {
-        height: 100%;
-        width: 0%;
-        transition: all 0.3s;
-        background: #cbd5e1;
-    }
-
-    .strength-text {
-        font-size: 12px;
-        color: #64748b;
-        font-weight: 500;
-    }
-
-    /* Field Hints & Errors */
-    .field-hint {
-        display: block;
-        font-size: 12px;
-        color: #64748b;
-        margin-top: 6px;
-    }
-
-    .field-error {
-        display: block;
-        font-size: 13px;
-        color: #ef4444;
-        margin-top: 6px;
-        font-weight: 500;
-    }
-
-    .validation-summary {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        padding: 12px 16px;
-        border-radius: 10px;
-        color: #dc2626;
-        font-size: 14px;
-        margin-bottom: 20px;
-    }
-
-    /* Terms Agreement */
-    .terms-agreement {
-        margin: 24px 0;
-    }
-
-    .checkbox-label {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        cursor: pointer;
-        position: relative;
-    }
-
-        .checkbox-label input[type="checkbox"] {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-    .checkmark {
-        width: 20px;
-        height: 20px;
-        border: 2px solid #cbd5e1;
-        border-radius: 6px;
-        flex-shrink: 0;
-        transition: all 0.2s;
-        position: relative;
-    }
-
-    .checkbox-label input[type="checkbox"]:checked ~ .checkmark {
-        background: #0d9488;
-        border-color: #0d9488;
-    }
-
-        .checkbox-label input[type="checkbox"]:checked ~ .checkmark::after {
-            content: '✓';
-            position: absolute;
-            color: white;
-            font-size: 14px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-    .terms-text {
-        font-size: 13px;
-        color: #475569;
-        line-height: 1.5;
-    }
-
-        .terms-text a {
-            color: #0d9488;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-            .terms-text a:hover {
-                text-decoration: underline;
-            }
-
-    /* Submit Button */
-    .btn-submit {
-        width: 100%;
-        padding: 14px;
-        border: none;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
-        color: white;
-        font-weight: 600;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
-        margin-top: 8px;
-    }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
-        }
-
-        .btn-submit:active {
-            transform: translateY(0);
-        }
-
-        .btn-submit i {
-            font-size: 20px;
-        }
-
-    /* Form Footer */
-    .form-footer {
-        margin-top: 24px;
-        text-align: center;
-        font-size: 14px;
-        color: #64748b;
-    }
-
-        .form-footer a {
-            color: #0d9488;
-            font-weight: 600;
-            text-decoration: none;
-            margin-left: 6px;
-        }
-
-            .form-footer a:hover {
-                text-decoration: underline;
-            }
-
-    /* Responsive Design */
-    @@media (max-width: 1024px) {
-        .register-container
-
-    {
+@@media (max-width: 768px) {
+    .input-row {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 0;
     }
-
-    .hero-section {
+    
+    .right-side {
         padding: 40px 30px;
     }
-
-    .hero-headline h2 {
-        font-size: 28px;
+    
+    .form-box h2 {
+        font-size: 1.8rem;
     }
-
-    .trust-indicators {
-        justify-content: center;
-    }
-
-    }
-
-    @@media (max-width: 768px) {
-        .register-wrapper
-
-    {
-        padding: 10px;
-    }
-
-    .form-card {
-        padding: 32px 24px;
-    }
-
-    .hero-section {
-        padding: 32px 24px;
-    }
-
-    .brand-title {
-        font-size: 36px;
-    }
-
-    .hero-headline h2 {
-        font-size: 24px;
-    }
-
-    .social-auth {
-        grid-template-columns: 1fr;
-    }
-
-    .trust-indicators {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-    }
-
-    }
-
-    @@media (max-width: 480px) {
-        .form-header h2
-
-    {
-        font-size: 24px;
-    }
-
-    .phone-wrapper {
-        flex-direction: column;
-    }
-
-    .country-code {
-        width: 100%;
-    }
-
-    }
+}
 </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+// Password Strength Checker
+const passwordInput = document.getElementById("passwordInput");
+const strengthBar = document.getElementById("strengthBar");
+const strengthText = document.getElementById("strengthText");
+
+if (passwordInput) {
+    passwordInput.addEventListener("input", function () {
+        const val = this.value;
+        let strength = 0;
+
+        if (val.length >= 6) strength++;
+        if (/[A-Z]/.test(val)) strength++;
+        if (/[0-9]/.test(val)) strength++;
+        if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+        if (val.length === 0) {
+            strengthBar.style.width = "0%";
+            strengthText.innerText = "";
+        }
+        else if (strength <= 1) {
+            strengthBar.style.width = "25%";
+            strengthBar.style.background = "#ef4444";
+            strengthText.innerText = "Weak";
+            strengthText.style.color = "#ef4444";
+        }
+        else if (strength == 2) {
+            strengthBar.style.width = "50%";
+            strengthBar.style.background = "#f59e0b";
+            strengthText.innerText = "Fair";
+            strengthText.style.color = "#f59e0b";
+        }
+        else if (strength == 3) {
+            strengthBar.style.width = "75%";
+            strengthBar.style.background = "#38b2ac";
+            strengthText.innerText = "Good";
+            strengthText.style.color = "#38b2ac";
+        }
+        else {
+            strengthBar.style.width = "100%";
+            strengthBar.style.background = "#10b981";
+            strengthText.innerText = "Strong";
+            strengthText.style.color = "#10b981";
+        }
+    });
+}
+
+// Toggle Password Visibility
+function togglePassword(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    }
+}
+</script>
+</body>
+</html>

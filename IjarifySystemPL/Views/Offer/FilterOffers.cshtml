@@ -7,8 +7,10 @@
 
 @section Styles{    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-     <link rel="stylesheet" href="/assets/css/FilterOffers.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/FilterOffers.css">
+       
 }
 
 <div class="page-title">
@@ -77,34 +79,42 @@
         </div>
     </div>
 
-    <div class="property-grid">
-                        @foreach (var item in Model.Offers)
-                        {
-        <div class="card">
-
-                
+    @if(Model.Offers != null && Model.Offers.Any())
+    {
+        <div class="property-grid">
+            @foreach (var item in Model.Offers)
+            {
+                <div class="card">
                     <img src="@item.PropertyImageUrl" class="card-img">
                     <div class="card-body">
                         <div class="card-header">
-                    <div><h4 class="card-title">@item.PropertyTitle</h4><p class="card-location">@item.LocationName</p></div>
-                    <div class="contact-btns">
-                        <a href="#" class="icon-btn btn-phone"><i class="fa-solid fa-phone"></i></a>
-                        <a href="#" class="icon-btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+                            <div><h4 class="card-title">@item.PropertyTitle</h4><p class="card-location">@item.LocationName</p></div>
+                            <div class="contact-btns">
+                                <a href="#" class="icon-btn btn-phone"><i class="fa-solid fa-phone"></i></a>
+                                <a href="#" class="icon-btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+                            </div>
+                        </div>
+                        <div class="offer-text"><span>@((int)item.DiscountPercentage)%</span> Down Payment, <span>@item.DurationInMonths</span> Months</div>
+                        <div class="card-footer">1 More Offer <i class="fa-solid fa-chevron-down"></i></div>
                     </div>
                 </div>
-                <div class="offer-text"><span>@((int)item.DiscountPercentage)%</span> Down Payment, <span>@item.DurationInMonths</span> Months</div>
-                <div class="card-footer">1 More Offer <i class="fa-solid fa-chevron-down"></i></div>
-            </div>
-           
+            }
         </div>
-        }
-        <button type="submit" style="display:none;">Search</button>
-        </form>
-    </div>
+    }
+    else
+    {
+         <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-tag-slash"></i></div>
+            <h5>No Offers Available</h5>
+            <p>There are currently no active offers for this location. Check back soon!</p>
+        </div>
+    }
+
+    <button type="submit" style="display:none;">Search</button>
+    </form>
 </div>
 </div>
 
 @section Scripts{
     <script src="/assets/js/FilterOffers.js"></script>
 }
-

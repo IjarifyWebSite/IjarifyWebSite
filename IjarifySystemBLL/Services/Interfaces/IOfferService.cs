@@ -15,11 +15,12 @@ namespace IjarifySystemBLL.Services.Interfaces
         LocationOffersPageViewModel? GetAllOffersByLocation(string LocationName);
         OfferFilterViewModel GetFilterPageIntialData();
         OfferFilterViewModel GetFilteredOffers(OfferFilterRequestViewModel? Request=null);
+        IEnumerable<OfferViewModel?>GetUserOffers(int UserId);
         OfferViewModel? GetOfferById(int id);
         bool CreateOffer(CreateOfferViewModel offerViewModel);
-        UpdateOfferViewModel? GetOfferForUpdate(int id);
-        bool UpdateOffer(UpdateOfferViewModel offerViewModel,int offerId);
-        bool DeleteOffer(int id);
+        CreateOfferViewModel? GetOfferForUpdate(int id,int userId);
+        bool UpdateOffer(CreateOfferViewModel offerViewModel);
+        Task <bool> DeleteOffer(int id);
 
 
     }

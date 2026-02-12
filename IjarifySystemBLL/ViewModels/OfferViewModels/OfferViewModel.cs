@@ -18,8 +18,8 @@ namespace IjarifySystemBLL.ViewModels.OfferViewModels
         public string LocationName { get; set; } = null!;
 
         #region Computed
-        public string StartDate => StartDateRaw.ToString("yyyy-MM-dd");
-        public string EndDate => EndDateRaw.ToString("yyyy-MM-dd");
+        public string StartDate => StartDateRaw.ToString("MMM d", System.Globalization.CultureInfo.InvariantCulture);
+        public string EndDate => EndDateRaw.ToString("MMM d, yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
         public int DurationInMonths
         {
