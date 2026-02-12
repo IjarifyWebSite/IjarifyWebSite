@@ -1,0 +1,187 @@
+﻿@using IjarifySystemBLL.ViewModels.OfferViewModels
+@model IEnumerable<OfferViewModel>
+@{
+    ViewData["Title"] = "LocationOffers";
+}
+
+@section Styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/LocationOffers.css"/>
+}
+
+<div class="page-title">
+<div class="page-hero">
+    <div class="container">
+        <div class="hero-badge"><i class="fas fa-tag"></i> Exclusive Deals</div>
+        <h1>Your Current Offers</h1>
+        <p>Manage and share your latest exclusive property deals</p>
+    </div>
+</div>
+
+<div class="container mt-4 mb-5">
+
+    <div class="offers-toolbar">
+        <h4>
+            Offers
+            <span class="count-chip">@Model.Count() active</span>
+        </h4>
+        <a href="@Url.Action("Create", "Offer")" class="btn-add-offer">
+            <i class="fas fa-plus"></i> Add New Offer
+        </a>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                
+                    var today    = DateTime.Today;
+                    var daysLeft = (item.EndDateRaw.Date - today).Days;
+                    string statusClass, statusIcon, statusText;
+                    if (today > item.EndDateRaw.Date)
+                    {
+                        statusClass = "expired";  statusIcon = "fa-circle-xmark"; statusText = "Expired";
+                    }
+                    else if (daysLeft <= 7)
+                    {
+                        statusClass = "expiring"; statusIcon = "fa-triangle-exclamation";statusText = $"Expires in {daysLeft}d";
+                    }
+                    else
+                    {
+                        statusClass = "active";   statusIcon = "fa-circle-check"; statusText = "Active";
+                    }
+
+                    var safeTitle = item.Title.Replace("'", "\\'");
+                
+
+                <div class="col-sm-6 col-lg-4 col-xl-3 offer-card-wrap">
+                    <div class="offer-card">
+
+                        <div class="card-actions">
+                            <a href="@Url.Action("Edit", "Offer", new { offerId = item.Id })"
+                               class="action-btn edit"
+                               title="Edit Offer">
+                                <i class="fas fa-pencil"></i>
+                            </a>
+                            <button class="action-btn delete"
+                                    title="Delete Offer"
+                                    onclick="confirmDelete(@item.Id, '@safeTitle')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(item.PropertyImageUrl))
+                        {
+                            <div class="card-img-wrap">
+                                <img src="@item.PropertyImageUrl" alt="@item.PropertyTitle" class="card-prop-img" />
+                                <div class="img-overlay"></div>
+                            </div>
+                        }
+
+                        <div class="discount-ring">
+                            <div class="discount-percent">@((int)item.DiscountPercentage)%</div>
+                            <div class="discount-label">Off</div>
+                        </div>
+
+                        <div class="offer-title-text">@item.Title</div>
+
+                        <div class="offer-dates">
+                            <i class="fas fa-calendar-range"></i>
+                            @item.StartDate — @item.EndDate
+                        </div>
+
+                        <div class="duration-chip">
+                            <i class="fas fa-hourglass-half"></i>
+                            @item.DurationInMonths month@(item.DurationInMonths > 1 ? "s" : "")
+                        </div>
+
+                        <span class="status-badge @statusClass">
+                            <span class="dot"></span>
+                            <i class="fas @statusIcon" style="font-size:.65rem;"></i>
+                            @statusText
+                        </span>
+
+                        <div class="project-name" title="@item.PropertyTitle">@item.PropertyTitle</div>
+                        <div class="location-row">
+                            <i class="fas fa-location-dot"></i>
+                            @item.LocationName
+                        </div>
+
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-tag-slash"></i></div>
+            <h5>No Offers Yet</h5>
+            <p>Create your first offer to start attracting clients.</p>
+            <a href="@Url.Action("Create", "Offer")" class="btn-add-offer mt-4">
+                <i class="fas fa-plus"></i> Add New Offer
+            </a>
+        </div>
+    }
+</div>
+
+<div class="confirm-overlay" id="deleteModal">
+    <div class="confirm-box">
+        <div class="confirm-icon"><i class="fas fa-trash-can"></i></div>
+        <h5>Delete this Offer?</h5>
+        <p id="deleteModalMsg">This action cannot be undone.</p>
+        <div class="confirm-actions">
+            <button class="btn-cancel-del" onclick="closeDeleteModal()">Cancel</button>
+            <button class="btn-confirm-del" id="confirmDeleteBtn">Yes, Delete</button>
+        </div>
+    </div>
+</div>
+</div>
+@section Scripts {
+    <script>
+        let pendingDeleteId = null;
+
+        function confirmDelete(id, title) {
+            pendingDeleteId = id;
+            document.getElementById('deleteModalMsg').textContent =
+                `You're about to delete the offer "${title}". This action cannot be undone.`;
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+            pendingDeleteId = null;
+        }
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+            if (!pendingDeleteId) return;
+            // POST to delete action — adjust controller/action name as needed
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/Offer/Delete/${pendingDeleteId}`;
+
+            const token = document.querySelector('input[name="__RequestVerificationToken"]');
+            if (token) {
+                const tokenInput = document.createElement('input');
+                tokenInput.type  = 'hidden';
+                tokenInput.name  = '__RequestVerificationToken';
+                tokenInput.value = token.value;
+                form.appendChild(tokenInput);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        });
+
+        document.getElementById('deleteModal').addEventListener('click', function (e) {
+            if (e.target === this) closeDeleteModal();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeDeleteModal();
+        });
+    </script>
+}

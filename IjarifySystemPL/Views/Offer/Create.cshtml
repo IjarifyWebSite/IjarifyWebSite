@@ -6,20 +6,21 @@
     SelectList Locations = new SelectList(Model.locations, "Id", "City");
 }
 
-
+<div class="page-title">
 <div class="offer-container">
     <!-- Page Header -->
     <div class="page-header">
         <div class="header-icon">
             <i class="bi bi-percent"></i>
         </div>
-        <h1>Create Special Offer</h1>
+        
+        <h1>@(Model.Id>0? "Edit Special Offer" : "Create Special Offer")</h1>
         <p>Set up exclusive deals to attract more customers</p>
     </div>
 
     <!-- Form Card -->
     <div class="form-card">
-        <form asp-action="Create" asp-controller="Offer" method="post">
+        <form asp-action="@(Model.Id>0?"Edit":"Create")" asp-controller="Offer" method="post">
 
             <!-- Basic Information -->
             <div class="form-section">
@@ -120,13 +121,13 @@
 
             <!-- Action Buttons -->
             <div class="action-buttons">
-                <a asp-action="Index" asp-controller="Offer" class="btn btn-secondary">
+                <a asp-action="MyOffers" asp-controller="Offer" class="btn btn-secondary">
                     <i class="bi bi-x-circle"></i>
                     Cancel
                 </a>
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-check-circle"></i>
-                    Create Offer
+                   @(Model.Id>0? "Save Changes":"Create Offer")
                 </button>
             </div>
 
@@ -179,6 +180,7 @@
         });
        
     </script>
+    </div>
 }
 
 
@@ -348,6 +350,7 @@
 
         .btn-secondary:hover {
             background: #e2e8f0;
+            color:black;
         }
 
     .reload-note {
