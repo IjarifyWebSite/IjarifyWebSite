@@ -84,7 +84,21 @@
                                                 <span class="badge for-sale">@property.ListingType</span>
                                             </div>
                                             <div class="property-overlay">
-                                                <button class="favorite-btn"><i class="bi bi-heart"></i></button>
+                                                <form asp-controller="Favourite" asp-action="Toggle" method="post" style="display:inline;">
+                                                    <input type="hidden" name="userId" value="4" />
+                                                    <input type="hidden" name="propertyId" value="@property.Id" />
+                                                    <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                                                    <button type="submit" class="favorite-btn">
+                                                        @if (property.IsFavourite)
+                                                        {
+                                                            <i class="bi bi-heart-fill" style="color: #e74c3c;"></i>
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class="bi bi-heart"></i>
+                                                        }
+                                                    </button>
+                                                </form>
                                                 <button class="gallery-btn" data-count="@property.TotalImages"><i class="bi bi-images"></i></button>
                                             </div>
                                         </div>
@@ -219,7 +233,20 @@
                                                     <span>@property.AgentName</span>
                                                 </div>
                                                 <div class="property-actions">
-                                                    <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-heart"></i></button>
+                                                    <form asp-controller="Favourite" asp-action="Toggle" method="post" style="display:inline;">
+                                                        <input type="hidden" name="propertyId" value="@property.Id" />
+                                                        <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                                                        <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                                            @if (property.IsFavourite)
+                                                            {
+                                                                <i class="bi bi-heart-fill" style="color: #e74c3c;"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="bi bi-heart"></i>
+                                                            }
+                                                        </button>
+                                                    </form>
                                                     <a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id" class="btn btn-primary btn-sm">View Details</a>
                                                 </div>
                                             </div>

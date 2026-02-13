@@ -29,5 +29,7 @@ namespace IjarifySystemBLL.ViewModels.PropertyViewModels
 
         //reviews & rating
         public PropertyReviewsViewModel? Reviews { get; set; }
+
+        public bool IsFavourite { get; set; }
     }
 }

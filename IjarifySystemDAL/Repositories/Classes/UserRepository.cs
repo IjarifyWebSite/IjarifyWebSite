@@ -28,6 +28,6 @@ namespace IjarifySystemDAL.Repositories.Classes
 
         public void Delete(User user) => dbContext.Users.Remove(user);
 
-        public User? GetByPhoneNumber(string phoneNumber) => dbContext.Users.Find(phoneNumber);
+        public User? GetByPhoneNumber(string phoneNumber) => dbContext.Users.FirstOrDefault(u=>u.PhoneNumber==phoneNumber);
     }
 }

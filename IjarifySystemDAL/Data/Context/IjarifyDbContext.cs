@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemDAL.Data.Context
 {
-    public class IjarifyDbContext : IdentityDbContext<User ,IdentityRole<int> ,int>
+    public class IjarifyDbContext : IdentityDbContext<User,IdentityRole<int>,int>
     {
         public IjarifyDbContext(DbContextOptions<IjarifyDbContext> options) : base(options)
         {
@@ -20,21 +20,10 @@ namespace IjarifySystemDAL.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<IdentityUserLogin<int>>(b => {b.HasKey(l => new { l.LoginProvider, l.ProviderKey });});
-
-            modelBuilder.Entity<IdentityUserRole<int>>(b => {b.HasKey(r => new { r.UserId, r.RoleId });});
-
-            modelBuilder.Entity<IdentityUserToken<int>>(b => {b.HasKey(t => new { t.UserId, t.LoginProvider, t.Name });});
-
-            modelBuilder.Entity<IdentityUserClaim<int>>(b => {b.HasKey(c => c.Id);});
-
-            modelBuilder.Entity<IdentityRoleClaim<int>>(b => {b.HasKey(c => c.Id);});
-
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             SeedData(modelBuilder);
+            base.OnModelCreating(modelBuilder);
         }
 
         private void SeedData(ModelBuilder modelBuilder)
@@ -46,10 +35,9 @@ namespace IjarifySystemDAL.Data.Context
                     Id = 1,
                     Name = "Omar Ali",
                     Email = "omar.ali@example.com",
-                    //Password = "AQAAAAEAACcQAAAAEH8zQK",
-                    //Phone = "01234567890",
-                    //Role = "Owner",
-                    Address = "15 El Nile Street, Maadi, Cairo",
+                    PasswordHash = "AQAAAAEAACcQAAAAEH8zQK",
+                    PhoneNumber = "01234567890",
+                    Address = "cairo",
                     ImageUrl = "https://i.pravatar.cc/150?img=33",
                     CreatedAt = new DateTime(2024, 1, 20, 9, 15, 0)
                 },
@@ -58,10 +46,9 @@ namespace IjarifySystemDAL.Data.Context
                     Id = 2,
                     Name = "Nour Ibrahim",
                     Email = "nour.ibrahim@example.com",
-                    //Password = "AQAAAAEAACcQAAAAEH8zQK",
-                    //Phone = "01098765432",
-                    //Role = "Owner",
-                    Address = "28 Tahrir Street, Downtown, Cairo",
+                    PasswordHash = "AQAAAAEAACcQAAAAEH8zQK",
+                    PhoneNumber = "01098765432",
+                    Address = "cairo",
                     ImageUrl = "https://i.pravatar.cc/150?img=27",
                     CreatedAt = new DateTime(2024, 3, 5, 11, 45, 0)
                 },
@@ -70,10 +57,9 @@ namespace IjarifySystemDAL.Data.Context
                     Id = 3,
                     Name = "Khaled Mahmoud",
                     Email = "khaled.mahmoud@example.com",
-                    //Password = "AQAAAAEAACcQAAAAEH8zQK",
-                    //Phone = "01187654321",
-                    //Role = "User",
-                    Address = "42 Nasr Road, Nasr City, Cairo",
+                    PasswordHash = "AQAAAAEAACcQAAAAEH8zQK",
+                    PhoneNumber = "01187654321",
+                    Address = "cairo",
                     ImageUrl = "https://i.pravatar.cc/150?img=51",
                     CreatedAt = new DateTime(2024, 2, 28, 16, 20, 0)
                 },
@@ -82,85 +68,51 @@ namespace IjarifySystemDAL.Data.Context
                     Id = 4,
                     Name = "Ahmed Hassan",
                     Email = "ahmed.hassan@example.com",
-                    //Password = "AQAAAAEAACcQAAAAEH8zQK",
-                    //Phone = "01012345678",
-                    //Role = "Owner",
-                    Address = "10 Tahrir Square, Cairo",
+                    PasswordHash = "AQAAAAEAACcQAAAAEH8zQK",
+                    PhoneNumber = "01012345678",
+                    Address = "cairo",                 // ✅ Add this line
                     ImageUrl = "https://i.pravatar.cc/150?img=12",
                     CreatedAt = new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified)
                 },
-                new User
-                {
-                    Id = 5,
-                    Name = "Fatima Mohamed",
-                    Email = "fatima.mohamed@example.com",
-                    //Password = "AQAAAAEAACcQAAAAEH8zQK",
-                    //Phone = "01123456789",
-                    //Role = "User",
-                    Address = "25 Alexandria Road, Cairo",
-                    ImageUrl = "https://i.pravatar.cc/150?img=45",
-                    CreatedAt = new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified)
-                }
-            );
+            new User
+            {
+                Id = 5,
+                Name = "Fatima Mohamed",
+                Email = "fatima.mohamed@example.com",
+                PasswordHash = "AQAAAAEAACcQAAAAEH8zQK",
+                PhoneNumber = "01123456789",
+                Address = "cairo",                // ✅ Already there, just needs proper syntax
+                ImageUrl = "https://i.pravatar.cc/150?img=45",
+                CreatedAt = new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified)
+            }
+                        );
 
-            // Seed Locations
             modelBuilder.Entity<Location>().HasData(
-                new Location
-                {
-                    Id = 1,
-                    City = "Cairo",
-                    Regoin = "Nasr City",
-                    Street = "Makram Ebeid",
-                    Latitude = 30.0444m,
-                    Longitude = 31.2357m,
-                    ImageUrl = "https://images.unsplash.com/photo-1549144511-f099e773c147?w=800",
-                    CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0)
-                },
-                new Location
-                {
-                    Id = 2,
-                    City = "Alexandria",
-                    Regoin = "Smouha",
-                    Street = "Mostafa Kamel",
-                    Latitude = 31.2001m,
-                    Longitude = 29.9187m,
-                    ImageUrl = "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800",
-                    CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0)
-                },
-                new Location
-                {
-                    Id = 3,
-                    City = "Cairo",
-                    Regoin = "Zamalek",
-                    Street = "26th July",
-                    Latitude = 30.0626m,
-                    Longitude = 31.2197m,
-                    ImageUrl = "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800",
-                    CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0)
-                },
-                new Location
-                {
-                    Id = 4,
-                    City = "Giza",
-                    Regoin = "6th October",
-                    Street = "Central Axis",
-                    Latitude = 29.9668m,
-                    Longitude = 30.9329m,
-                    ImageUrl = "https://images.unsplash.com/photo-1568084680786-a84f91d1153c?w=800",
-                    CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0)
-                },
-                new Location
-                {
-                    Id = 5,
-                    City = "Cairo",
-                    Regoin = "New Cairo",
-                    Street = "90th Street",
-                    Latitude = 30.0330m,
-                    Longitude = 31.4913m,
-                    ImageUrl = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
-                    CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0)
-                }
-            );
+     // 1. New Cairo (General/Fifth Settlement)
+     new Location { Id = 1, City = "New Cairo", Regoin = "Fifth Settlement", Street = "North 90th St", Latitude = 30.0055m, Longitude = 31.4782m, ImageUrl = "https://prod-images.nawy.com/processed/area/image/2/high.webp", CreatedAt = new DateTime(2024, 1, 1) },
+
+     // 2. New Administrative Capital
+     new Location { Id = 2, City = "New Capital City", Regoin = "R7 District", Street = "Bin Zayed Axis", Latitude = 30.0131m, Longitude = 31.7258m, ImageUrl = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800", CreatedAt = new DateTime(2024, 1, 1) },
+
+     // 3. 6th of October City
+     new Location { Id = 3, City = "6th October City", Regoin = "West Somid", Street = "26th of July Corridor", Latitude = 29.9737m, Longitude = 30.9510m, ImageUrl = "https://prod-images.nawy.com/processed/area/image/1/high.webp", CreatedAt = new DateTime(2024, 1, 1) },
+
+     // 4. Mostakbal City
+     new Location { Id = 4, City = "Mostakbal City", Regoin = "Phase 1", Street = "Suez Road", Latitude = 30.1290m, Longitude = 31.6030m, ImageUrl = "https://prod-images.nawy.com/processed/area/image/10/high.webp", CreatedAt = new DateTime(2024, 1, 1) },
+
+    // 5. ELgouna 
+    new Location
+    { Id = 5, City = "El Gouna", Regoin = "Abu Tig Marina", Street = "Marina Way", Latitude = 27.3942m, Longitude = 33.6782m, ImageUrl = "https://prod-images.nawy.com/processed/area/image/5/high.webp", CreatedAt = new DateTime(2024, 1, 1) },
+
+     // 6. El Shorouk
+     new Location { Id = 6, City = "El Shorouk", Regoin = "District 3", Street = "El Horreya Axis", Latitude = 30.1197m, Longitude = 31.6046m, ImageUrl = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800", CreatedAt = new DateTime(2024, 1, 1) },
+
+     // 7. Maadi
+     new Location { Id = 7, City = "Maadi", Regoin = "Degla", Street = "Road 233", Latitude = 29.9599m, Longitude = 31.2676m, ImageUrl = "https://cairogossip.com/app/uploads/2020/02/caf268d7b5e3978ce944d44b6a144653.jpg", CreatedAt = new DateTime(2024, 1, 1) },
+
+     // 8. Ain Sokhna
+     new Location { Id = 8, City = "Ain Sokhna", Regoin = "Galala", Street = "Zaafarana Road", Latitude = 29.5768m, Longitude = 32.3385m, ImageUrl = "https://www.etbtoursegypt.com/storage/1421/Ain-El-Sokhna-Travel-Guide.jpg", CreatedAt = new DateTime(2024, 1, 1) }
+ );
 
             // Seed Amenities (using only Interior and Exterior categories)
             modelBuilder.Entity<Amenity>().HasData(
@@ -366,7 +318,7 @@ namespace IjarifySystemDAL.Data.Context
                     ListingType = PropertyListingType.Rent,
                     Type = PropertyType.Office,
                     UserId = 1,
-                    LocationId = 3,
+                    LocationId = 8,
                     CreatedAt = new DateTime(2024, 2, 20, 11, 0, 0)
                 },
                 new Property
@@ -381,7 +333,7 @@ namespace IjarifySystemDAL.Data.Context
                     ListingType = PropertyListingType.Sale,
                     Type = PropertyType.Clinic,
                     UserId = 3,
-                    LocationId = 1,
+                    LocationId = 7,
                     CreatedAt = new DateTime(2024, 2, 25, 13, 30, 0)
                 }
             );
@@ -598,47 +550,99 @@ namespace IjarifySystemDAL.Data.Context
                 }
             );
 
-            // Seed Offers
             modelBuilder.Entity<Offer>().HasData(
-                new Offer
-                {
-                    Id = 1,
-                    Title = "Spring Special - 10% Off First Month",
-                    EndDate = new DateTime(2024, 3, 31),
-                    DiscountPercentage = 10m,
-                    PropertyId = 1,
-                    IsActive = true
-                },
-                new Offer
-                {
-                    Id = 2,
-                    Title = "Summer Vacation Deal - 15% Off",
-                    EndDate = new DateTime(2024, 4, 30),
-                    DiscountPercentage = 15m,
-                    PropertyId = 2,
-                    IsActive = true
-                },
-                new Offer
-                {
-                    Id = 3,
-                    Title = "New Tenant Bonus - 5% Off",
-                    EndDate = new DateTime(2024, 4, 15),
-                    DiscountPercentage = 5m,
-                    PropertyId = 6,
-                    IsActive = true
-                },
-                new Offer
-                {
-                    Id = 4,
-                    Title = "Limited Time - 20% Off Sale Price",
-                    EndDate = new DateTime(2024, 5, 31),
-                    DiscountPercentage = 20m,
-                    PropertyId = 8,
-                    IsActive = true
-                }
-            );
+                 new Offer
+                 {
+                     Id = 1,
+                     Title = "Spring Special - 10% Off",
+                     CreatedAt = new DateTime(2024, 3, 1),
+                     EndDate = new DateTime(2024, 3, 31),
+                     DiscountPercentage = 10m,
+                     PropertyId = 1,
+                     IsActive = true
+                 },
+                 new Offer
+                 {
+                     Id = 2,
+                     Title = "Ramadan Mubarak Deal",
+                     CreatedAt = new DateTime(2024, 3, 1),
+                     EndDate = new DateTime(2024, 3, 31),
+                     DiscountPercentage = 10m,
+                     PropertyId = 2,
+                     IsActive = true
+                 },
+                 new Offer
+                 {
+                     Id = 3,
+                     Title = "Spring Special - 10% Off",
+                     CreatedAt = new DateTime(2024, 3, 1),
+                     EndDate = new DateTime(2024, 3, 31),
+                     DiscountPercentage = 10m,
+                     PropertyId = 3,
+                     IsActive = true
+                 },
+                 new Offer
+                 {
+                     Id = 4,
+                     Title = "Summer Early Bird",
+                     CreatedAt = new DateTime(2024, 3, 1),
+                     EndDate = new DateTime(2024, 3, 31),
+                     DiscountPercentage = 10m,
+                     PropertyId = 4,
+                     IsActive = true
+                 },
+                 new Offer
+                 {
+                     Id = 5,
+                     Title = "Ramadan Offer",
+                     CreatedAt = new DateTime(2024, 3, 10),
+                     EndDate = new DateTime(2024, 4, 10),
+                     DiscountPercentage = 15m,
+                     PropertyId = 5,
+                     IsActive = true
+                 },
+                 new Offer
+                 {
+                     Id = 6,
+                     Title = "Summer Early Bird",
+                     CreatedAt = new DateTime(2024, 5, 1),
+                     EndDate = new DateTime(2024, 6, 1),
+                     DiscountPercentage = 5m,
+                     PropertyId = 7,
+                     IsActive = true
+                 },
+                 new Offer
+                 {
+                     Id = 7,
+                     Title = "Eid Sale - Villas",
+                     CreatedAt = new DateTime(2024, 4, 8),
+                     EndDate = new DateTime(2024, 4, 15),
+                     DiscountPercentage = 20m,
+                     PropertyId = 6,
+                     IsActive = true
+                 },
+                 new Offer
+                 {
+                     Id = 8,
+                     Title = "Office Lease Discount",
+                     CreatedAt = new DateTime(2024, 2, 1),
+                     EndDate = new DateTime(2024, 4, 1),
+                     DiscountPercentage = 12m,
+                     PropertyId = 5,
+                     IsActive = false // Expired/Inactive
+                 },
+                 new Offer
+                 {
+                     Id = 9,
+                     Title = "Family Home Promo",
+                     CreatedAt = new DateTime(2024, 2, 1),
+                     EndDate = new DateTime(2024, 4, 1),
+                     DiscountPercentage = 12m,
+                     PropertyId = 8,
+                     IsActive = false // Expired/Inactive
+                 }
+             );
         }
-
         public DbSet<Property> Properties { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
