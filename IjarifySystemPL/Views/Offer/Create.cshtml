@@ -20,7 +20,7 @@
 
     <!-- Form Card -->
     <div class="form-card">
-        <form asp-action="@(Model.Id>0?"Edit":"Create")" asp-controller="Offer" method="post">
+        <form asp-action="@(Model.Id>0?"Edit":"Create")" asp-controller="Offer" asp-route-id="@Model.Id" method="post">
 
             <!-- Basic Information -->
             <div class="form-section">

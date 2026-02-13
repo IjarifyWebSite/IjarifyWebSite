@@ -17,9 +17,9 @@ namespace IjarifySystemBLL.Services.Classes
         {
            _locationRepository = locationRepository;
         }
-        public List<Location> GetAllLocations()
+        public List<Location> GetAllLocationsByUser(int userId)
         {
-            return _locationRepository.GetAll();
+            return _locationRepository.GetAllForUser(userId);
         }
     }
 }
