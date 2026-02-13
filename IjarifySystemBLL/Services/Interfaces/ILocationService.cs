@@ -9,7 +9,7 @@ namespace IjarifySystemBLL.Services.Interfaces
 {
     public interface ILocationService
     {
-        List<Location> GetAllLocations();
+        List<Location> GetAllLocationsByUser(int userId);
 
     }
 }

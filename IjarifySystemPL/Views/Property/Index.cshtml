@@ -259,7 +259,7 @@
 
                     @if (totalPages > 1)
                     {
-                        <nav class="pagination-container">
+                        <nav class="my-4 pagination-container">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item @(currentPage == 1 ? "disabled" : "")">
                                     <a class="page-link" asp-action="Index" asp-route-page="@(currentPage - 1)">&laquo;</a>
@@ -459,4 +459,102 @@
         font-size: 13px;
         color: #6c757d;
     }
+
+    /* ========== PRECISE CARD HEIGHT CONTROL ========== */
+
+.properties-grid .property-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* الصورة - ثابتة دايماً */
+.properties-grid .property-card .property-image {
+    height: 220px;
+    min-height: 220px;
+    max-height: 220px;
+    overflow: hidden;
+    position: relative;
+}
+
+.properties-grid .property-card .property-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* المحتوى - يتمدد */
+.properties-grid .property-card .property-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+}
+
+/* السعر */
+.properties-grid .property-card .property-price {
+    margin-bottom: 10px;
+}
+
+/* العنوان - سطرين max */
+.properties-grid .property-card .property-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* ✅ max 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.5em; /* ✅ حتى لو سطر واحد */
+    margin-bottom: 8px;
+}
+
+/* الموقع */
+.properties-grid .property-card .property-location {
+    margin-bottom: 10px;
+    min-height: 1.5em;
+}
+
+/* الريفيوز */
+.properties-grid .property-card .property-rating {
+    margin-bottom: 12px;
+    min-height: 24px; /* ✅ حتى لو مفيش reviews */
+}
+
+/* المميزات */
+.properties-grid .property-card .property-features {
+    margin-bottom: 12px;
+    min-height: 30px;
+}
+
+/* الأجنت */
+.properties-grid .property-card .property-agent {
+    margin-bottom: 15px;
+    min-height: 50px;
+}
+
+/* الزرار - دايماً تحت */
+.properties-grid .property-card .property-content .btn {
+    margin-top: auto; /* ✅ push to bottom */
+}
+
+/* ========== SKELETON SAME HEIGHT ========== */
+.properties-grid .card.placeholder-glow {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.properties-grid .card.placeholder-glow > div:first-child {
+    height: 220px !important;
+    min-height: 220px;
+    max-height: 220px;
+}
+
+.properties-grid .card.placeholder-glow .card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.properties-grid .card.placeholder-glow .btn.placeholder {
+    margin-top: auto;
+}
 </style>

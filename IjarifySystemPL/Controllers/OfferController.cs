@@ -34,7 +34,7 @@ namespace IjarifySystemPL.Controllers
             var Model = new CreateOfferViewModel()
             {
                 properties = _propertyService.GetPropertyByuser(currentUser.Id),
-                locations=_locationService.GetAllLocations()
+                locations=_locationService.GetAllLocationsByUser(currentUser.Id)
 
             };
 
@@ -52,7 +52,7 @@ namespace IjarifySystemPL.Controllers
             if (!ModelState.IsValid)
             {
                 var CurrentUser = await userManager.GetUserAsync(User);
-                request.locations = _locationService.GetAllLocations();
+                request.locations = _locationService.GetAllLocationsByUser(CurrentUser.Id);
                 request.properties = _propertyService.GetPropertyByuser(CurrentUser.Id);
 
                 return View(request);
@@ -64,7 +64,7 @@ namespace IjarifySystemPL.Controllers
             }
 
             var currentUser = await userManager.GetUserAsync(User);
-            request.locations = _locationService.GetAllLocations();
+            request.locations = _locationService.GetAllLocationsByUser(currentUser.Id);
             request.properties = _propertyService.GetPropertyByuser(currentUser.Id);
             ModelState.AddModelError("", "Something went wrong while creating the offer. Please try again.");
             return View(request);
@@ -87,10 +87,18 @@ namespace IjarifySystemPL.Controllers
         }
 
         // for ajax call
+        [Authorize]
+        [HttpGet]
         public async Task<IActionResult> GetPropertiesByLocation(int locationId)
         {
             var currentUser = await userManager.GetUserAsync(User);
-            var properties = _propertyService.GetByLocationAndUser(locationId, currentUser.Id);
+            var properties = _propertyService.GetByLocationAndUser(locationId, currentUser.Id)
+                .Select(p => new
+                {
+                    id = p.Id,      
+                    title = p.Title 
+                })
+            .ToList();
             return Json(properties);
         }
 
@@ -115,12 +123,16 @@ namespace IjarifySystemPL.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(CreateOfferViewModel request)
+        public async Task<IActionResult> Edit(CreateOfferViewModel request)
         {
+
             ModelState.Remove("properties");
             ModelState.Remove("locations");
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
+                var currentUser = await userManager.GetUserAsync(User);
+                request.locations = _locationService.GetAllLocationsByUser(currentUser.Id);
+                request.properties = _propertyService.GetPropertyByuser(currentUser.Id);
                 return View("Create",request);
             }
             bool IsUpdated = _offerService.UpdateOffer(request);

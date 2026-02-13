@@ -124,7 +124,7 @@ namespace IjarifySystemBLL.Services.Classes
                 return null;
             }
             var properties = _propertyRepository.GetByUser(userId);
-            var Locations = _locationRepository.GetAll();
+            var Locations = _locationRepository.GetAllForUser(userId);
             var offerViewModel = new CreateOfferViewModel
             {
                 Id= offer.Id,
