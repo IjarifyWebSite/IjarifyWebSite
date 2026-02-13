@@ -26,7 +26,9 @@ namespace IjarifySystemPL.Controllers
         }
 
         [Authorize]
+
         public async Task<IActionResult> Create()
+
         {
             var currentUser = await userManager.GetUserAsync(User);
             var Model = new CreateOfferViewModel()
@@ -41,7 +43,9 @@ namespace IjarifySystemPL.Controllers
         }
         [HttpPost]
         [Authorize]
+
         public async Task<IActionResult> Create(CreateOfferViewModel request)
+
         {
             ModelState.Remove("properties");
             ModelState.Remove("locations");
@@ -50,6 +54,7 @@ namespace IjarifySystemPL.Controllers
                 var CurrentUser = await userManager.GetUserAsync(User);
                 request.locations = _locationService.GetAllLocations();
                 request.properties = _propertyService.GetPropertyByuser(CurrentUser.Id);
+
                 return View(request);
             }
             bool IsCreated= _offerService.CreateOffer(request);
@@ -90,6 +95,7 @@ namespace IjarifySystemPL.Controllers
         }
 
         [Authorize]
+
         public async Task<IActionResult> MyOffers()
         {
             var currentUser = await userManager.GetUserAsync(User);
