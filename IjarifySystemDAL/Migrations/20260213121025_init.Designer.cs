@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IjarifySystemDAL.Migrations
 {
     [DbContext(typeof(IjarifyDbContext))]
-    [Migration("20260213040151_init")]
+    [Migration("20260213121025_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -581,7 +581,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3750),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3732),
                             DiscountPercentage = 10m,
                             EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -591,7 +591,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3811),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3865),
                             DiscountPercentage = 10m,
                             EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -601,7 +601,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3816),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3880),
                             DiscountPercentage = 10m,
                             EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -611,7 +611,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3820),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3890),
                             DiscountPercentage = 10m,
                             EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -621,7 +621,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3824),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3900),
                             DiscountPercentage = 15m,
                             EndDate = new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -631,7 +631,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3829),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3910),
                             DiscountPercentage = 5m,
                             EndDate = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -641,7 +641,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3833),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3919),
                             DiscountPercentage = 20m,
                             EndDate = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -651,7 +651,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3837),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3929),
                             DiscountPercentage = 12m,
                             EndDate = new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = false,
@@ -661,7 +661,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3842),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3939),
                             DiscountPercentage = 12m,
                             EndDate = new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = false,
@@ -671,7 +671,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3846),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3948),
                             DiscountPercentage = 5m,
                             EndDate = new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -681,7 +681,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3851),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3958),
                             DiscountPercentage = 25m,
                             EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -691,7 +691,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3856),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3968),
                             DiscountPercentage = 8m,
                             EndDate = new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -701,7 +701,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3860),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3977),
                             DiscountPercentage = 30m,
                             EndDate = new DateTime(2026, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -711,7 +711,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3864),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3989),
                             DiscountPercentage = 15m,
                             EndDate = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -721,7 +721,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3869),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3999),
                             DiscountPercentage = 20m,
                             EndDate = new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -731,7 +731,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 16,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3873),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4009),
                             DiscountPercentage = 12m,
                             EndDate = new DateTime(2026, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -741,7 +741,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 17,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3877),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4018),
                             DiscountPercentage = 10m,
                             EndDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -751,7 +751,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 18,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3881),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4028),
                             DiscountPercentage = 18m,
                             EndDate = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -761,7 +761,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 19,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3886),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4037),
                             DiscountPercentage = 40m,
                             EndDate = new DateTime(2026, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -771,7 +771,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 20,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3889),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4047),
                             DiscountPercentage = 7m,
                             EndDate = new DateTime(2026, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -781,7 +781,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 21,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3893),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4057),
                             DiscountPercentage = 9m,
                             EndDate = new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -791,7 +791,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 22,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3896),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4066),
                             DiscountPercentage = 22m,
                             EndDate = new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -801,7 +801,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 23,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3900),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4076),
                             DiscountPercentage = 11m,
                             EndDate = new DateTime(2026, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -811,7 +811,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 24,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3903),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4085),
                             DiscountPercentage = 35m,
                             EndDate = new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -821,7 +821,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 25,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3907),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4155),
                             DiscountPercentage = 14m,
                             EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -831,7 +831,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 26,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3911),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4186),
                             DiscountPercentage = 16m,
                             EndDate = new DateTime(2026, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -841,7 +841,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 27,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3915),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4198),
                             DiscountPercentage = 13m,
                             EndDate = new DateTime(2026, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -851,7 +851,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 28,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3919),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4208),
                             DiscountPercentage = 50m,
                             EndDate = new DateTime(2026, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -861,7 +861,7 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 29,
-                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3923),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4218),
                             DiscountPercentage = 20m,
                             EndDate = new DateTime(2026, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
@@ -1427,7 +1427,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Address = "cairo",
-                            ConcurrencyStamp = "cb70d528-6a13-4a0f-bfbe-27eddc06a5ab",
+                            ConcurrencyStamp = "afa309ab-5a3d-411e-b5d0-be54efe269d3",
                             CreatedAt = new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified),
                             Email = "omar.ali@example.com",
                             EmailConfirmed = false,
@@ -1444,7 +1444,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             Address = "cairo",
-                            ConcurrencyStamp = "e799b52d-5881-486d-8afe-bd59487923f7",
+                            ConcurrencyStamp = "9412d4c6-d315-4666-8954-fde88d6cd97a",
                             CreatedAt = new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified),
                             Email = "nour.ibrahim@example.com",
                             EmailConfirmed = false,
@@ -1461,7 +1461,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 3,
                             AccessFailedCount = 0,
                             Address = "cairo",
-                            ConcurrencyStamp = "675f2c1e-4af3-474a-b414-4cdefadc686d",
+                            ConcurrencyStamp = "edcabd7c-3ad7-4bfb-9ced-5088d9db0e2d",
                             CreatedAt = new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified),
                             Email = "khaled.mahmoud@example.com",
                             EmailConfirmed = false,
@@ -1478,7 +1478,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 4,
                             AccessFailedCount = 0,
                             Address = "cairo",
-                            ConcurrencyStamp = "a2d5a2af-5a30-4e94-848d-f34f5633e1c6",
+                            ConcurrencyStamp = "a6a0a156-320c-472a-9522-12a15129f30b",
                             CreatedAt = new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ahmed.hassan@example.com",
                             EmailConfirmed = false,
@@ -1495,7 +1495,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 5,
                             AccessFailedCount = 0,
                             Address = "cairo",
-                            ConcurrencyStamp = "9c58647e-c468-4114-a40f-f5400816e606",
+                            ConcurrencyStamp = "2e6b3f20-ffad-46ec-a72e-1c0ebcbd1341",
                             CreatedAt = new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified),
                             Email = "fatima.mohamed@example.com",
                             EmailConfirmed = false,
