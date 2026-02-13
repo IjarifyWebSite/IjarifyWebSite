@@ -41,6 +41,7 @@ namespace IjarifySystemPL.Controllers
         public async Task<IActionResult> Profile() 
         {
             var currentUser = await userManager.GetUserAsync(User);
+            
             if (currentUser == null)
             {
                 return RedirectToAction("Login");
@@ -52,7 +53,7 @@ namespace IjarifySystemPL.Controllers
 
             var allBookings = await _bookingService.GetUserBookingsAsync(currentUser.Id);
 
-            var userInquiries = _inquiryService.GetUserInquiries(userId);
+            var userInquiries = _inquiryService.GetUserInquiries(currentUser.Id);
 
             var profile = new ProfileViewModel
             {

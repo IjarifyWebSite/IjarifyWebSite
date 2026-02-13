@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace IjarifySystemBLL.Services.Classes
 {
-    public class PropertyService(IPropertyRepository _repo, IFavouriteRepository _favouriteRepo) : IPropertyService
+    public class PropertyService(IPropertyRepository _repo, IFavouriteRepository _favouriteRepo,IjarifyDbContext _context) : IPropertyService
     {
         // Using Directory.GetCurrentDirectory() to avoid hosting environment issues
         private readonly string _rootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");

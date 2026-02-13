@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace IjarifySystemPL.Controllers
 {
-    public class PropertyController(IPropertyService _propertyService, UserManager<User> _userManager) : Controller
+    public class PropertyController : Controller
     {
         private readonly IPropertyService _propertyService;
         private readonly IFavouriteService _favouriteService;
