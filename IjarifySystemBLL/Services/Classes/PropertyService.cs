@@ -250,18 +250,66 @@ namespace IjarifySystemBLL.Services.Classes
                 throw new UnauthorizedAccessException("You don't have permission to delete this property.");
             }
 
-            // Delete images from file system
-            if (property.PropertyImages != null && property.PropertyImages.Any())
+            // Load all related entities to ensure we can delete them (Manual Cascade Delete)
+            // We use _context directly here because Repository might not include everything needed for deletion
+            var propertyToDelete = await _context.Properties
+                .Include(p => p.PropertyInquiries)
+                .Include(p => p.PropertyOffers)
+                .Include(p => p.Bookings)
+                .Include(p => p.Favorites)
+                .Include(p => p.Reviews)
+                .Include(p => p.PropertyImages)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (propertyToDelete == null) return false;
+
+            // 1. Delete Inquiries
+            if (propertyToDelete.PropertyInquiries != null && propertyToDelete.PropertyInquiries.Any())
             {
-                foreach (var image in property.PropertyImages)
+                _context.Inquiries.RemoveRange(propertyToDelete.PropertyInquiries);
+            }
+
+            // 2. Delete Offers
+            if (propertyToDelete.PropertyOffers != null && propertyToDelete.PropertyOffers.Any())
+            {
+                _context.Offers.RemoveRange(propertyToDelete.PropertyOffers);
+            }
+
+            // 3. Delete Bookings
+            if (propertyToDelete.Bookings != null && propertyToDelete.Bookings.Any())
+            {
+                _context.bookings.RemoveRange(propertyToDelete.Bookings);
+            }
+
+            // 4. Delete Favorites
+            if (propertyToDelete.Favorites != null && propertyToDelete.Favorites.Any())
+            {
+                _context.favourites.RemoveRange(propertyToDelete.Favorites);
+            }
+
+            // 5. Delete Reviews
+            if (propertyToDelete.Reviews != null && propertyToDelete.Reviews.Any())
+            {
+                _context.reviews.RemoveRange(propertyToDelete.Reviews);
+            }
+
+            // 6. Delete Images from file system and DB
+            if (propertyToDelete.PropertyImages != null && propertyToDelete.PropertyImages.Any())
+            {
+                foreach (var image in propertyToDelete.PropertyImages)
                 {
                     DeleteImageFile(image.ImageUrl);
                 }
+                // No need to remove from context explicitly if configured with Cascade, 
+                // but for safety with the manual approach:
+                _context.PropertyImages.RemoveRange(propertyToDelete.PropertyImages);
             }
 
-            // Delete the property (cascade delete will handle related entities)
-            _repo.Delete(property);
-            await _repo.SaveAsync();
+            // 7. Finally Delete the Property
+            _context.Properties.Remove(propertyToDelete);
+            
+            // Save all changes in one transaction
+            await _context.SaveChangesAsync();
 
             return true;
         }

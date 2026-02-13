@@ -35,3 +35,8 @@ body {
   box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
   color: white !important;
 }
+
+/* Fix Navbar Z-Index Conflict */
+.header.fixed-top {
+  z-index: 2000 !important;
+}

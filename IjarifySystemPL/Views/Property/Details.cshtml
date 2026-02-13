@@ -33,8 +33,23 @@
 
         <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-            <div class="row gy-4">
+            <!-- Alerts -->
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2"></i> @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i> @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
 
+            <div class="row gy-4">
                 <div class="col-lg-8">
 
                     <!-- Property Gallery -->
@@ -278,6 +293,20 @@
                                 <i class="bi bi-envelope-fill"></i>
                                 Send Inquiry
                             </a>
+
+                        </div>
+
+                        <!-- Owner Actions -->
+                        <div class="owner-action-card mt-4 mb-4">
+                            <h5 class="mb-3 text-muted">Owner Actions</h5>
+                            <div class="d-grid gap-2">
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn action-btn">
+                                    <i class="bi bi-pencil me-2"></i> Edit Property
+                                </a>
+                                <button type="button" class="btn action-btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deletePropertyModal">
+                                    <i class="bi bi-trash me-2"></i> Delete Property
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Social Share -->
@@ -355,6 +384,7 @@
         .price-value {
             font-size: 42px;
             font-weight: 700;
+            color: white;
             margin: 0;
             line-height: 1;
         }
@@ -408,4 +438,169 @@
             font-size: 16px;
         }
     </style>
+    <style>
+        .inquiry-action-card {
+            background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+            text-align: center;
+            color: white;
+        }
+
+        .inquiry-icon {
+            font-size: 32px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+        }
+
+        .inquiry-title {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .inquiry-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .btn-send-inquiry {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px 24px;
+            background: white;
+            color: #667eea;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-send-inquiry:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            color: #764ba2;
+        }
+
+        .btn-send-inquiry i {
+            font-size: 20px;
+        }
+
+        .owner-action-card {
+            background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+            text-align: center;
+            color: white;
+            border: none;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            font-weight: 700;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: white;
+            color: #667eea;
+            border: none;
+            margin-bottom: 10px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            color: #764ba2;
+            background: white;
+        }
+
+        .action-btn.btn-outline-danger {
+            color: #e53e3e;
+        }
+        
+        .action-btn.btn-outline-danger:hover {
+            color: #c53030;
+            background: #fff5f5;
+        }
+    </style>
+
+    <!-- Delete Property Modal -->
+    <div class="modal fade" id="deletePropertyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center px-4 pb-4">
+                    <div class="mb-4">
+                        <div class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="bi bi-trash text-danger" style="font-size: 2.5rem;"></i>
+                        </div>
+                    </div>
+                    <h4 class="mb-3">Delete Property?</h4>
+                    <p class="text-muted mb-0">Are you sure you want to delete "@Model.Title"? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center gap-2 pt-0 pb-4">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" id="confirmDeletePropertyBtn">
+                        <i class="bi bi-trash me-1"></i> Delete Already
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
+
+@section Scripts {
+    <script>
+        document.getElementById('confirmDeletePropertyBtn')?.addEventListener('click', function() {
+            const propertyId = @Model.Id;
+            const btn = this;
+            
+            // For security with [ValidateAntiForgeryToken]
+            const token = $('input[name="__RequestVerificationToken"]').val();
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Deleting...';
+
+            $.ajax({
+                url: '@Url.Action("DeleteConfirmed", "Property")',
+                type: 'POST',
+                data: {
+                    id: propertyId,
+                    __RequestVerificationToken: token
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Redirect to index on success
+                        window.location.href = '@Url.Action("Index", "Property")';
+                    } else {
+                        alert(response.message || 'Failed to delete property');
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="bi bi-trash me-1"></i> Delete Already';
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while deleting the property');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-trash me-1"></i> Delete Already';
+                }
+            });
+        });
+    </script>
+}
