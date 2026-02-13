@@ -13,6 +13,7 @@
 
     <!-- Breadcrumbs -->
     <div class="breadcrumb-section">
+        <div class="header">
         <div class="container">
             <nav class="breadcrumb-nav">
                 <a asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Home</a>
@@ -21,6 +22,7 @@
                 <i class="bi bi-chevron-right"></i>
                 <span>Booking #@Model.Id</span>
             </nav>
+        </div>
         </div>
     </div>
 
@@ -330,6 +332,7 @@
 
     /* Breadcrumbs */
     .breadcrumb-section {
+        margin-top: 100px;
         background: white;
         padding: 16px 0;
         border-bottom: 1px solid #e2e8f0;
@@ -906,13 +909,14 @@
     }
 
     .btn-secondary {
-        background: #f1f5f9;
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
         color: #475569;
     }
 
         .btn-secondary:hover {
-            background: #e2e8f0;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
+            color: white;
         }
 
     .btn-danger {
@@ -924,6 +928,7 @@
         .btn-danger:hover {
             background: #fee2e2;
             border-color: #fca5a5;
+            color: #dc2626;
         }
 
     /* Help Card */
