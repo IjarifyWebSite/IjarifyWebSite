@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IjarifySystemDAL.Migrations
 {
     [DbContext(typeof(IjarifyDbContext))]
-    [Migration("20260212125152_init")]
+    [Migration("20260213121025_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -449,57 +449,90 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 1,
-                            City = "Cairo",
-                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "https://images.unsplash.com/photo-1549144511-f099e773c147?w=800",
-                            Latitude = 30.0444m,
-                            Longitude = 31.2357m,
-                            Regoin = "Nasr City",
-                            Street = "Makram Ebeid"
+                            City = "New Cairo",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://prod-images.nawy.com/processed/area/image/2/high.webp",
+                            Latitude = 30.0055m,
+                            Longitude = 31.4782m,
+                            Regoin = "Fifth Settlement",
+                            Street = "North 90th St"
                         },
                         new
                         {
                             Id = 2,
-                            City = "Alexandria",
-                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800",
-                            Latitude = 31.2001m,
-                            Longitude = 29.9187m,
-                            Regoin = "Smouha",
-                            Street = "Mostafa Kamel"
+                            City = "New Capital City",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
+                            Latitude = 30.0131m,
+                            Longitude = 31.7258m,
+                            Regoin = "R7 District",
+                            Street = "Bin Zayed Axis"
                         },
                         new
                         {
                             Id = 3,
-                            City = "Cairo",
-                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800",
-                            Latitude = 30.0626m,
-                            Longitude = 31.2197m,
-                            Regoin = "Zamalek",
-                            Street = "26th July"
+                            City = "6th October City",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://prod-images.nawy.com/processed/area/image/1/high.webp",
+                            Latitude = 29.9737m,
+                            Longitude = 30.9510m,
+                            Regoin = "West Somid",
+                            Street = "26th of July Corridor"
                         },
                         new
                         {
                             Id = 4,
-                            City = "Giza",
-                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "https://images.unsplash.com/photo-1568084680786-a84f91d1153c?w=800",
-                            Latitude = 29.9668m,
-                            Longitude = 30.9329m,
-                            Regoin = "6th October",
-                            Street = "Central Axis"
+                            City = "Mostakbal City",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://prod-images.nawy.com/processed/area/image/10/high.webp",
+                            Latitude = 30.1290m,
+                            Longitude = 31.6030m,
+                            Regoin = "Phase 1",
+                            Street = "Suez Road"
                         },
                         new
                         {
                             Id = 5,
-                            City = "Cairo",
-                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
-                            Latitude = 30.0330m,
-                            Longitude = 31.4913m,
-                            Regoin = "New Cairo",
-                            Street = "90th Street"
+                            City = "El Gouna",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://prod-images.nawy.com/processed/area/image/5/high.webp",
+                            Latitude = 27.3942m,
+                            Longitude = 33.6782m,
+                            Regoin = "Abu Tig Marina",
+                            Street = "Marina Way"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            City = "El Shorouk",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
+                            Latitude = 30.1197m,
+                            Longitude = 31.6046m,
+                            Regoin = "District 3",
+                            Street = "El Horreya Axis"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            City = "Maadi",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://cairogossip.com/app/uploads/2020/02/caf268d7b5e3978ce944d44b6a144653.jpg",
+                            Latitude = 29.9599m,
+                            Longitude = 31.2676m,
+                            Regoin = "Degla",
+                            Street = "Road 233"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            City = "Ain Sokhna",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "https://www.etbtoursegypt.com/storage/1421/Ain-El-Sokhna-Travel-Guide.jpg",
+                            Latitude = 29.5768m,
+                            Longitude = 32.3385m,
+                            Regoin = "Galala",
+                            Street = "Zaafarana Road"
                         });
                 });
 
@@ -548,42 +581,292 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3732),
                             DiscountPercentage = 10m,
-                            EndDate = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             PropertyId = 1,
-                            Title = "Spring Special - 10% Off First Month"
+                            Title = "Spring Special - 10% Off"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DiscountPercentage = 15m,
-                            EndDate = new DateTime(2024, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3865),
+                            DiscountPercentage = 10m,
+                            EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             PropertyId = 2,
-                            Title = "Summer Vacation Deal - 15% Off"
+                            Title = "Ramadan Mubarak Deal"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DiscountPercentage = 5m,
-                            EndDate = new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3880),
+                            DiscountPercentage = 10m,
+                            EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            PropertyId = 6,
-                            Title = "New Tenant Bonus - 5% Off"
+                            PropertyId = 3,
+                            Title = "Spring Special - 10% Off"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3890),
+                            DiscountPercentage = 10m,
+                            EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 4,
+                            Title = "Summer Early Bird"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3900),
+                            DiscountPercentage = 15m,
+                            EndDate = new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 5,
+                            Title = "Ramadan Offer"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3910),
+                            DiscountPercentage = 5m,
+                            EndDate = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 7,
+                            Title = "Summer Early Bird"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3919),
                             DiscountPercentage = 20m,
-                            EndDate = new DateTime(2024, 5, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 6,
+                            Title = "Eid Sale - Villas"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3929),
+                            DiscountPercentage = 12m,
+                            EndDate = new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = false,
+                            PropertyId = 5,
+                            Title = "Office Lease Discount"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3939),
+                            DiscountPercentage = 12m,
+                            EndDate = new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = false,
+                            PropertyId = 8,
+                            Title = "Family Home Promo"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3948),
+                            DiscountPercentage = 5m,
+                            EndDate = new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 1,
+                            Title = "Weekend Getaway"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3958),
+                            DiscountPercentage = 25m,
+                            EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 2,
+                            Title = "Monthly Stay Discount"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3968),
+                            DiscountPercentage = 8m,
+                            EndDate = new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 3,
+                            Title = "Business Trip Special"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3977),
+                            DiscountPercentage = 30m,
+                            EndDate = new DateTime(2026, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 4,
+                            Title = "Last Minute Deal"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3989),
+                            DiscountPercentage = 15m,
+                            EndDate = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 5,
+                            Title = "Winter Escape"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3999),
+                            DiscountPercentage = 20m,
+                            EndDate = new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 6,
+                            Title = "New Year Bash"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4009),
+                            DiscountPercentage = 12m,
+                            EndDate = new DateTime(2026, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 7,
+                            Title = "Student Housing Promo"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4018),
+                            DiscountPercentage = 10m,
+                            EndDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             PropertyId = 8,
-                            Title = "Limited Time - 20% Off Sale Price"
+                            Title = "Loyalty Reward"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4028),
+                            DiscountPercentage = 18m,
+                            EndDate = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 1,
+                            Title = "Honeymoon Suite Deal"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4037),
+                            DiscountPercentage = 40m,
+                            EndDate = new DateTime(2026, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 2,
+                            Title = "Flash Sale 24h"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4047),
+                            DiscountPercentage = 7m,
+                            EndDate = new DateTime(2026, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 3,
+                            Title = "Autumn Leaves Discount"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4057),
+                            DiscountPercentage = 9m,
+                            EndDate = new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 4,
+                            Title = "Cozy Apartment Deal"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4066),
+                            DiscountPercentage = 22m,
+                            EndDate = new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 5,
+                            Title = "Corporate Booking"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4076),
+                            DiscountPercentage = 11m,
+                            EndDate = new DateTime(2026, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 6,
+                            Title = "Beachfront Special"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4085),
+                            DiscountPercentage = 35m,
+                            EndDate = new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 7,
+                            Title = "Long Term Lease"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4155),
+                            DiscountPercentage = 14m,
+                            EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 8,
+                            Title = "Referral Bonus"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4186),
+                            DiscountPercentage = 16m,
+                            EndDate = new DateTime(2026, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 1,
+                            Title = "Summer Solstice"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4198),
+                            DiscountPercentage = 13m,
+                            EndDate = new DateTime(2026, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 2,
+                            Title = "Back to School"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4208),
+                            DiscountPercentage = 50m,
+                            EndDate = new DateTime(2026, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 3,
+                            Title = "Black Friday Rental"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CreatedAt = new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4218),
+                            DiscountPercentage = 20m,
+                            EndDate = new DateTime(2026, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 4,
+                            Title = "Christmas Spirit"
                         });
                 });
 
@@ -747,7 +1030,7 @@ namespace IjarifySystemDAL.Migrations
                             CreatedAt = new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Prime office location in downtown Cairo with modern facilities and easy access to public transportation.",
                             ListingType = "Rent",
-                            LocationId = 3,
+                            LocationId = 8,
                             Price = 40000m,
                             Title = "Commercial Office Space in Downtown Cairo",
                             Type = "Office",
@@ -762,7 +1045,7 @@ namespace IjarifySystemDAL.Migrations
                             CreatedAt = new DateTime(2024, 2, 25, 13, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Fully equipped medical clinic with modern equipment and established patient base. Great investment opportunity.",
                             ListingType = "Sale",
-                            LocationId = 1,
+                            LocationId = 7,
                             Price = 2500000m,
                             Title = "Medical Clinic for Sale in Nasr City",
                             Type = "Clinic",
@@ -1062,7 +1345,7 @@ namespace IjarifySystemDAL.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(100)
+                        .HasMaxLength(256)
                         .HasColumnType("varchar");
 
                     b.Property<bool>("EmailConfirmed")
@@ -1131,7 +1414,7 @@ namespace IjarifySystemDAL.Migrations
                         .IsUnique()
                         .HasFilter("[PhoneNumber] IS NOT NULL");
 
-                    b.ToTable("Users", null, t =>
+                    b.ToTable("AspNetUsers", null, t =>
                         {
                             t.HasCheckConstraint("CK_IjarifyUserValidEmail", "Email like '_%@_%._%'");
 
@@ -1143,14 +1426,16 @@ namespace IjarifySystemDAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            Address = "15 El Nile Street, Maadi, Cairo",
-                            ConcurrencyStamp = "0150b8b4-0e23-4164-ba7a-0549d136af0e",
+                            Address = "cairo",
+                            ConcurrencyStamp = "afa309ab-5a3d-411e-b5d0-be54efe269d3",
                             CreatedAt = new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified),
                             Email = "omar.ali@example.com",
                             EmailConfirmed = false,
                             ImageUrl = "https://i.pravatar.cc/150?img=33",
                             LockoutEnabled = false,
                             Name = "Omar Ali",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH8zQK",
+                            PhoneNumber = "01234567890",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false
                         },
@@ -1158,14 +1443,16 @@ namespace IjarifySystemDAL.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            Address = "28 Tahrir Street, Downtown, Cairo",
-                            ConcurrencyStamp = "8442e117-0176-4d96-a3d6-efb6812251e5",
+                            Address = "cairo",
+                            ConcurrencyStamp = "9412d4c6-d315-4666-8954-fde88d6cd97a",
                             CreatedAt = new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified),
                             Email = "nour.ibrahim@example.com",
                             EmailConfirmed = false,
                             ImageUrl = "https://i.pravatar.cc/150?img=27",
                             LockoutEnabled = false,
                             Name = "Nour Ibrahim",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH8zQK",
+                            PhoneNumber = "01098765432",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false
                         },
@@ -1173,14 +1460,16 @@ namespace IjarifySystemDAL.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            Address = "42 Nasr Road, Nasr City, Cairo",
-                            ConcurrencyStamp = "f8f2446e-326b-4f6c-b455-73013b9e5dd7",
+                            Address = "cairo",
+                            ConcurrencyStamp = "edcabd7c-3ad7-4bfb-9ced-5088d9db0e2d",
                             CreatedAt = new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified),
                             Email = "khaled.mahmoud@example.com",
                             EmailConfirmed = false,
                             ImageUrl = "https://i.pravatar.cc/150?img=51",
                             LockoutEnabled = false,
                             Name = "Khaled Mahmoud",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH8zQK",
+                            PhoneNumber = "01187654321",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false
                         },
@@ -1188,14 +1477,16 @@ namespace IjarifySystemDAL.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            Address = "10 Tahrir Square, Cairo",
-                            ConcurrencyStamp = "0bdf47f7-9489-48bf-bc14-592f965fe5fe",
+                            Address = "cairo",
+                            ConcurrencyStamp = "a6a0a156-320c-472a-9522-12a15129f30b",
                             CreatedAt = new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ahmed.hassan@example.com",
                             EmailConfirmed = false,
                             ImageUrl = "https://i.pravatar.cc/150?img=12",
                             LockoutEnabled = false,
                             Name = "Ahmed Hassan",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH8zQK",
+                            PhoneNumber = "01012345678",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false
                         },
@@ -1203,14 +1494,16 @@ namespace IjarifySystemDAL.Migrations
                         {
                             Id = 5,
                             AccessFailedCount = 0,
-                            Address = "25 Alexandria Road, Cairo",
-                            ConcurrencyStamp = "f4561239-bdef-4d25-a078-a8ef57bda706",
+                            Address = "cairo",
+                            ConcurrencyStamp = "2e6b3f20-ffad-46ec-a72e-1c0ebcbd1341",
                             CreatedAt = new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified),
                             Email = "fatima.mohamed@example.com",
                             EmailConfirmed = false,
                             ImageUrl = "https://i.pravatar.cc/150?img=45",
                             LockoutEnabled = false,
                             Name = "Fatima Mohamed",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH8zQK",
+                            PhoneNumber = "01123456789",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false
                         });

@@ -1,8 +1,9 @@
-using System.Diagnostics;
+using IjarifySystemBLL.Services.Classes;
 using IjarifySystemBLL.Services.Interfaces;
 using IjarifySystemBLL.ViewModels;
 using IjarifySystemPL.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace IjarifySystemPL.Controllers
 {
@@ -11,18 +12,19 @@ namespace IjarifySystemPL.Controllers
         
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeService _HomeService;
+        private readonly IPropertyService _propertyService;
 
-        public HomeController(ILogger<HomeController> logger,IHomeService homeService)
+        public HomeController(ILogger<HomeController> logger,IHomeService homeService, IPropertyService propertyService)
         {
             _logger = logger;
             _HomeService = homeService;
+            _propertyService = propertyService;
         }
-
         public IActionResult Index()
         {
             var model = new HomeViewModel
             {
-               TopLocations=_HomeService.GetTopLocations().ToList()
+                TopLocations = _HomeService.GetTopLocations().ToList()
             };
             return View(model);
         }

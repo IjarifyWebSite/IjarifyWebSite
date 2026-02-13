@@ -1,0 +1,917 @@
+﻿@using IjarifySystemBLL.ViewModels.PropertyViewModels;
+@model CreatePropertyViewModel
+
+@{
+    ViewData["Title"] = "Edit Property";
+}
+
+<section class="submit-property-section">
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="header-icon">
+                <i class="bi bi-pencil-square"></i>
+            </div>
+            <h1 class="header-title">Edit Your Property</h1>
+            <p class="header-subtitle">Update your property details to keep your listing accurate and attractive to potential tenants.</p>
+        </div>
+
+        <div class="form-wrapper">
+
+            <form asp-action="Edit" asp-controller="Property" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+
+                <!-- ================= Basic Information ================= -->
+                <div class="form-section">
+                    <h4 class="section-title">
+                        <i class="bi bi-info-circle"></i>
+                        Basic Information
+                    </h4>
+
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label class="form-label">Property Title <span>*</span></label>
+                            <input asp-for="Title" class="form-input" placeholder="Modern apartment in downtown" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Listing Type <span>*</span></label>
+                            <select asp-for="ListingType" class="form-select">
+                                <option value="">Select Listing Type</option>
+                                <option value="Rent">For Rent</option>
+                                <option value="Sale">For Sale</option>
+                            </select>
+                            <span asp-validation-for="ListingType" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Property Type <span>*</span></label>
+                            <select asp-for="PropertyType" class="form-select">
+                                <option value="">Select Property Type</option>
+                                <option value="Apartment">Apartment</option>
+                                <option value="Villa">Villa</option>
+                                <option value="House">House</option>
+                                <option value="Studio">Studio</option>
+                                <option value="Office">Office</option>
+                                <option value="Shop">Shop</option>
+                            </select>
+                            <span asp-validation-for="PropertyType" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Price <span>*</span></label>
+                            <input asp-for="Price" type="number" class="form-input" placeholder="5000" step="0.01" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Area (m²) <span>*</span></label>
+                            <input asp-for="Area" type="number" class="form-input" placeholder="120" step="0.01" />
+                            <span asp-validation-for="Area" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row triple">
+                        <div class="form-group">
+                            <label class="form-label">Bedrooms <span>*</span></label>
+                            <input asp-for="BedRooms" type="number" class="form-input" placeholder="3" min="0" />
+                            <span asp-validation-for="BedRooms" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Bathrooms <span>*</span></label>
+                            <input asp-for="BathRooms" type="number" class="form-input" placeholder="2" min="0" />
+                            <span asp-validation-for="BathRooms" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label class="form-label">Description <span>*</span></label>
+                            <textarea asp-for="Description" class="form-textarea" placeholder="Describe the property..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= Location ================= -->
+                <div class="form-section">
+                    <h4 class="section-title">
+                        <i class="bi bi-geo-alt"></i>
+                        Location
+                    </h4>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">City <span>*</span></label>
+                            <input asp-for="City" class="form-input" placeholder="e.g., Cairo" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Region <span>*</span></label>
+                            <input asp-for="Region" class="form-input" placeholder="e.g., New Cairo" />
+                            <span asp-validation-for="Region" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label class="form-label">Street Address <span>*</span></label>
+                            <input asp-for="Street" class="form-input" placeholder="e.g., 123 Main Street, Building 5" />
+                            <span asp-validation-for="Street" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= Main Image ================= -->
+                <div class="form-section">
+                    <h4 class="section-title">
+                        <i class="bi bi-image"></i>
+                        Main Image
+                    </h4>
+
+                    <div class="upload-zone" onclick="document.getElementById('mainImageInput').click()">
+                        <i class="bi bi-image-fill"></i>
+                        <h3>Upload New Main Property Image</h3>
+                        <span class="file-info">Supported: JPG, PNG, WebP • Max 5MB</span>
+                    </div>
+                    <input asp-for="MainImage" type="file" id="mainImageInput" accept="image/*" style="display: none;" onchange="handleMainImage(this)" />
+                    <span asp-validation-for="MainImage" class="text-danger"></span>
+                    <small class="hint">
+                        Leave empty to keep existing main image. Upload a new image to replace it.
+                    </small>
+
+                    <div id="mainPreview" class="main-preview"></div>
+                </div>
+
+                <!-- ================= Gallery Images ================= -->
+                <div class="form-section">
+                    <h4 class="section-title">
+                        <i class="bi bi-images"></i>
+                        Property Images
+                    </h4>
+
+                    <div class="upload-zone" onclick="document.getElementById('galleryInput').click()">
+                        <i class="bi bi-cloud-arrow-up"></i>
+                        <h3>Upload New Property Photos</h3>
+                        <span class="file-info">Supported: JPG, PNG, WebP • Max 5MB per image</span>
+                    </div>
+                    <input asp-for="GalleryImages" type="file" id="galleryInput" multiple accept="image/*" style="display: none;" onchange="handleFiles(this)" />
+                    <small class="hint">
+                        Leave empty to keep existing gallery images. Upload new images to replace all gallery images.
+                    </small>
+
+                    <div id="previewGrid" class="preview-grid"></div>
+                </div>
+
+                <!-- ================= Amenities ================= -->
+                <div class="form-section">
+                    <h4 class="section-title">
+                        <i class="bi bi-stars"></i>
+                        Property Features
+                    </h4>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Feature Category</label>
+                            <select id="amenityCategory" class="form-select">
+                                <option value="">Select Category</option>
+                                <option value="Interior">Interior Features</option>
+                                <option value="Exterior">Exterior Features</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Feature Name</label>
+                            <input type="text" id="amenityInput" class="form-input" placeholder="e.g., WiFi, Pool, Garden" />
+                        </div>
+                    </div>
+
+                    <div class="form-row single">
+                        <button type="button" class="btn btn-secondary" onclick="addAmenity()" style="width: auto;">
+                            <i class="bi bi-plus-lg"></i>
+                            Add Feature
+                        </button>
+                    </div>
+
+                    <small class="hint" style="display: block; margin-bottom: 15px;">
+                        Note: Adding new amenities will replace all existing amenities. Make sure to add all features you want to keep.
+                    </small>
+
+                    <!-- Interior Features List -->
+                    <div id="interiorSection" style="display: none; margin-top: 30px;">
+                        <div class="category-header">Interior Features</div>
+                        <div id="interiorAmenities" class="amenities-display-grid"></div>
+                    </div>
+
+                    <!-- Exterior Features List -->
+                    <div id="exteriorSection" style="display: none; margin-top: 30px;">
+                        <div class="category-header">Exterior Features</div>
+                        <div id="exteriorAmenities" class="amenities-display-grid"></div>
+                    </div>
+                </div>
+
+                <!-- ================= Submit ================= -->
+                <div class="submit-section">
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                        <i class="bi bi-x-circle"></i>
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i>
+                        Update Property
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function handleMainImage(input) {
+            const preview = document.getElementById('mainPreview');
+            preview.innerHTML = ''; // Clear previous
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'preview-item main-preview-item';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="Main Property Image">
+                        <button type="button" class="remove-btn" onclick="removeMainImage()">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    `;
+                    preview.appendChild(div);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeMainImage() {
+            document.getElementById('mainImageInput').value = '';
+            document.getElementById('mainPreview').innerHTML = '';
+        }
+
+        function handleFiles(input) {
+            const preview = document.getElementById('previewGrid');
+
+            if (input.files) {
+                Array.from(input.files).forEach((file, index) => {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        const div = document.createElement('div');
+                        div.className = 'preview-item';
+                        div.innerHTML = `
+                            <img src="${e.target.result}" alt="Property Image ${index + 1}">
+                            <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        `;
+                        preview.appendChild(div);
+                    }
+
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        // Drag and drop for gallery images
+        const uploadZones = document.querySelectorAll('.upload-zone');
+
+        uploadZones.forEach(uploadZone => {
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.style.borderColor = '#2c7a7b';
+                uploadZone.style.background = '#f0fdfa';
+            });
+
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.style.borderColor = '#cbd5e1';
+                uploadZone.style.background = '#f8fafc';
+            });
+
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const files = e.dataTransfer.files;
+
+                // Determine which input to use
+                if (uploadZone.getAttribute('onclick').includes('mainImageInput')) {
+                    document.getElementById('mainImageInput').files = files;
+                    handleMainImage(document.getElementById('mainImageInput'));
+                } else {
+                    document.getElementById('galleryInput').files = files;
+                    handleFiles(document.getElementById('galleryInput'));
+                }
+
+                uploadZone.style.borderColor = '#cbd5e1';
+                uploadZone.style.background = '#f8fafc';
+            });
+        });
+
+        // Custom Amenities Functions
+        let amenityCounter = 0;
+
+        function addAmenity() {
+            const categorySelect = document.getElementById('amenityCategory');
+            const amenityInput = document.getElementById('amenityInput');
+
+            const category = categorySelect.value;
+            const amenityName = amenityInput.value.trim();
+
+            if (!category) {
+                alert('Please select a category (Interior or Exterior)');
+                return;
+            }
+
+            if (!amenityName) {
+                alert('Please enter a feature name');
+                return;
+            }
+
+            // تحديد الـ container المناسب
+            const containerId = category === 'Interior' ? 'interiorAmenities' : 'exteriorAmenities';
+            const sectionId = category === 'Interior' ? 'interiorSection' : 'exteriorSection';
+
+            const container = document.getElementById(containerId);
+            const section = document.getElementById(sectionId);
+
+            // إظهار القسم
+            section.style.display = 'block';
+
+            // إنشاء الـ badge
+            const amenityId = 'amenity_' + amenityCounter++;
+            const amenityDiv = document.createElement('div');
+            amenityDiv.className = 'amenity-badge';
+            amenityDiv.innerHTML = `
+                <span class="amenity-badge-text">
+                    <i class="bi ${category === 'Interior' ? 'bi-house-door' : 'bi-building'}"></i>
+                    ${amenityName}
+                </span>
+                <input type="hidden" name="Amenities[${amenityId}].Name" value="${amenityName}" />
+                <input type="hidden" name="Amenities[${amenityId}].Category" value="${category}" />
+                <button type="button" class="amenity-badge-remove" onclick="this.parentElement.remove(); checkEmptySections();">
+                    <i class="bi bi-x"></i>
+                </button>
+            `;
+
+            container.appendChild(amenityDiv);
+
+            // تفريغ الحقول
+            amenityInput.value = '';
+            categorySelect.value = '';
+            amenityInput.focus();
+        }
+
+        function checkEmptySections() {
+            const interiorContainer = document.getElementById('interiorAmenities');
+            const exteriorContainer = document.getElementById('exteriorAmenities');
+            const interiorSection = document.getElementById('interiorSection');
+            const exteriorSection = document.getElementById('exteriorSection');
+
+            if (interiorContainer.children.length === 0) {
+                interiorSection.style.display = 'none';
+            }
+
+            if (exteriorContainer.children.length === 0) {
+                exteriorSection.style.display = 'none';
+            }
+        }
+
+        // Allow Enter key to add amenity
+        document.addEventListener('DOMContentLoaded', function() {
+            const amenityInput = document.getElementById('amenityInput');
+            if (amenityInput) {
+                amenityInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addAmenity();
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+<style>
+    .submit-property-section {
+        padding: 60px 20px;
+        min-height: 100vh;
+        background: transparent;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* Header Section */
+    .header-section {
+        text-align: center;
+        margin-bottom: 25px;
+        color: white;
+        animation: fadeInDown 0.8s ease;
+    }
+
+    .header-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 100px;
+        background: #2c7a7b;
+        backdrop-filter: blur(10px);
+        border-radius: 50%;
+        margin: 40px 0 25px;
+        animation: pulse 2s infinite;
+    }
+
+        .header-icon i {
+            font-size: 50px;
+            color: white;
+        }
+
+    .header-title {
+        font-size: 52px;
+        font-weight: 800;
+        margin-bottom: 20px;
+        text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        letter-spacing: -1px;
+        color: #0f172a;
+    }
+
+    .header-subtitle {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #2c7a7b;
+        opacity: 0.95;
+        max-width: 700px;
+        margin: 0 auto;
+        font-weight: 400;
+    }
+
+    @@keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    /* Form Wrapper */
+    .form-wrapper {
+        background: white;
+        border-radius: 24px;
+        padding: 50px;
+        animation: fadeInUp 0.8s ease;
+        margin-top: 50px;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .section-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 25px;
+        padding-bottom: 12px;
+        border-bottom: 3px solid #2c7a7b;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .section-title i {
+            color: #2c7a7b;
+            font-size: 28px;
+        }
+
+    .form-section {
+        margin-bottom: 40px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+        margin-bottom: 25px;
+    }
+
+        .form-row.single {
+            grid-template-columns: 1fr;
+        }
+
+        .form-row.triple {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+    .form-group {
+        position: relative;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 10px;
+    }
+
+        .form-label span {
+            color: #ef4444;
+        }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        width: 100%;
+        padding: 14px 18px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 15px;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+    }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #2c7a7b;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(44, 122, 123, 0.1);
+        }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .helper-text {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 8px;
+    }
+
+    .upload-zone {
+        border: 3px dashed #cbd5e1;
+        border-radius: 16px;
+        padding: 50px 30px;
+        text-align: center;
+        background: #f8fafc;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+        .upload-zone:hover {
+            border-color: #2c7a7b;
+            background: #f0fdfa;
+            transform: translateY(-2px);
+        }
+
+        .upload-zone i {
+            font-size: 64px;
+            color: #2c7a7b;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .upload-zone h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .upload-zone p {
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .upload-zone .file-info {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+    .hint {
+        font-size: 13px;
+        color: #6c757d;
+    }
+
+    .main-preview {
+        margin-top: 25px;
+    }
+
+    .main-preview-item {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .preview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .preview-item {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        aspect-ratio: 1;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+        .preview-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(239, 68, 68, 0.95);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+            .preview-item .remove-btn:hover {
+                background: rgba(220, 38, 38, 1);
+                transform: scale(1.1);
+            }
+
+    .category-header {
+        font-size: 16px;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 15px;
+        padding-left: 8px;
+        border-left: 4px solid #2c7a7b;
+    }
+
+    .amenities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .amenity-item {
+        position: relative;
+    }
+
+    .amenity-checkbox {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .amenity-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 18px;
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 14px;
+        font-weight: 500;
+        color: #334155;
+    }
+
+        .amenity-label i {
+            font-size: 20px;
+            color: #64748b;
+            transition: color 0.3s ease;
+        }
+
+        .amenity-label:hover {
+            border-color: #2c7a7b;
+            background: #f0fdfa;
+            transform: translateY(-2px);
+        }
+
+    .amenity-checkbox:checked + .amenity-label {
+        background: linear-gradient(135deg, #2c7a7b 0%, #14b8a6 100%);
+        border-color: #2c7a7b;
+        color: white;
+    }
+
+        .amenity-checkbox:checked + .amenity-label i {
+            color: white;
+        }
+
+    .submit-section {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #e2e8f0;
+    }
+
+    .btn {
+        padding: 16px 40px;
+        border-radius: 14px;
+        font-size: 16px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #2c7a7b 0%, #14b8a6 100%);
+        color: white;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(44, 122, 123, 0.4);
+        }
+
+    .btn-secondary {
+        background: #f1f5f9;
+        color: #475569;
+        border: 2px solid #e2e8f0;
+    }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+        }
+
+    .text-danger {
+        color: #ef4444;
+        font-size: 13px;
+        margin-top: 6px;
+        display: block;
+    }
+
+    /* Amenities Display */
+    .amenities-display-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .amenity-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #2c7a7b 0%, #14b8a6 100%);
+        color: white;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        animation: slideIn 0.3s ease;
+        box-shadow: 0 2px 8px rgba(44, 122, 123, 0.3);
+    }
+
+    .amenity-badge-text {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .amenity-badge-text i {
+            font-size: 16px;
+        }
+
+    .amenity-badge-remove {
+        background: rgba(255, 255, 255, 0.25);
+        border: none;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        padding: 0;
+        font-size: 14px;
+        margin-left: 4px;
+    }
+
+        .amenity-badge-remove:hover {
+            background: rgba(239, 68, 68, 0.9);
+            transform: scale(1.1);
+        }
+
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .header-title {
+            font-size: 36px;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+        }
+
+        .header-icon {
+            width: 80px;
+            height: 80px;
+        }
+
+            .header-icon i {
+                font-size: 40px;
+            }
+
+        .form-wrapper {
+            padding: 30px 20px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .amenities-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .submit-section {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>

@@ -79,7 +79,7 @@
                                                     <span class="badge for-sale">@property.ListingType</span>
                                                 </div>
                                                 <div class="property-overlay">
-                                                    <button class="favorite-btn active" onclick="removeFavourite(@Model.UserId, @property.PropertyId, @property.FavouriteId)">
+                                                    <button class="favorite-btn active" onclick="removeFavourite(@property.PropertyId, @property.FavouriteId)">
                                                         <i class="bi bi-heart-fill text-danger"></i>
                                                     </button>
                                                 </div>
@@ -100,7 +100,7 @@
                                                         <i class="bi bi-calendar-check"></i> Added on @property.CreatedAt.ToString("MMM dd, yyyy")
                                                     </small>
                                                 </div>
-                                                <a href="@Url.Action("Details", "Property", new { id = property.PropertyId })" class="btn btn-primary w-100">View Details</a>
+                                                <a href="@Url.Action("Details", "Property", new { id = property.PropertyId })" class="btn btn-teal w-100">View Details</a>
                                             </div>
                                         </div>
                                     </div>
@@ -164,10 +164,10 @@
                                                         <i class="bi bi-calendar-check"></i> Added @property.CreatedAt.ToString("MMM dd, yyyy")
                                                     </small>
                                                     <div class="property-actions">
-                                                        <button class="btn btn-outline-danger btn-sm" onclick="removeFavourite(@Model.UserId, @property.PropertyId, @property.FavouriteId)">
+                                                        <button class="btn btn-outline-danger btn-sm" onclick="removeFavourite(@property.PropertyId, @property.FavouriteId)">
                                                             <i class="bi bi-heart-fill"></i> Remove
                                                         </button>
-                                                        <a href="@Url.Action("Details", "Property", new { id = property.PropertyId })" class="btn btn-primary btn-sm">View Details</a>
+                                                        <a href="@Url.Action("Details", "Property", new { id = property.PropertyId })" class="btn btn-teal btn-sm">View Details</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -191,7 +191,7 @@
                                     <p class="text-muted mb-4">
                                         Start exploring properties and save your favorites by clicking the heart icon.
                                     </p>
-                                    <a href="@Url.Action("Index", "Property")" class="btn btn-primary btn-lg">
+                                    <a href="@Url.Action("Index", "Property")" class="btn btn-teal">
                                         <i class="bi bi-search"></i> Browse Properties
                                     </a>
                                 </div>
@@ -207,6 +207,33 @@
 
     </section><!-- /Favourites Section -->
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center px-4 pb-4">
+                    <div class="mb-4">
+                        <div class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="bi bi-trash text-danger" style="font-size: 2.5rem;"></i>
+                        </div>
+                    </div>
+                    <h4 class="mb-3">Remove from Favourites?</h4>
+                    <p class="text-muted mb-0">Are you sure you want to remove this property from your favourites?</p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center gap-2 pt-0 pb-4">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
+                        <i class="bi bi-trash me-1"></i> Remove
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 @section Scripts {
@@ -229,45 +256,66 @@
             });
         });
 
+        // Remove favourite variables
+        var deletePropertyId = null;
+        var deleteFavouriteId = null;
+
         // Remove favourite function
-        function removeFavourite(userId, propertyId, favouriteId) {
-            if (confirm('Are you sure you want to remove this property from your favourites?')) {
-                $.ajax({
-                    url: '@Url.Action("Remove", "Favourite")',
-                    type: 'POST',
-                    data: {
-                        userId: userId,
-                        propertyId: propertyId
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            // Remove the card with animation
-                            $('[data-favourite-id="' + favouriteId + '"]').fadeOut(400, function () {
-                                $(this).remove();
-
-                                // Check if no more favourites
-                                if ($('.property-card').length === 0 && $('.property-list-item').length === 0) {
-                                    location.reload();
-                                } else {
-                                    // Update count
-                                    var currentCount = parseInt($('.properties-header h5').text().match(/\d+/)[0]);
-                                    var newCount = currentCount - 1;
-                                    $('.properties-header h5').text('You have ' + newCount + ' saved properties');
-                                }
-                            });
-
-                            // Show success message
-                            showNotification('Removed from favourites successfully!', 'success');
-                        } else {
-                            showNotification('Failed to remove favourite. Please try again.', 'error');
-                        }
-                    },
-                    error: function () {
-                        showNotification('An error occurred. Please try again.', 'error');
-                    }
-                });
-            }
+        function removeFavourite(propertyId, favouriteId) {
+            deletePropertyId = propertyId;
+            deleteFavouriteId = favouriteId;
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
         }
+
+        // Handle confirm delete button click
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            if (deletePropertyId === null) return;
+            
+            var modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+
+            $.ajax({
+                url: '@Url.Action("Remove", "Favourite")',
+                type: 'POST',
+                data: {
+                    propertyId: deletePropertyId
+                },
+                success: function (response) {
+                    modal.hide();
+
+                    if (response.success) {
+                        // Remove the card with animation
+                        $('[data-favourite-id="' + deleteFavouriteId + '"]').fadeOut(400, function () {
+                            $(this).remove();
+
+                            // Check if no more favourites
+                            if ($('.property-card').length === 0 && $('.property-list-item').length === 0) {
+                                location.reload();
+                            } else {
+                                // Update count
+                                var currentCount = parseInt($('.properties-header h5').text().match(/\d+/)[0]);
+                                var newCount = currentCount - 1;
+                                $('.properties-header h5').text('You have ' + newCount + ' saved properties');
+                            }
+                        });
+
+                        // Show success message
+                        showNotification('Removed from favourites successfully!', 'success');
+                    } else {
+                        showNotification('Failed to remove favourite. Please try again.', 'error');
+                    }
+                    
+                    deletePropertyId = null;
+                    deleteFavouriteId = null;
+                },
+                error: function () {
+                    modal.hide();
+                    showNotification('An error occurred. Please try again.', 'error');
+                    deletePropertyId = null;
+                    deleteFavouriteId = null;
+                }
+            });
+        });
 
         // Simple notification function
         function showNotification(message, type) {

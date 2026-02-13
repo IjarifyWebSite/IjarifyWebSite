@@ -13,16 +13,18 @@ namespace IjarifySystemPL.Controllers
         private readonly IReviewService _reviewService;
         private readonly IBookingService _bookingService;
         private readonly IUserService _userService;
+        private readonly IInquiryService _inquiryService;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly string _imagePath;
 
-        public AccountController(IReviewService reviewService, IBookingService bookingService, IUserService userService, IWebHostEnvironment webHostEnvironment, UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(IReviewService reviewService, IBookingService bookingService, IUserService userService, IInquiryService inquiryService, IWebHostEnvironment webHostEnvironment, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _reviewService = reviewService;
             _bookingService = bookingService;
             _userService = userService;
+            _inquiryService = inquiryService;
             this.webHostEnvironment = webHostEnvironment;
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -39,6 +41,7 @@ namespace IjarifySystemPL.Controllers
         public async Task<IActionResult> Profile() 
         {
             var currentUser = await userManager.GetUserAsync(User);
+            
             if (currentUser == null)
             {
                 return RedirectToAction("Login");
@@ -49,6 +52,8 @@ namespace IjarifySystemPL.Controllers
             var reviews = _reviewService.GetReviewsByUser(currentUser.Id);
 
             var allBookings = await _bookingService.GetUserBookingsAsync(currentUser.Id);
+
+            var userInquiries = _inquiryService.GetUserInquiries(currentUser.Id);
 
             var profile = new ProfileViewModel
             {
@@ -74,7 +79,9 @@ namespace IjarifySystemPL.Controllers
                         IsValid = b.IsValid
                     })
                     .ToList(),
-                TotalBookings = allBookings.Count()
+                TotalBookings = allBookings.Count(),
+                RecentInquiries = userInquiries.Inquiries.Take(6).ToList(),
+                TotalInquiries = userInquiries.TotalCount
             };
 
             return View(profile);
@@ -307,6 +314,17 @@ namespace IjarifySystemPL.Controllers
                 {
                     ModelState.AddModelError("Email", "Email already registered");
                     return View(newUser);
+                }
+
+                // Check if phone number already exists
+                if (!string.IsNullOrEmpty(newUser.PhoneNumber))
+                {
+                    var existingPhone = _userService.GetUserByPhoneNumber(newUser.PhoneNumber);
+                    if (existingPhone != null)
+                    {
+                        ModelState.AddModelError("PhoneNumber", "This phone number is already registered. Please use a different number.");
+                        return View(newUser);
+                    }
                 }
 
                 // Create new user

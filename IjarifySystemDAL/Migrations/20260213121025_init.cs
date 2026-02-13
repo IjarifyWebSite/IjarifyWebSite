@@ -46,6 +46,39 @@ namespace IjarifySystemDAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.CheckConstraint("CK_IjarifyUserValidEmail", "Email like '_%@_%._%'");
+                    table.CheckConstraint("CK_IjarifyUserValidPhone", "PhoneNumber like '01%' and PhoneNumber not like '%[^0-9]%'");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -63,39 +96,6 @@ namespace IjarifySystemDAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Locations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                    table.CheckConstraint("CK_IjarifyUserValidEmail", "Email like '_%@_%._%'");
-                    table.CheckConstraint("CK_IjarifyUserValidPhone", "PhoneNumber like '01%' and PhoneNumber not like '%[^0-9]%'");
                 });
 
             migrationBuilder.CreateTable(
@@ -133,9 +133,9 @@ namespace IjarifySystemDAL.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_Users_UserId",
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -153,9 +153,9 @@ namespace IjarifySystemDAL.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_Users_UserId",
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -177,9 +177,9 @@ namespace IjarifySystemDAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_Users_UserId",
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -197,9 +197,9 @@ namespace IjarifySystemDAL.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_Users_UserId",
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -227,15 +227,15 @@ namespace IjarifySystemDAL.Migrations
                 {
                     table.PrimaryKey("PK_Properties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Properties_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
+                        name: "FK_Properties_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Properties_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_Properties_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -283,14 +283,14 @@ namespace IjarifySystemDAL.Migrations
                 {
                     table.PrimaryKey("PK_bookings", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_bookings_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_bookings_Properties_PropertyID",
                         column: x => x.PropertyID,
                         principalTable: "Properties",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_bookings_Users_UserID",
-                        column: x => x.UserID,
-                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -309,14 +309,14 @@ namespace IjarifySystemDAL.Migrations
                 {
                     table.PrimaryKey("PK_favourites", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_favourites_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_favourites_Properties_PropertyId",
                         column: x => x.PropertyId,
                         principalTable: "Properties",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_favourites_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -336,16 +336,16 @@ namespace IjarifySystemDAL.Migrations
                 {
                     table.PrimaryKey("PK_Inquiries", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Inquiries_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Inquiries_Properties_PropertyId",
                         column: x => x.PropertyId,
                         principalTable: "Properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Inquiries_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -413,15 +413,27 @@ namespace IjarifySystemDAL.Migrations
                     table.PrimaryKey("PK_reviews", x => x.Id);
                     table.CheckConstraint("CK_Review_Rating_Range", "Rating Between 1 and 10");
                     table.ForeignKey(
+                        name: "FK_reviews_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_reviews_Properties_PropertyId",
                         column: x => x.PropertyId,
                         principalTable: "Properties",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_reviews_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "ImageUrl", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 0, "cairo", "afa309ab-5a3d-411e-b5d0-be54efe269d3", new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", false, "https://i.pravatar.cc/150?img=33", false, null, "Omar Ali", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01234567890", false, null, false, null, null },
+                    { 2, 0, "cairo", "9412d4c6-d315-4666-8954-fde88d6cd97a", new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", false, "https://i.pravatar.cc/150?img=27", false, null, "Nour Ibrahim", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01098765432", false, null, false, null, null },
+                    { 3, 0, "cairo", "edcabd7c-3ad7-4bfb-9ced-5088d9db0e2d", new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", false, "https://i.pravatar.cc/150?img=51", false, null, "Khaled Mahmoud", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01187654321", false, null, false, null, null },
+                    { 4, 0, "cairo", "a6a0a156-320c-472a-9522-12a15129f30b", new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", false, "https://i.pravatar.cc/150?img=12", false, null, "Ahmed Hassan", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01012345678", false, null, false, null, null },
+                    { 5, 0, "cairo", "2e6b3f20-ffad-46ec-a72e-1c0ebcbd1341", new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), "fatima.mohamed@example.com", false, "https://i.pravatar.cc/150?img=45", false, null, "Fatima Mohamed", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01123456789", false, null, false, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -429,23 +441,14 @@ namespace IjarifySystemDAL.Migrations
                 columns: new[] { "Id", "City", "CreatedAt", "ImageUrl", "Latitude", "Longitude", "Regoin", "Street", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, "Cairo", new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1549144511-f099e773c147?w=800", 30.0444m, 31.2357m, "Nasr City", "Makram Ebeid", null },
-                    { 2, "Alexandria", new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800", 31.2001m, 29.9187m, "Smouha", "Mostafa Kamel", null },
-                    { 3, "Cairo", new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800", 30.0626m, 31.2197m, "Zamalek", "26th July", null },
-                    { 4, "Giza", new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1568084680786-a84f91d1153c?w=800", 29.9668m, 30.9329m, "6th October", "Central Axis", null },
-                    { 5, "Cairo", new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800", 30.0330m, 31.4913m, "New Cairo", "90th Street", null }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "ImageUrl", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UserName" },
-                values: new object[,]
-                {
-                    { 1, 0, "15 El Nile Street, Maadi, Cairo", "0150b8b4-0e23-4164-ba7a-0549d136af0e", new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", false, "https://i.pravatar.cc/150?img=33", false, null, "Omar Ali", null, null, null, null, false, null, false, null, null },
-                    { 2, 0, "28 Tahrir Street, Downtown, Cairo", "8442e117-0176-4d96-a3d6-efb6812251e5", new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", false, "https://i.pravatar.cc/150?img=27", false, null, "Nour Ibrahim", null, null, null, null, false, null, false, null, null },
-                    { 3, 0, "42 Nasr Road, Nasr City, Cairo", "f8f2446e-326b-4f6c-b455-73013b9e5dd7", new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", false, "https://i.pravatar.cc/150?img=51", false, null, "Khaled Mahmoud", null, null, null, null, false, null, false, null, null },
-                    { 4, 0, "10 Tahrir Square, Cairo", "0bdf47f7-9489-48bf-bc14-592f965fe5fe", new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", false, "https://i.pravatar.cc/150?img=12", false, null, "Ahmed Hassan", null, null, null, null, false, null, false, null, null },
-                    { 5, 0, "25 Alexandria Road, Cairo", "f4561239-bdef-4d25-a078-a8ef57bda706", new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), "fatima.mohamed@example.com", false, "https://i.pravatar.cc/150?img=45", false, null, "Fatima Mohamed", null, null, null, null, false, null, false, null, null }
+                    { 1, "New Cairo", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://prod-images.nawy.com/processed/area/image/2/high.webp", 30.0055m, 31.4782m, "Fifth Settlement", "North 90th St", null },
+                    { 2, "New Capital City", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800", 30.0131m, 31.7258m, "R7 District", "Bin Zayed Axis", null },
+                    { 3, "6th October City", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://prod-images.nawy.com/processed/area/image/1/high.webp", 29.9737m, 30.9510m, "West Somid", "26th of July Corridor", null },
+                    { 4, "Mostakbal City", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://prod-images.nawy.com/processed/area/image/10/high.webp", 30.1290m, 31.6030m, "Phase 1", "Suez Road", null },
+                    { 5, "El Gouna", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://prod-images.nawy.com/processed/area/image/5/high.webp", 27.3942m, 33.6782m, "Abu Tig Marina", "Marina Way", null },
+                    { 6, "El Shorouk", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800", 30.1197m, 31.6046m, "District 3", "El Horreya Axis", null },
+                    { 7, "Maadi", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://cairogossip.com/app/uploads/2020/02/caf268d7b5e3978ce944d44b6a144653.jpg", 29.9599m, 31.2676m, "Degla", "Road 233", null },
+                    { 8, "Ain Sokhna", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://www.etbtoursegypt.com/storage/1421/Ain-El-Sokhna-Travel-Guide.jpg", 29.5768m, 32.3385m, "Galala", "Zaafarana Road", null }
                 });
 
             migrationBuilder.InsertData(
@@ -478,8 +481,8 @@ namespace IjarifySystemDAL.Migrations
                     { 4, 280m, 3, 4, new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified), "Spacious family townhouse with garden, 4 bedrooms, and modern kitchen. Located in a quiet compound with 24/7 security.", "Rent", 4, 25000m, "Family Townhouse in 6th October", "Townhouse", null, 5 },
                     { 5, 250m, 3, 4, new DateTime(2024, 2, 15, 12, 45, 0, 0, DateTimeKind.Unspecified), "Luxurious penthouse with panoramic views, private terrace, and premium finishes. Features include smart home system and private parking.", "Rent", 5, 35000m, "Penthouse Apartment in New Cairo", "Apartment", null, 3 },
                     { 6, 100m, 1, 2, new DateTime(2024, 3, 1, 10, 30, 0, 0, DateTimeKind.Unspecified), "Well-maintained 2-bedroom apartment, perfect for small families or couples. Close to schools and shopping centers.", "Rent", 1, 10000m, "Affordable Apartment in Nasr City", "Apartment", null, 5 },
-                    { 7, 200m, 2, 0, new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified), "Prime office location in downtown Cairo with modern facilities and easy access to public transportation.", "Rent", 3, 40000m, "Commercial Office Space in Downtown Cairo", "Office", null, 1 },
-                    { 8, 180m, 3, 0, new DateTime(2024, 2, 25, 13, 30, 0, 0, DateTimeKind.Unspecified), "Fully equipped medical clinic with modern equipment and established patient base. Great investment opportunity.", "Sale", 1, 2500000m, "Medical Clinic for Sale in Nasr City", "Clinic", null, 3 }
+                    { 7, 200m, 2, 0, new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified), "Prime office location in downtown Cairo with modern facilities and easy access to public transportation.", "Rent", 8, 40000m, "Commercial Office Space in Downtown Cairo", "Office", null, 1 },
+                    { 8, 180m, 3, 0, new DateTime(2024, 2, 25, 13, 30, 0, 0, DateTimeKind.Unspecified), "Fully equipped medical clinic with modern equipment and established patient base. Great investment opportunity.", "Sale", 7, 2500000m, "Medical Clinic for Sale in Nasr City", "Clinic", null, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -495,13 +498,38 @@ namespace IjarifySystemDAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Offers",
-                columns: new[] { "Id", "DiscountPercentage", "EndDate", "IsActive", "PropertyId", "Title", "UpdatedAt" },
+                columns: new[] { "Id", "StartDate", "DiscountPercentage", "EndDate", "IsActive", "PropertyId", "Title", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, 10m, new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Spring Special - 10% Off First Month", null },
-                    { 2, 15m, new DateTime(2024, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Summer Vacation Deal - 15% Off", null },
-                    { 3, 5m, new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "New Tenant Bonus - 5% Off", null },
-                    { 4, 20m, new DateTime(2024, 5, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 8, "Limited Time - 20% Off Sale Price", null }
+                    { 1, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3732), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Spring Special - 10% Off", null },
+                    { 2, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3865), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Ramadan Mubarak Deal", null },
+                    { 3, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3880), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Spring Special - 10% Off", null },
+                    { 4, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3890), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Summer Early Bird", null },
+                    { 5, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3900), 15m, new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 5, "Ramadan Offer", null },
+                    { 6, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3910), 5m, new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 7, "Summer Early Bird", null },
+                    { 7, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3919), 20m, new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "Eid Sale - Villas", null },
+                    { 8, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3929), 12m, new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 5, "Office Lease Discount", null },
+                    { 9, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3939), 12m, new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 8, "Family Home Promo", null },
+                    { 10, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3948), 5m, new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Weekend Getaway", null },
+                    { 11, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3958), 25m, new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Monthly Stay Discount", null },
+                    { 12, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3968), 8m, new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Business Trip Special", null },
+                    { 13, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3977), 30m, new DateTime(2026, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Last Minute Deal", null },
+                    { 14, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3989), 15m, new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 5, "Winter Escape", null },
+                    { 15, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(3999), 20m, new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "New Year Bash", null },
+                    { 16, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4009), 12m, new DateTime(2026, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 7, "Student Housing Promo", null },
+                    { 17, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4018), 10m, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 8, "Loyalty Reward", null },
+                    { 18, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4028), 18m, new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Honeymoon Suite Deal", null },
+                    { 19, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4037), 40m, new DateTime(2026, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Flash Sale 24h", null },
+                    { 20, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4047), 7m, new DateTime(2026, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Autumn Leaves Discount", null },
+                    { 21, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4057), 9m, new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Cozy Apartment Deal", null },
+                    { 22, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4066), 22m, new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 5, "Corporate Booking", null },
+                    { 23, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4076), 11m, new DateTime(2026, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "Beachfront Special", null },
+                    { 24, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4085), 35m, new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 7, "Long Term Lease", null },
+                    { 25, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4155), 14m, new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 8, "Referral Bonus", null },
+                    { 26, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4186), 16m, new DateTime(2026, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Summer Solstice", null },
+                    { 27, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4198), 13m, new DateTime(2026, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Back to School", null },
+                    { 28, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4208), 50m, new DateTime(2026, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Black Friday Rental", null },
+                    { 29, new DateTime(2026, 2, 13, 14, 10, 23, 512, DateTimeKind.Local).AddTicks(4218), 20m, new DateTime(2026, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Christmas Spirit", null }
                 });
 
             migrationBuilder.InsertData(
@@ -600,6 +628,32 @@ namespace IjarifySystemDAL.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_Email",
+                table: "AspNetUsers",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_PhoneNumber",
+                table: "AspNetUsers",
+                column: "PhoneNumber",
+                unique: true,
+                filter: "[PhoneNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_bookings_PropertyID",
                 table: "bookings",
                 column: "PropertyID");
@@ -658,32 +712,6 @@ namespace IjarifySystemDAL.Migrations
                 name: "IX_reviews_UserId",
                 table: "reviews",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "EmailIndex",
-                table: "Users",
-                column: "NormalizedEmail");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email",
-                unique: true,
-                filter: "[Email] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_PhoneNumber",
-                table: "Users",
-                column: "PhoneNumber",
-                unique: true,
-                filter: "[PhoneNumber] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "Users",
-                column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
         }
 
         /// <inheritdoc />
@@ -735,10 +763,10 @@ namespace IjarifySystemDAL.Migrations
                 name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Locations");
         }
     }
 }

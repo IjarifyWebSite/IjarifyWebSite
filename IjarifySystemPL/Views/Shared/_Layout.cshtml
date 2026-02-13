@@ -59,9 +59,9 @@
                             <ul>
                                 <li><a asp-controller="Account" asp-action="Profile"><i class="bi bi-person"></i> My Profile</a></li>
                                 <li><a asp-controller="Booking" asp-action="MyBookings"><i class="bi bi-calendar-check"></i> My Bookings</a></li>
-                                <li><a asp-controller="Favourite" asp-action="MyFavorites"><i class="bi bi-heart"></i> My Favorites</a></li>
+                                <li><a asp-controller="Favourite" asp-action="Index"><i class="bi bi-heart"></i> My Favorites</a></li>
 
-                                <li><a asp-controller="Inquiry" asp-action="MyInquiries"><i class="bi bi-chat-dots"></i> My Inquiries</a></li>
+                                <li><a asp-controller="Inquiry" asp-action="Index"><i class="bi bi-chat-dots"></i> My Inquiries</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form asp-controller="Account" asp-action="Logout" method="post" style="display: inline;">
@@ -148,7 +148,7 @@
                         <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center mb-4">
                             <span class="sitename">Ijarify</span>
                         </a>
-                        <p class="mb-4">Your trusted partner in finding the perfect property. Whether you're looking to buy, rent, or list your property, we're here to help you every step of the way.</p>
+                        <p class="mb-4" style="overflow:hidden">Your trusted partner in finding the perfect property.</p>
 
                         <div class="newsletter-form">
                             <h5>Stay Updated</h5>

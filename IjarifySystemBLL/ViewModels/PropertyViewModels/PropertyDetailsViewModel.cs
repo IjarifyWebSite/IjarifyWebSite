@@ -58,5 +58,8 @@ namespace IjarifySystemBLL.ViewModels.PropertyViewModels
 
         //User Info
         public string? CurrentUserImage { get; set; }
+
+        // Favourite status
+        public bool IsFavourite { get; set; }
     } 
 }

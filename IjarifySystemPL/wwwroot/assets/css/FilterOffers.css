@@ -4,6 +4,10 @@
     --nawy-border: #e6e6e6;
     --nawy-bg: #f8f9fa;
     --nawy-orange: #f2a900;
+    --teal: #2c7a7b;
+    --teal-light: #e0f4f4;
+    --ink: #1a2b2b;
+    --muted: #6b8080;
 }
 
 body {
@@ -259,3 +263,34 @@ body {
     font-size: 13px;
     cursor: pointer;
 }
+
+.empty-state {
+    text-align: center;
+    padding: 70px 20px;
+    color: var(--muted);
+}
+
+    .empty-state .empty-icon {
+        width: 80px;
+        height: 80px;
+        background: var(--teal-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+        color: var(--teal);
+    }
+
+    .empty-state h5 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 1.3rem;
+        color: var(--ink);
+        margin-bottom: 8px;
+    }
+
+    .empty-state p {
+        font-size: .9rem;
+    }

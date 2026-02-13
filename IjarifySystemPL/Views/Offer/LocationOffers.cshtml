@@ -4,13 +4,13 @@
     ViewData["Title"] = "LocationOffers";
 }
 
-
-    @section Styles{
+@section Styles{
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/LocationOffers.css">
-    }
+}
 
-    <div class="page-title">
+ <div class="page-title">
     <div class="page-title-section py-4 bg-light text-center">
     <div class="container">
         <h1 class="display-5 fw-bold">Current Offers</h1>
@@ -32,10 +32,92 @@
             <i class="fas fa-phone-alt"></i> Call Us
         </button>
     </div>
+    <!-- Toolbar -->
+    <div class="offers-toolbar">
+        <h4>
+            Offers
+            <span class="count-chip">@Model.Offers.Count() active</span>
+        </h4>
+    </div>
 
-    <h4 class="offers-title">Offers</h4>
+    @if (Model.Offers.Any())
+    {
+        <div class="row g-4">
+            @foreach (var item in Model.Offers)
+            {
+                
+                    var today    = DateTime.Today;
+                    var daysLeft = (item.EndDateRaw.Date - today).Days;
+                    string statusClass, statusIcon, statusText;
+                    if (today > item.EndDateRaw.Date)
+                    {
+                        statusClass = "expired";  statusIcon = "fa-circle-xmark";statusText = "Expired";
+                    }
+                    else if (daysLeft <= 7)
+                    {
+                        statusClass = "expiring";statusIcon = "fa-triangle-exclamation";statusText = $"Expires in {daysLeft}d";
+                    }
+                    else
+                    {
+                        statusClass = "active";statusIcon = "fa-circle-check";statusText = "Active";
+                    }
+                
 
-    <div class="row g-4">
-         <partial name="Partials/_Offers" model="Model" />
-     </div>
+                <div class="col-sm-6 col-lg-4 col-xl-3 offer-card-wrap">
+                    <div class="offer-card">
+
+                        @if (!string.IsNullOrEmpty(item.PropertyImageUrl))
+                        {
+                            <div class="card-img-wrap">
+                                <img src="@item.PropertyImageUrl" alt="@item.PropertyTitle" class="card-prop-img" />
+                                <div class="img-overlay"></div>
+                            </div>
+                        }
+
+                        <div class="discount-ring">
+                            <div class="discount-percent">@((int)item.DiscountPercentage)%</div>
+                            <div class="discount-label">Off</div>
+                        </div>
+
+                        <div class="offer-title-text">@item.Title</div>
+
+                        <div class="offer-dates">
+                            <i class="fas fa-calendar-range"></i>
+                            @item.StartDate — @item.EndDate
+                        </div>
+
+                        <div class="duration-chip">
+                            <i class="fas fa-hourglass-half"></i>
+                            @item.DurationInMonths month@(item.DurationInMonths > 1 ? "s" : "")
+                        </div>
+
+                        <span class="status-badge @statusClass">
+                            <span class="dot"></span>
+                            <i class="fas @statusIcon" style="font-size:.65rem;"></i>
+                            @statusText
+                        </span>
+
+                        <div class="project-name" title="@item.PropertyTitle">@item.PropertyTitle</div>
+                        <div class="location-row">
+                            <i class="fas fa-location-dot"></i>
+                            @item.LocationName
+                        </div>
+
+                        <button class="get-offer-btn">
+                            <i class="fas fa-bolt" style="margin-right:6px; font-size:.8rem;"></i>Get Offer
+                        </button>
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-tag-slash"></i></div>
+            <h5>No Offers Available</h5>
+            <p>There are currently no active offers for this location. Check back soon!</p>
+        </div>
+    }
 </div>
