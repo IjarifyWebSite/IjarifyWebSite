@@ -429,11 +429,11 @@ namespace IjarifySystemDAL.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "ImageUrl", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "cairo", "dac1af64-3ef5-4655-8c36-4a838a7c50d1", new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", false, "https://i.pravatar.cc/150?img=33", false, null, "Omar Ali", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01234567890", false, null, false, null, null },
-                    { 2, 0, "cairo", "e5e36398-63f3-4f0d-9128-4ed7d16bab43", new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", false, "https://i.pravatar.cc/150?img=27", false, null, "Nour Ibrahim", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01098765432", false, null, false, null, null },
-                    { 3, 0, "cairo", "34e4bddc-7580-410b-aa45-8e223f37adcb", new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", false, "https://i.pravatar.cc/150?img=51", false, null, "Khaled Mahmoud", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01187654321", false, null, false, null, null },
-                    { 4, 0, "cairo", "685f2663-a938-43cc-8411-7a45c429c298", new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", false, "https://i.pravatar.cc/150?img=12", false, null, "Ahmed Hassan", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01012345678", false, null, false, null, null },
-                    { 5, 0, "cairo", "8f89dac8-c137-466c-b8c0-f3372560a2f0", new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), "fatima.mohamed@example.com", false, "https://i.pravatar.cc/150?img=45", false, null, "Fatima Mohamed", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01123456789", false, null, false, null, null }
+                    { 1, 0, "cairo", "cb70d528-6a13-4a0f-bfbe-27eddc06a5ab", new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", false, "https://i.pravatar.cc/150?img=33", false, null, "Omar Ali", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01234567890", false, null, false, null, null },
+                    { 2, 0, "cairo", "e799b52d-5881-486d-8afe-bd59487923f7", new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", false, "https://i.pravatar.cc/150?img=27", false, null, "Nour Ibrahim", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01098765432", false, null, false, null, null },
+                    { 3, 0, "cairo", "675f2c1e-4af3-474a-b414-4cdefadc686d", new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", false, "https://i.pravatar.cc/150?img=51", false, null, "Khaled Mahmoud", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01187654321", false, null, false, null, null },
+                    { 4, 0, "cairo", "a2d5a2af-5a30-4e94-848d-f34f5633e1c6", new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", false, "https://i.pravatar.cc/150?img=12", false, null, "Ahmed Hassan", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01012345678", false, null, false, null, null },
+                    { 5, 0, "cairo", "9c58647e-c468-4114-a40f-f5400816e606", new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), "fatima.mohamed@example.com", false, "https://i.pravatar.cc/150?img=45", false, null, "Fatima Mohamed", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01123456789", false, null, false, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -501,15 +501,35 @@ namespace IjarifySystemDAL.Migrations
                 columns: new[] { "Id", "StartDate", "DiscountPercentage", "EndDate", "IsActive", "PropertyId", "Title", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 10m, new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Spring Special - 10% Off", null },
-                    { 2, new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 10m, new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Ramadan Mubarak Deal", null },
-                    { 3, new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 10m, new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Spring Special - 10% Off", null },
-                    { 4, new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 10m, new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Summer Early Bird", null },
-                    { 5, new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 15m, new DateTime(2024, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 5, "Ramadan Offer", null },
-                    { 6, new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 5m, new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 7, "Summer Early Bird", null },
-                    { 7, new DateTime(2024, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), 20m, new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "Eid Sale - Villas", null },
-                    { 8, new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 12m, new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 5, "Office Lease Discount", null },
-                    { 9, new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 12m, new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 8, "Family Home Promo", null }
+                    { 1, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3750), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Spring Special - 10% Off", null },
+                    { 2, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3811), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Ramadan Mubarak Deal", null },
+                    { 3, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3816), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Spring Special - 10% Off", null },
+                    { 4, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3820), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Summer Early Bird", null },
+                    { 5, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3824), 15m, new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 5, "Ramadan Offer", null },
+                    { 6, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3829), 5m, new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 7, "Summer Early Bird", null },
+                    { 7, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3833), 20m, new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "Eid Sale - Villas", null },
+                    { 8, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3837), 12m, new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 5, "Office Lease Discount", null },
+                    { 9, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3842), 12m, new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 8, "Family Home Promo", null },
+                    { 10, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3846), 5m, new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Weekend Getaway", null },
+                    { 11, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3851), 25m, new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Monthly Stay Discount", null },
+                    { 12, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3856), 8m, new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Business Trip Special", null },
+                    { 13, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3860), 30m, new DateTime(2026, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Last Minute Deal", null },
+                    { 14, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3864), 15m, new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 5, "Winter Escape", null },
+                    { 15, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3869), 20m, new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "New Year Bash", null },
+                    { 16, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3873), 12m, new DateTime(2026, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 7, "Student Housing Promo", null },
+                    { 17, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3877), 10m, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 8, "Loyalty Reward", null },
+                    { 18, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3881), 18m, new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Honeymoon Suite Deal", null },
+                    { 19, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3886), 40m, new DateTime(2026, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Flash Sale 24h", null },
+                    { 20, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3889), 7m, new DateTime(2026, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Autumn Leaves Discount", null },
+                    { 21, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3893), 9m, new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Cozy Apartment Deal", null },
+                    { 22, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3896), 22m, new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 5, "Corporate Booking", null },
+                    { 23, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3900), 11m, new DateTime(2026, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "Beachfront Special", null },
+                    { 24, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3903), 35m, new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 7, "Long Term Lease", null },
+                    { 25, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3907), 14m, new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 8, "Referral Bonus", null },
+                    { 26, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3911), 16m, new DateTime(2026, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Summer Solstice", null },
+                    { 27, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3915), 13m, new DateTime(2026, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Back to School", null },
+                    { 28, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3919), 50m, new DateTime(2026, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Black Friday Rental", null },
+                    { 29, new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3923), 20m, new DateTime(2026, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Christmas Spirit", null }
                 });
 
             migrationBuilder.InsertData(

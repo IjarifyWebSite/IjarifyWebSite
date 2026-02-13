@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IjarifySystemDAL.Migrations
 {
     [DbContext(typeof(IjarifyDbContext))]
-    [Migration("20260213021002_init")]
+    [Migration("20260213040151_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -581,9 +581,9 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3750),
                             DiscountPercentage = 10m,
-                            EndDate = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             PropertyId = 1,
                             Title = "Spring Special - 10% Off"
@@ -591,9 +591,9 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3811),
                             DiscountPercentage = 10m,
-                            EndDate = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             PropertyId = 2,
                             Title = "Ramadan Mubarak Deal"
@@ -601,9 +601,9 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3816),
                             DiscountPercentage = 10m,
-                            EndDate = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             PropertyId = 3,
                             Title = "Spring Special - 10% Off"
@@ -611,9 +611,9 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3820),
                             DiscountPercentage = 10m,
-                            EndDate = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             PropertyId = 4,
                             Title = "Summer Early Bird"
@@ -621,9 +621,9 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3824),
                             DiscountPercentage = 15m,
-                            EndDate = new DateTime(2024, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             PropertyId = 5,
                             Title = "Ramadan Offer"
@@ -631,9 +631,9 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3829),
                             DiscountPercentage = 5m,
-                            EndDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             PropertyId = 7,
                             Title = "Summer Early Bird"
@@ -641,9 +641,9 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2024, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3833),
                             DiscountPercentage = 20m,
-                            EndDate = new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             PropertyId = 6,
                             Title = "Eid Sale - Villas"
@@ -651,9 +651,9 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3837),
                             DiscountPercentage = 12m,
-                            EndDate = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = false,
                             PropertyId = 5,
                             Title = "Office Lease Discount"
@@ -661,12 +661,212 @@ namespace IjarifySystemDAL.Migrations
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3842),
                             DiscountPercentage = 12m,
-                            EndDate = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = false,
                             PropertyId = 8,
                             Title = "Family Home Promo"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3846),
+                            DiscountPercentage = 5m,
+                            EndDate = new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 1,
+                            Title = "Weekend Getaway"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3851),
+                            DiscountPercentage = 25m,
+                            EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 2,
+                            Title = "Monthly Stay Discount"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3856),
+                            DiscountPercentage = 8m,
+                            EndDate = new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 3,
+                            Title = "Business Trip Special"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3860),
+                            DiscountPercentage = 30m,
+                            EndDate = new DateTime(2026, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 4,
+                            Title = "Last Minute Deal"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3864),
+                            DiscountPercentage = 15m,
+                            EndDate = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 5,
+                            Title = "Winter Escape"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3869),
+                            DiscountPercentage = 20m,
+                            EndDate = new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 6,
+                            Title = "New Year Bash"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3873),
+                            DiscountPercentage = 12m,
+                            EndDate = new DateTime(2026, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 7,
+                            Title = "Student Housing Promo"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3877),
+                            DiscountPercentage = 10m,
+                            EndDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 8,
+                            Title = "Loyalty Reward"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3881),
+                            DiscountPercentage = 18m,
+                            EndDate = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 1,
+                            Title = "Honeymoon Suite Deal"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3886),
+                            DiscountPercentage = 40m,
+                            EndDate = new DateTime(2026, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 2,
+                            Title = "Flash Sale 24h"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3889),
+                            DiscountPercentage = 7m,
+                            EndDate = new DateTime(2026, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 3,
+                            Title = "Autumn Leaves Discount"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3893),
+                            DiscountPercentage = 9m,
+                            EndDate = new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 4,
+                            Title = "Cozy Apartment Deal"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3896),
+                            DiscountPercentage = 22m,
+                            EndDate = new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 5,
+                            Title = "Corporate Booking"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3900),
+                            DiscountPercentage = 11m,
+                            EndDate = new DateTime(2026, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 6,
+                            Title = "Beachfront Special"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3903),
+                            DiscountPercentage = 35m,
+                            EndDate = new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 7,
+                            Title = "Long Term Lease"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3907),
+                            DiscountPercentage = 14m,
+                            EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 8,
+                            Title = "Referral Bonus"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3911),
+                            DiscountPercentage = 16m,
+                            EndDate = new DateTime(2026, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 1,
+                            Title = "Summer Solstice"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3915),
+                            DiscountPercentage = 13m,
+                            EndDate = new DateTime(2026, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 2,
+                            Title = "Back to School"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3919),
+                            DiscountPercentage = 50m,
+                            EndDate = new DateTime(2026, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 3,
+                            Title = "Black Friday Rental"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CreatedAt = new DateTime(2026, 2, 13, 6, 1, 49, 875, DateTimeKind.Local).AddTicks(3923),
+                            DiscountPercentage = 20m,
+                            EndDate = new DateTime(2026, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            PropertyId = 4,
+                            Title = "Christmas Spirit"
                         });
                 });
 
@@ -1227,7 +1427,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Address = "cairo",
-                            ConcurrencyStamp = "dac1af64-3ef5-4655-8c36-4a838a7c50d1",
+                            ConcurrencyStamp = "cb70d528-6a13-4a0f-bfbe-27eddc06a5ab",
                             CreatedAt = new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified),
                             Email = "omar.ali@example.com",
                             EmailConfirmed = false,
@@ -1244,7 +1444,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             Address = "cairo",
-                            ConcurrencyStamp = "e5e36398-63f3-4f0d-9128-4ed7d16bab43",
+                            ConcurrencyStamp = "e799b52d-5881-486d-8afe-bd59487923f7",
                             CreatedAt = new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified),
                             Email = "nour.ibrahim@example.com",
                             EmailConfirmed = false,
@@ -1261,7 +1461,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 3,
                             AccessFailedCount = 0,
                             Address = "cairo",
-                            ConcurrencyStamp = "34e4bddc-7580-410b-aa45-8e223f37adcb",
+                            ConcurrencyStamp = "675f2c1e-4af3-474a-b414-4cdefadc686d",
                             CreatedAt = new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified),
                             Email = "khaled.mahmoud@example.com",
                             EmailConfirmed = false,
@@ -1278,7 +1478,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 4,
                             AccessFailedCount = 0,
                             Address = "cairo",
-                            ConcurrencyStamp = "685f2663-a938-43cc-8411-7a45c429c298",
+                            ConcurrencyStamp = "a2d5a2af-5a30-4e94-848d-f34f5633e1c6",
                             CreatedAt = new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ahmed.hassan@example.com",
                             EmailConfirmed = false,
@@ -1295,7 +1495,7 @@ namespace IjarifySystemDAL.Migrations
                             Id = 5,
                             AccessFailedCount = 0,
                             Address = "cairo",
-                            ConcurrencyStamp = "8f89dac8-c137-466c-b8c0-f3372560a2f0",
+                            ConcurrencyStamp = "9c58647e-c468-4114-a40f-f5400816e606",
                             CreatedAt = new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified),
                             Email = "fatima.mohamed@example.com",
                             EmailConfirmed = false,

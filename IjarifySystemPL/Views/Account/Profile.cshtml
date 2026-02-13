@@ -326,7 +326,24 @@
                             }
                         </div>
                     </div>
-
+                    <!-- Offers Section -->
+<div class="col-lg-8 mt-3">
+    <!-- Offers Header -->
+    <div class="reviews-header">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                <h2 class="reviews-title">My Offers</h2>
+                <p class="reviews-subtitle mb-0">Manage your property bids and offers</p>
+            </div>
+            <div>
+            <a href="@Url.Action("MyOffers", "Offer")" class="btn-offers">
+                  View My Offers <i class="bi bi-arrow-right ms-2"></i>
+             </a>
+             </div>
+            
+        </div>
+    </div>
+    </div>
                 </div>
                 <!-- End Left Content -->
                 <!-- Right Sidebar -->
@@ -479,6 +496,24 @@
 </div>
 
 <style>
+
+    .btn-offers
+    {
+         
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+        color: #fff;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        display: inline-block;
+    
+    }
+     .btn-offers:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
+        color: white;
+    } 
     .profile-actions {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

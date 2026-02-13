@@ -49,7 +49,7 @@ namespace IjarifySystemBLL.Services.Classes
         }       
         public IEnumerable<OfferViewModel> GetAllOffers()
         {
-            var Offers = _offerRepository.GetAll(o=>o.CreatedAt<o.EndDate);
+            var Offers = _offerRepository.GetAll(o=>DateTime.Now<o.EndDate);
             if (Offers == null || !Offers.Any())
             {
                 return Enumerable.Empty<OfferViewModel>();
@@ -70,7 +70,7 @@ namespace IjarifySystemBLL.Services.Classes
       
         public LocationOffersPageViewModel? GetAllOffersByLocation(string city)
         {
-            var Offers= _offerRepository.GetAllForLocation(city,o=>o.CreatedAt<o.EndDate && o.IsActive);
+            var Offers= _offerRepository.GetAllForLocation(city, o => DateTime.Now < o.EndDate && o.IsActive);
             var location = _locationRepository.GetByCity(city);
             if(location == null)
             {
@@ -186,7 +186,7 @@ namespace IjarifySystemBLL.Services.Classes
 
         public OfferFilterViewModel GetFilterPageIntialData()
         {
-            var offers = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate);
+            var offers = _offerRepository.GetOffersWithPropertyAndLocation(o => DateTime.Now < o.EndDate);
             var areas = offers.Select(o => o.Property.Location.City).Distinct().ToList();
             var Compounds= offers.Select(o => o.Property.Title).Distinct().ToList();
             var filterData = new OfferFilterViewModel
@@ -211,7 +211,7 @@ namespace IjarifySystemBLL.Services.Classes
         }
         public OfferFilterViewModel GetFilteredOffers(OfferFilterRequestViewModel? Request = null)
         {
-            var FilteredOffers = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate,Request?.SearchTerm,Request?.Areas,Request?.Compounds,Request?.MinimumDiscount);
+            var FilteredOffers = _offerRepository.GetOffersWithPropertyAndLocation(o => DateTime.Now < o.EndDate, Request?.SearchTerm,Request?.Areas,Request?.Compounds,Request?.MinimumDiscount);
             var filterData = new OfferFilterViewModel
             {
                 Offers = FilteredOffers.Select(o => new OfferViewModel
@@ -227,8 +227,8 @@ namespace IjarifySystemBLL.Services.Classes
                 SelectedAreas = Request?.Areas ?? new List<string>(),
                 SelectedCompounds = Request?.Compounds ?? new List<string>(),
                 SelectedDiscounts = Request?.MinimumDiscount ?? new List<decimal>(),
-                Areas = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate).Select(o => o.Property.Location.City).Distinct().ToList(),
-                Compounds = _offerRepository.GetOffersWithPropertyAndLocation(o => o.CreatedAt < o.EndDate).Select(o => o.Property.Title).Distinct()
+                Areas = _offerRepository.GetOffersWithPropertyAndLocation(o => DateTime.Now < o.EndDate).Select(o => o.Property.Location.City).Distinct().ToList(),
+                Compounds = _offerRepository.GetOffersWithPropertyAndLocation(o => DateTime.Now < o.EndDate).Select(o => o.Property.Title).Distinct()
 
 
                 .ToList()
