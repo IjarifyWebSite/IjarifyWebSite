@@ -1,0 +1,772 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace IjarifySystemDAL.Migrations
+{
+    /// <inheritdoc />
+    public partial class init : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "amenities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Icon = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Category = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_amenities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.CheckConstraint("CK_IjarifyUserValidEmail", "Email like '_%@_%._%'");
+                    table.CheckConstraint("CK_IjarifyUserValidPhone", "PhoneNumber like '01%' and PhoneNumber not like '%[^0-9]%'");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    City = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Regoin = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Street = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Latitude = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Longitude = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Properties",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "varchar(800)", maxLength: 800, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    BedRooms = table.Column<int>(type: "int", nullable: false),
+                    BathRooms = table.Column<int>(type: "int", nullable: false),
+                    Area = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ListingType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Properties", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Properties_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Properties_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AmenityProperty",
+                columns: table => new
+                {
+                    amenitiesId = table.Column<int>(type: "int", nullable: false),
+                    propertiesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AmenityProperty", x => new { x.amenitiesId, x.propertiesId });
+                    table.ForeignKey(
+                        name: "FK_AmenityProperty_Properties_propertiesId",
+                        column: x => x.propertiesId,
+                        principalTable: "Properties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AmenityProperty_amenities_amenitiesId",
+                        column: x => x.amenitiesId,
+                        principalTable: "amenities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "bookings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Check_In = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Check_Out = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    PropertyID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_bookings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_bookings_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_bookings_Properties_PropertyID",
+                        column: x => x.PropertyID,
+                        principalTable: "Properties",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "favourites",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PropertyId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_favourites", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_favourites_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_favourites_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Inquiries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Message = table.Column<string>(type: "varchar(800)", maxLength: 800, nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    PropertyId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inquiries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Inquiries_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Inquiries_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Offers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DiscountPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    PropertyId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Offers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Offers_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PropertyImages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PropertyId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropertyImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PropertyImages_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
+                    PropertyId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_reviews", x => x.Id);
+                    table.CheckConstraint("CK_Review_Rating_Range", "Rating Between 1 and 10");
+                    table.ForeignKey(
+                        name: "FK_reviews_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_reviews_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "ImageUrl", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 0, "cairo", "8cc639d6-b958-4c11-a96e-4cd158cfc355", new DateTime(2024, 1, 20, 9, 15, 0, 0, DateTimeKind.Unspecified), "omar.ali@example.com", false, "https://i.pravatar.cc/150?img=33", false, null, "Omar Ali", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01234567890", false, null, false, null, null },
+                    { 2, 0, "cairo", "7dbb1b21-68b7-4826-94cb-cc169b70e1fa", new DateTime(2024, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), "nour.ibrahim@example.com", false, "https://i.pravatar.cc/150?img=27", false, null, "Nour Ibrahim", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01098765432", false, null, false, null, null },
+                    { 3, 0, "cairo", "8e02032f-78f4-41b4-9ff7-1cbd549a5415", new DateTime(2024, 2, 28, 16, 20, 0, 0, DateTimeKind.Unspecified), "khaled.mahmoud@example.com", false, "https://i.pravatar.cc/150?img=51", false, null, "Khaled Mahmoud", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01187654321", false, null, false, null, null },
+                    { 4, 0, "cairo", "36a8ac5a-eb96-4de4-bb59-03493b9c6d36", new DateTime(2024, 1, 15, 8, 0, 0, 0, DateTimeKind.Unspecified), "ahmed.hassan@example.com", false, "https://i.pravatar.cc/150?img=12", false, null, "Ahmed Hassan", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01012345678", false, null, false, null, null },
+                    { 5, 0, "cairo", "e9147a29-aef6-458f-a145-0f2274968145", new DateTime(2024, 1, 18, 10, 30, 0, 0, DateTimeKind.Unspecified), "fatima.mohamed@example.com", false, "https://i.pravatar.cc/150?img=45", false, null, "Fatima Mohamed", null, null, "AQAAAAEAACcQAAAAEH8zQK", "01123456789", false, null, false, null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Locations",
+                columns: new[] { "Id", "City", "CreatedAt", "ImageUrl", "Latitude", "Longitude", "Regoin", "Street", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, "New Cairo", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://prod-images.nawy.com/processed/area/image/2/high.webp", 30.0055m, 31.4782m, "Fifth Settlement", "North 90th St", null },
+                    { 2, "New Capital City", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800", 30.0131m, 31.7258m, "R7 District", "Bin Zayed Axis", null },
+                    { 3, "6th October City", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://prod-images.nawy.com/processed/area/image/1/high.webp", 29.9737m, 30.9510m, "West Somid", "26th of July Corridor", null },
+                    { 4, "Mostakbal City", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://prod-images.nawy.com/processed/area/image/10/high.webp", 30.1290m, 31.6030m, "Phase 1", "Suez Road", null },
+                    { 5, "El Gouna", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://prod-images.nawy.com/processed/area/image/5/high.webp", 27.3942m, 33.6782m, "Abu Tig Marina", "Marina Way", null },
+                    { 6, "El Shorouk", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800", 30.1197m, 31.6046m, "District 3", "El Horreya Axis", null },
+                    { 7, "Maadi", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://cairogossip.com/app/uploads/2020/02/caf268d7b5e3978ce944d44b6a144653.jpg", 29.9599m, 31.2676m, "Degla", "Road 233", null },
+                    { 8, "Ain Sokhna", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://www.etbtoursegypt.com/storage/1421/Ain-El-Sokhna-Travel-Guide.jpg", 29.5768m, 32.3385m, "Galala", "Zaafarana Road", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "amenities",
+                columns: new[] { "Id", "Category", "CreatedAt", "Icon", "Name", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, "Interior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "wifi", "WiFi", null },
+                    { 2, "Interior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "snowflake", "Air Conditioning", null },
+                    { 3, "Exterior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "car", "Parking", null },
+                    { 4, "Exterior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "water", "Swimming Pool", null },
+                    { 5, "Interior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "dumbbell", "Gym", null },
+                    { 6, "Exterior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "shield", "Security", null },
+                    { 7, "Interior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "elevator", "Elevator", null },
+                    { 8, "Exterior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "tree", "Garden", null },
+                    { 9, "Exterior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "balcony", "Balcony", null },
+                    { 10, "Interior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "fire", "Central Heating", null },
+                    { 11, "Interior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "kitchen", "Kitchen Appliances", null },
+                    { 12, "Interior", new DateTime(2024, 1, 5, 8, 0, 0, 0, DateTimeKind.Unspecified), "couch", "Furnished", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Properties",
+                columns: new[] { "Id", "Area", "BathRooms", "BedRooms", "CreatedAt", "Description", "ListingType", "LocationId", "Price", "Title", "Type", "UpdatedAt", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 150m, 2, 3, new DateTime(2024, 1, 20, 10, 0, 0, 0, DateTimeKind.Unspecified), "Spacious 3-bedroom apartment with modern amenities and stunning city views. Perfect for families looking for comfort and convenience in the heart of Nasr City.", "Rent", 1, 15000m, "Luxury Apartment in Nasr City", "Apartment", null, 1 },
+                    { 2, 350m, 4, 5, new DateTime(2024, 1, 25, 11, 30, 0, 0, DateTimeKind.Unspecified), "Beautiful villa with private beach access, pool, and garden. Ideal for vacation rentals or permanent residence. Enjoy the Mediterranean lifestyle.", "Rent", 2, 50000m, "Beachfront Villa in Alexandria", "Villa", null, 3 },
+                    { 3, 60m, 1, 1, new DateTime(2024, 2, 1, 9, 0, 0, 0, DateTimeKind.Unspecified), "Cozy studio apartment in the heart of Zamalek, close to cafes, restaurants, and shops. Perfect for young professionals.", "Rent", 3, 8000m, "Modern Studio in Zamalek", "Studio", null, 1 },
+                    { 4, 280m, 3, 4, new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified), "Spacious family townhouse with garden, 4 bedrooms, and modern kitchen. Located in a quiet compound with 24/7 security.", "Rent", 4, 25000m, "Family Townhouse in 6th October", "Townhouse", null, 5 },
+                    { 5, 250m, 3, 4, new DateTime(2024, 2, 15, 12, 45, 0, 0, DateTimeKind.Unspecified), "Luxurious penthouse with panoramic views, private terrace, and premium finishes. Features include smart home system and private parking.", "Rent", 5, 35000m, "Penthouse Apartment in New Cairo", "Apartment", null, 3 },
+                    { 6, 100m, 1, 2, new DateTime(2024, 3, 1, 10, 30, 0, 0, DateTimeKind.Unspecified), "Well-maintained 2-bedroom apartment, perfect for small families or couples. Close to schools and shopping centers.", "Rent", 1, 10000m, "Affordable Apartment in Nasr City", "Apartment", null, 5 },
+                    { 7, 200m, 2, 0, new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified), "Prime office location in downtown Cairo with modern facilities and easy access to public transportation.", "Rent", 8, 40000m, "Commercial Office Space in Downtown Cairo", "Office", null, 1 },
+                    { 8, 180m, 3, 0, new DateTime(2024, 2, 25, 13, 30, 0, 0, DateTimeKind.Unspecified), "Fully equipped medical clinic with modern equipment and established patient base. Great investment opportunity.", "Sale", 7, 2500000m, "Medical Clinic for Sale in Nasr City", "Clinic", null, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Inquiries",
+                columns: new[] { "Id", "CreatedAt", "Message", "PropertyId", "UpdatedAt", "UserId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 2, 1, 10, 30, 0, 0, DateTimeKind.Unspecified), "Is the apartment still available for rent starting next month? Also, are pets allowed?", 1, null, 2 },
+                    { 2, new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified), "I'm interested in renting the villa for the summer. Can we schedule a viewing?", 2, null, 4 },
+                    { 3, new DateTime(2024, 2, 15, 11, 45, 0, 0, DateTimeKind.Unspecified), "Does the rent include utilities? Also, is there parking available?", 3, null, 2 },
+                    { 4, new DateTime(2024, 2, 22, 10, 0, 0, 0, DateTimeKind.Unspecified), "What is the minimum lease period for the office space?", 7, null, 4 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Offers",
+                columns: new[] { "Id", "StartDate", "DiscountPercentage", "EndDate", "IsActive", "PropertyId", "Title", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1922), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Spring Special - 10% Off", null },
+                    { 2, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1972), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Ramadan Mubarak Deal", null },
+                    { 3, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1975), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Spring Special - 10% Off", null },
+                    { 4, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1978), 10m, new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Summer Early Bird", null },
+                    { 5, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1981), 15m, new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 5, "Ramadan Offer", null },
+                    { 6, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1983), 5m, new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 7, "Summer Early Bird", null },
+                    { 7, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1986), 20m, new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "Eid Sale - Villas", null },
+                    { 8, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1988), 12m, new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 5, "Office Lease Discount", null },
+                    { 9, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1992), 12m, new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 8, "Family Home Promo", null },
+                    { 10, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1994), 5m, new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Weekend Getaway", null },
+                    { 11, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1997), 25m, new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Monthly Stay Discount", null },
+                    { 12, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(1999), 8m, new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Business Trip Special", null },
+                    { 13, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2002), 30m, new DateTime(2026, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Last Minute Deal", null },
+                    { 14, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2004), 15m, new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 5, "Winter Escape", null },
+                    { 15, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2008), 20m, new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "New Year Bash", null },
+                    { 16, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2011), 12m, new DateTime(2026, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 7, "Student Housing Promo", null },
+                    { 17, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2013), 10m, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 8, "Loyalty Reward", null },
+                    { 18, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2016), 18m, new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Honeymoon Suite Deal", null },
+                    { 19, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2018), 40m, new DateTime(2026, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Flash Sale 24h", null },
+                    { 20, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2021), 7m, new DateTime(2026, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Autumn Leaves Discount", null },
+                    { 21, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2024), 9m, new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Cozy Apartment Deal", null },
+                    { 22, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2027), 22m, new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 5, "Corporate Booking", null },
+                    { 23, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2029), 11m, new DateTime(2026, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 6, "Beachfront Special", null },
+                    { 24, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2032), 35m, new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 7, "Long Term Lease", null },
+                    { 25, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2034), 14m, new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 8, "Referral Bonus", null },
+                    { 26, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2037), 16m, new DateTime(2026, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1, "Summer Solstice", null },
+                    { 27, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2040), 13m, new DateTime(2026, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 2, "Back to School", null },
+                    { 28, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2043), 50m, new DateTime(2026, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3, "Black Friday Rental", null },
+                    { 29, new DateTime(2026, 2, 14, 15, 42, 34, 735, DateTimeKind.Local).AddTicks(2045), 20m, new DateTime(2026, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "Christmas Spirit", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PropertyImages",
+                columns: new[] { "Id", "CreatedAt", "ImageUrl", "PropertyId", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 1, 20, 10, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800", 1, null },
+                    { 2, new DateTime(2024, 1, 20, 10, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800", 1, null },
+                    { 3, new DateTime(2024, 1, 20, 10, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800", 1, null },
+                    { 4, new DateTime(2024, 1, 25, 11, 30, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800", 2, null },
+                    { 5, new DateTime(2024, 1, 25, 11, 30, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800", 2, null },
+                    { 6, new DateTime(2024, 1, 25, 11, 30, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800", 2, null },
+                    { 7, new DateTime(2024, 1, 25, 11, 30, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800", 2, null },
+                    { 8, new DateTime(2024, 2, 1, 9, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800", 3, null },
+                    { 9, new DateTime(2024, 2, 1, 9, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=800", 3, null },
+                    { 10, new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800", 4, null },
+                    { 11, new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800", 4, null },
+                    { 12, new DateTime(2024, 2, 10, 14, 15, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=800", 4, null },
+                    { 13, new DateTime(2024, 2, 15, 12, 45, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800", 5, null },
+                    { 14, new DateTime(2024, 2, 15, 12, 45, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800", 5, null },
+                    { 15, new DateTime(2024, 2, 15, 12, 45, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800", 5, null },
+                    { 16, new DateTime(2024, 3, 1, 10, 30, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1502672023488-70e25813eb80?w=800", 6, null },
+                    { 17, new DateTime(2024, 3, 1, 10, 30, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1560185009-5bf9f2849488?w=800", 6, null },
+                    { 18, new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800", 7, null },
+                    { 19, new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800", 7, null },
+                    { 20, new DateTime(2024, 2, 25, 13, 30, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800", 8, null },
+                    { 21, new DateTime(2024, 2, 25, 13, 30, 0, 0, DateTimeKind.Unspecified), "https://images.unsplash.com/photo-1551076805-e1869033e561?w=800", 8, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "bookings",
+                columns: new[] { "Id", "Check_In", "Check_Out", "CreatedAt", "PropertyID", "Status", "TotalPrice", "UpdatedAt", "UserID" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), 1, "Approved", 15000m, null, 2 },
+                    { 2, new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 3, 10, 14, 30, 0, 0, DateTimeKind.Unspecified), 2, "Approved", 25000m, null, 4 },
+                    { 3, new DateTime(2024, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 3, 5, 9, 15, 0, 0, DateTimeKind.Unspecified), 3, "Pending", 8000m, null, 2 },
+                    { 4, new DateTime(2024, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 10, 11, 30, 0, 0, DateTimeKind.Unspecified), 5, "Rejected", 8000m, null, 4 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "favourites",
+                columns: new[] { "Id", "CreatedAt", "PropertyId", "UpdatedAt", "UserId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 1, 25, 12, 0, 0, 0, DateTimeKind.Unspecified), 1, null, 2 },
+                    { 2, new DateTime(2024, 1, 28, 15, 30, 0, 0, DateTimeKind.Unspecified), 2, null, 2 },
+                    { 3, new DateTime(2024, 2, 20, 10, 45, 0, 0, DateTimeKind.Unspecified), 5, null, 4 },
+                    { 4, new DateTime(2024, 2, 25, 14, 20, 0, 0, DateTimeKind.Unspecified), 3, null, 4 },
+                    { 5, new DateTime(2024, 2, 28, 9, 15, 0, 0, DateTimeKind.Unspecified), 7, null, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "reviews",
+                columns: new[] { "Id", "Comment", "CreatedAt", "PropertyId", "Rating", "UpdatedAt", "UserId" },
+                values: new object[,]
+                {
+                    { 1, "Amazing apartment! Very spacious and clean. The location is perfect and the landlord is very responsive.", new DateTime(2024, 2, 5, 15, 30, 0, 0, DateTimeKind.Unspecified), 1, 9, null, 2 },
+                    { 2, "Dream villa! The beach access is incredible and the kids love the pool. Highly recommended!", new DateTime(2024, 2, 20, 11, 0, 0, 0, DateTimeKind.Unspecified), 2, 10, null, 4 },
+                    { 3, "Nice studio in a great location. Perfect for my needs as a single professional.", new DateTime(2024, 2, 25, 14, 20, 0, 0, DateTimeKind.Unspecified), 3, 8, null, 2 },
+                    { 4, "Excellent family townhouse. The compound is safe and the neighbors are friendly. Kids love playing in the garden.", new DateTime(2024, 3, 5, 16, 45, 0, 0, DateTimeKind.Unspecified), 4, 9, null, 2 },
+                    { 5, "Good apartment for the price. Could use some updates but overall a solid choice.", new DateTime(2024, 3, 15, 13, 10, 0, 0, DateTimeKind.Unspecified), 6, 7, null, 4 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AmenityProperty_propertiesId",
+                table: "AmenityProperty",
+                column: "propertiesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_Email",
+                table: "AspNetUsers",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_PhoneNumber",
+                table: "AspNetUsers",
+                column: "PhoneNumber",
+                unique: true,
+                filter: "[PhoneNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_bookings_PropertyID",
+                table: "bookings",
+                column: "PropertyID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_bookings_UserID",
+                table: "bookings",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_favourites_PropertyId",
+                table: "favourites",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_favourites_UserId",
+                table: "favourites",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inquiries_PropertyId",
+                table: "Inquiries",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inquiries_UserId",
+                table: "Inquiries",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Offers_PropertyId",
+                table: "Offers",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_LocationId",
+                table: "Properties",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_UserId",
+                table: "Properties",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropertyImages_PropertyId",
+                table: "PropertyImages",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_reviews_PropertyId",
+                table: "reviews",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_reviews_UserId",
+                table: "reviews",
+                column: "UserId");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "AmenityProperty");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "bookings");
+
+            migrationBuilder.DropTable(
+                name: "favourites");
+
+            migrationBuilder.DropTable(
+                name: "Inquiries");
+
+            migrationBuilder.DropTable(
+                name: "Offers");
+
+            migrationBuilder.DropTable(
+                name: "PropertyImages");
+
+            migrationBuilder.DropTable(
+                name: "reviews");
+
+            migrationBuilder.DropTable(
+                name: "amenities");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Properties");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
+        }
+    }
+}
