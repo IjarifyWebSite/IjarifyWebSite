@@ -57,9 +57,9 @@
 
                     @if (ViewData.ModelState.ErrorCount > 0)
                     {
-                        <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger d-flex align-items-center justify-content-center" role="alert">
                             <i class="bi bi-exclamation-triangle me-2"></i>
-                            <span asp-validation-summary="ModelOnly"></span>
+                            <div asp-validation-summary="All" class="text-danger mb-0"></div>
                         </div>
                     }
 
@@ -491,6 +491,12 @@
         font-size: 13px;
         margin-top: 4px;
         display: block;
+    }
+
+    .alert ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
     }
 
     @@media (max-width: 992px) {
