@@ -39,7 +39,16 @@
 
                 <div class="profile-content">
                     <div class="agent-avatar">
-                        <img src="@Model.ProfileImageUrl" alt="User" class="avatar-image">
+                        @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                        {
+                            <img src="@Model.ProfileImageUrl" alt="User" class="avatar-image">
+                        }
+                        else
+                        {
+                            <div class="avatar-image d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #38b2ac, #2c7a7b); font-size: 60px; color: white;">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                        }
                         <div class="status-indicator">
                             <i class="bi bi-circle-fill"></i>
                             <span>Active</span>
