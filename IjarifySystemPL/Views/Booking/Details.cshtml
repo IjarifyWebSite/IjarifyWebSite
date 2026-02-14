@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="header-right">
-                    <span class="status-badge @Model.StatusBadgeClass">
+                    <span class="status-badge @Model.StatusBadgeClass" style="background:rgb(255 233 167) !important;">
                         <i class="bi @(Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Approved ? "bi-check-circle-fill" :
                                                                   Model.Status == IjarifySystemDAL.Entities.Enums.BookingStatus.Pending ? "bi-clock-fill" :
                                                                   "bi-x-circle-fill")"></i>
@@ -377,7 +377,7 @@
 
     /* Header */
     .details-header {
-        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
         border-radius: 20px;
         padding: 32px 40px;
         margin-bottom: 30px;
@@ -482,7 +482,7 @@
     .header-icon {
         width: 40px;
         height: 40px;
-        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -579,6 +579,7 @@
         .view-property-btn:hover {
             background: #e2e8f0;
             transform: translateY(-1px);
+            color:white;
         }
 
     /* Stay Timeline */
@@ -721,12 +722,12 @@
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
         border: 1px solid #e2e8f0;
-        position: sticky;
-        top: 20px;
+        margin-bottom:10px;
+
     }
 
     .summary-header {
-        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
         padding: 20px 24px;
         color: white;
         display: flex;
@@ -742,6 +743,7 @@
             font-size: 18px;
             font-weight: 700;
             margin: 0;
+            color: white;
         }
 
     .summary-body {
@@ -910,7 +912,7 @@
 
     .btn-secondary {
         background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
-        color: #475569;
+        color: white;
     }
 
         .btn-secondary:hover {
@@ -945,7 +947,8 @@
     .help-icon {
         width: 56px;
         height: 56px;
-        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+        ;
         border-radius: 50%;
         display: flex;
         align-items: center;
