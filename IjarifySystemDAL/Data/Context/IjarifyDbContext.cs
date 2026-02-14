@@ -555,8 +555,8 @@ namespace IjarifySystemDAL.Data.Context
                  {
                      Id = 1,
                      Title = "Spring Special - 10% Off",
-                     CreatedAt = new DateTime(2024, 3, 1),
-                     EndDate = new DateTime(2024, 3, 31),
+                     CreatedAt = DateTime.Now,
+                     EndDate = new DateTime(2026, 3, 31),
                      DiscountPercentage = 10m,
                      PropertyId = 1,
                      IsActive = true
@@ -565,8 +565,8 @@ namespace IjarifySystemDAL.Data.Context
                  {
                      Id = 2,
                      Title = "Ramadan Mubarak Deal",
-                     CreatedAt = new DateTime(2024, 3, 1),
-                     EndDate = new DateTime(2024, 3, 31),
+                     CreatedAt = DateTime.Now,
+                     EndDate = new DateTime(2026, 3, 31),
                      DiscountPercentage = 10m,
                      PropertyId = 2,
                      IsActive = true
@@ -575,8 +575,8 @@ namespace IjarifySystemDAL.Data.Context
                  {
                      Id = 3,
                      Title = "Spring Special - 10% Off",
-                     CreatedAt = new DateTime(2024, 3, 1),
-                     EndDate = new DateTime(2024, 3, 31),
+                     CreatedAt = DateTime.Now,
+                     EndDate = new DateTime(2026, 3, 31),
                      DiscountPercentage = 10m,
                      PropertyId = 3,
                      IsActive = true
@@ -585,8 +585,8 @@ namespace IjarifySystemDAL.Data.Context
                  {
                      Id = 4,
                      Title = "Summer Early Bird",
-                     CreatedAt = new DateTime(2024, 3, 1),
-                     EndDate = new DateTime(2024, 3, 31),
+                     CreatedAt = DateTime.Now,
+                     EndDate = new DateTime(2026, 3, 31),
                      DiscountPercentage = 10m,
                      PropertyId = 4,
                      IsActive = true
@@ -595,8 +595,8 @@ namespace IjarifySystemDAL.Data.Context
                  {
                      Id = 5,
                      Title = "Ramadan Offer",
-                     CreatedAt = new DateTime(2024, 3, 10),
-                     EndDate = new DateTime(2024, 4, 10),
+                     CreatedAt = DateTime.Now,
+                     EndDate = new DateTime(2026, 4, 10),
                      DiscountPercentage = 15m,
                      PropertyId = 5,
                      IsActive = true
@@ -605,8 +605,8 @@ namespace IjarifySystemDAL.Data.Context
                  {
                      Id = 6,
                      Title = "Summer Early Bird",
-                     CreatedAt = new DateTime(2024, 5, 1),
-                     EndDate = new DateTime(2024, 6, 1),
+                     CreatedAt = DateTime.Now,
+                     EndDate = new DateTime(2026, 6, 1),
                      DiscountPercentage = 5m,
                      PropertyId = 7,
                      IsActive = true
@@ -615,8 +615,8 @@ namespace IjarifySystemDAL.Data.Context
                  {
                      Id = 7,
                      Title = "Eid Sale - Villas",
-                     CreatedAt = new DateTime(2024, 4, 8),
-                     EndDate = new DateTime(2024, 4, 15),
+                     CreatedAt = DateTime.Now,
+                     EndDate = new DateTime(2026, 4, 15),
                      DiscountPercentage = 20m,
                      PropertyId = 6,
                      IsActive = true
@@ -625,8 +625,8 @@ namespace IjarifySystemDAL.Data.Context
                  {
                      Id = 8,
                      Title = "Office Lease Discount",
-                     CreatedAt = new DateTime(2024, 2, 1),
-                     EndDate = new DateTime(2024, 4, 1),
+                     CreatedAt = DateTime.Now,
+                     EndDate = new DateTime(2026, 4, 1),
                      DiscountPercentage = 12m,
                      PropertyId = 5,
                      IsActive = false // Expired/Inactive
@@ -635,12 +635,33 @@ namespace IjarifySystemDAL.Data.Context
                  {
                      Id = 9,
                      Title = "Family Home Promo",
-                     CreatedAt = new DateTime(2024, 2, 1),
-                     EndDate = new DateTime(2024, 4, 1),
+                     CreatedAt = DateTime.Now,
+                     EndDate = new DateTime(2026, 4, 1),
                      DiscountPercentage = 12m,
                      PropertyId = 8,
                      IsActive = false // Expired/Inactive
-                 }
+                 },
+                    new Offer { Id = 10, Title = "Weekend Getaway", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 8, 1), DiscountPercentage = 5m, PropertyId = 1, IsActive = true },
+                    new Offer { Id = 11, Title = "Monthly Stay Discount", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 12, 31), DiscountPercentage = 25m, PropertyId = 2, IsActive = true },
+                    new Offer { Id = 12, Title = "Business Trip Special", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 9, 10), DiscountPercentage = 8m, PropertyId = 3, IsActive = true },
+                    new Offer { Id = 13, Title = "Last Minute Deal", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 5, 20), DiscountPercentage = 30m, PropertyId = 4, IsActive = true },
+                    new Offer { Id = 14, Title = "Winter Escape", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 2, 28), DiscountPercentage = 15m, PropertyId = 5, IsActive = true },
+                    new Offer { Id = 15, Title = "New Year Bash", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 1, 5), DiscountPercentage = 20m, PropertyId = 6, IsActive = true },
+                    new Offer { Id = 16, Title = "Student Housing Promo", CreatedAt =       DateTime.Now, EndDate = new DateTime(2026, 10, 1), DiscountPercentage = 12m, PropertyId = 7, IsActive = true },
+                    new Offer { Id = 17, Title = "Loyalty Reward", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 1, 1), DiscountPercentage = 10m, PropertyId = 8, IsActive = true },
+                    new Offer { Id = 18, Title = "Honeymoon Suite Deal", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 2, 28), DiscountPercentage = 18m, PropertyId = 1, IsActive = true },
+                    new Offer { Id = 19, Title = "Flash Sale 24h", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 4, 2), DiscountPercentage = 40m, PropertyId = 2, IsActive = true },
+                    new Offer { Id = 20, Title = "Autumn Leaves Discount", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 11, 1), DiscountPercentage = 7m, PropertyId = 3, IsActive = true },
+                    new Offer { Id = 21, Title = "Cozy Apartment Deal", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 5, 1), DiscountPercentage = 9m, PropertyId = 4, IsActive = true },
+                    new Offer { Id = 22, Title = "Corporate Booking", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 12, 1), DiscountPercentage = 22m, PropertyId = 5, IsActive = true },
+                    new Offer { Id = 23, Title = "Beachfront Special", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 9, 30), DiscountPercentage = 11m, PropertyId = 6, IsActive = true },
+                    new Offer { Id = 24, Title = "Long Term Lease", CreatedAt = DateTime.Now, EndDate = new DateTime(2027, 1, 1), DiscountPercentage = 35m, PropertyId = 7, IsActive = true },
+                    new Offer { Id = 25, Title = "Referral Bonus", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 12, 31), DiscountPercentage = 14m, PropertyId = 8, IsActive = true },
+                    new Offer { Id = 26, Title = "Summer Solstice", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 6, 30), DiscountPercentage = 16m, PropertyId = 1, IsActive = true },
+                    new Offer { Id = 27, Title = "Back to School", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 9, 15), DiscountPercentage = 13m, PropertyId = 2, IsActive = true },
+                    new Offer { Id = 28, Title = "Black Friday Rental", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 11, 30), DiscountPercentage = 50m, PropertyId = 3, IsActive = true },
+                    new Offer { Id = 29, Title = "Christmas Spirit", CreatedAt = DateTime.Now, EndDate = new DateTime(2026, 12, 26), DiscountPercentage = 20m, PropertyId = 4, IsActive = true }
+
              );
         }
         public DbSet<Property> Properties { get; set; }

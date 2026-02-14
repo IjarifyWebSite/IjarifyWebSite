@@ -23,9 +23,9 @@ namespace IjarifySystemDAL.Repositories.Classes
             return _DbContext.Locations.AsNoTracking().FirstOrDefault(l=>l.City==city);
         }
 
-        public List<Location> GetAll()
+        public List<Location> GetAllForUser(int userId)
         {
-            return _DbContext.Locations.ToList();
+            return _DbContext.Locations.Where(l=>l.Properties.Any(p=>p.UserId==userId)).ToList();
         }
     }
 }
