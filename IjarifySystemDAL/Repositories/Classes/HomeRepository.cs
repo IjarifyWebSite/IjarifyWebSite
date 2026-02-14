@@ -20,7 +20,7 @@ namespace IjarifySystemDAL.Repositories.Classes
         }
         public IEnumerable<Location> GetTopLocations()
         {
-            var Locations = _DBContext.Locations.AsNoTracking().ToList();
+            var Locations = _DBContext.Locations.AsNoTracking().OrderBy(l=>l.Id).Take(8).ToList();
             return Locations;
         }
     }

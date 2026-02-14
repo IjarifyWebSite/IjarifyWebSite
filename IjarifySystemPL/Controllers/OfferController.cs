@@ -1,9 +1,11 @@
 ﻿using IjarifySystemBLL.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using IjarifySystemBLL.ViewModels.OfferViewModels;
 using IjarifySystemDAL.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using System.Numerics;
 namespace IjarifySystemPL.Controllers
 {
     public class OfferController : Controller
@@ -49,6 +51,12 @@ namespace IjarifySystemPL.Controllers
         {
             ModelState.Remove("properties");
             ModelState.Remove("locations");
+
+            if (request.EndDate < request.StartDate)
+            {
+                ModelState.AddModelError("EndDate", $"Please enter a value greater than or equal to {request.StartDate.ToString("yyyy-MM-dd")} ");
+            }
+
             if (!ModelState.IsValid)
             {
                 var CurrentUser = await userManager.GetUserAsync(User);
@@ -57,6 +65,7 @@ namespace IjarifySystemPL.Controllers
 
                 return View(request);
             }
+           
             bool IsCreated= _offerService.CreateOffer(request);
             if(IsCreated)
             {
@@ -128,6 +137,10 @@ namespace IjarifySystemPL.Controllers
 
             ModelState.Remove("properties");
             ModelState.Remove("locations");
+            if (request.EndDate < request.StartDate)
+            {
+                ModelState.AddModelError("EndDate", $"Please enter a value greater than or equal to {request.StartDate.ToString("yyyy-MM-dd")} ");
+            }
             if (!ModelState.IsValid)
             {
                 var currentUser = await userManager.GetUserAsync(User);

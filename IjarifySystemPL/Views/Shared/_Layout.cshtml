@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<IjarifySystemDAL.Entities.User> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -44,18 +48,26 @@
                     <!-- Public Navigation -->
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-controller="Property" asp-action="Index">Properties</a></li>
-                    <li><a asp-controller="Property" asp-action="Search">Search</a></li>
                      <li><a asp-controller="Offer" asp-action="FilterOffers">Offers</a></li>
-                    <li><a asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-controller="Home" asp-action="Index" asp-fragment="about">About</a></li>
                     <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
 
 
 
                     @if (User.Identity.IsAuthenticated)
                     {
+                        var currentUser = await UserManager.GetUserAsync(User);
+                        var profileImage = currentUser?.ImageUrl ?? "/images/default-avatar.jpg";
+                        
                         <!-- Authenticated User Menu -->
                         <li class="dropdown">
-                            <a href="#"><span><i class="bi bi-person-circle"></i> My Account</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            <a href="#">
+                                <span>
+                                    <img src="@profileImage" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover; margin-right: 5px;"> 
+                                    My Account
+                                </span> 
+                                <i class="bi bi-chevron-down toggle-dropdown"></i>
+                            </a>
                             <ul>
                                 <li><a asp-controller="Account" asp-action="Profile"><i class="bi bi-person"></i> My Profile</a></li>
                                 <li><a asp-controller="Booking" asp-action="MyBookings"><i class="bi bi-calendar-check"></i> My Bookings</a></li>

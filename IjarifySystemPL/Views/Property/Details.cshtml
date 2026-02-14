@@ -6,8 +6,8 @@
 
     <!-- Page Title -->
     <div class="page-title">
-        <div class="heading">
-            <div class="container">
+        @*<div class="heading">
+             <div class="container">
                 <div class="row d-flex justify-content-center text-center">
                     <div class="col-lg-8">
                         <h1 class="heading-title">@Model.Title</h1>
@@ -16,9 +16,9 @@
                         </p>
                     </div>
                 </div>
-            </div>
-        </div>
-        <nav class="breadcrumbs">
+            </div> 
+        </div>*@
+        <nav class="breadcrumbs mt-5">
             <div class="container">
                 <ol>
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
@@ -234,13 +234,13 @@
                                 <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
                                 @if (Model.IsFavourite)
                                 {
-                                    <button type="submit" class="btn btn-outline-danger w-100" style="border-radius: 12px; padding: 10px 20px; font-weight: 600;">
+                                    <button type="submit" class="btn btn-outline-none w-100 btn-style" style="border-radius: 12px; padding: 10px 20px; font-weight: 600;">
                                         <i class="bi bi-heart-fill" style="color: #e74c3c;"></i> Remove from Favourites
                                     </button>
                                 }
                                 else
                                 {
-                                    <button type="submit" class="btn btn-outline-secondary w-100" style="border-radius: 12px; padding: 10px 20px; font-weight: 600;">
+                                    <button type="submit" class="btn btn-outline-none w-100 btn-style" style="border-radius: 12px; padding: 10px 20px; font-weight: 600;">
                                         <i class="bi bi-heart"></i> Add to Favourites
                                     </button>
                                 }
@@ -358,6 +358,22 @@
         </div>
     </section>
     <style>
+         .property-details
+    {
+       margin-top:-10px;
+    }
+        .btn-style
+        {
+            background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+            color: white;
+        }
+        .btn-style:hover
+        {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
+            color: white;
+        }
+
         .booking-action-card {
             background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
             border-radius: 15px;
@@ -403,8 +419,8 @@
             gap: 10px;
             width: 100%;
             padding: 16px 24px;
-            background: white;
-            color: #667eea;
+            background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+            color: white;
             border-radius: 10px;
             font-weight: 700;
             font-size: 16px;
@@ -413,11 +429,11 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-book-now:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            color: #764ba2;
-        }
+            .btn-book-now:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
+                color: white;
+            }
 
         .btn-book-now i {
             font-size: 20px;
@@ -474,8 +490,8 @@
             gap: 10px;
             width: 100%;
             padding: 16px 24px;
-            background: white;
-            color: #667eea;
+            background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
+            color: white;
             border-radius: 10px;
             font-weight: 700;
             font-size: 16px;
@@ -485,9 +501,9 @@
         }
 
         .btn-send-inquiry:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            color: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
+            color: white;
         }
 
         .btn-send-inquiry i {
@@ -522,7 +538,7 @@
         .action-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            color: #764ba2;
+            color: #667eea;
             background: white;
         }
 

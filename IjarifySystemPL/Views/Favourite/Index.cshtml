@@ -7,7 +7,7 @@
 
     <!-- Page Title -->
     <div class="page-title">
-        <div class="heading">
+        @* <div class="heading">
             <div class="container">
                 <div class="row d-flex justify-content-center text-center">
                     <div class="col-lg-8">
@@ -20,8 +20,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <nav class="breadcrumbs">
+        </div> *@
+        <nav class="breadcrumbs mt-5">
             <div class="container">
                 <ol>
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
@@ -100,7 +100,9 @@
                                                         <i class="bi bi-calendar-check"></i> Added on @property.CreatedAt.ToString("MMM dd, yyyy")
                                                     </small>
                                                 </div>
-                                                <a href="@Url.Action("Details", "Property", new { id = property.PropertyId })" class="btn btn-teal w-100">View Details</a>
+                                                <a href="@Url.Action("Details", "Property", new { id = property.PropertyId })" class="btn btn-teal w-100 rounded-pill">
+                                                    <i class="bi bi-search"></i> View Details
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -163,11 +165,13 @@
                                                     <small class="text-muted">
                                                         <i class="bi bi-calendar-check"></i> Added @property.CreatedAt.ToString("MMM dd, yyyy")
                                                     </small>
-                                                    <div class="property-actions">
-                                                        <button class="btn btn-outline-danger btn-sm" onclick="removeFavourite(@property.PropertyId, @property.FavouriteId)">
+                                                <div class="property-actions">
+                                                        <button class="btn btn-danger btn-sm" onclick="removeFavourite(@property.PropertyId, @property.FavouriteId)">
                                                             <i class="bi bi-heart-fill"></i> Remove
                                                         </button>
-                                                        <a href="@Url.Action("Details", "Property", new { id = property.PropertyId })" class="btn btn-teal btn-sm">View Details</a>
+                                                        <a href="@Url.Action("Details", "Property", new { id = property.PropertyId })" class="btn btn-teal btn-sm rounded-pill">
+                                                            <i class="bi bi-search"></i> View Details
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -191,9 +195,9 @@
                                     <p class="text-muted mb-4">
                                         Start exploring properties and save your favorites by clicking the heart icon.
                                     </p>
-                                    <a href="@Url.Action("Index", "Property")" class="btn btn-teal">
-                                        <i class="bi bi-search"></i> Browse Properties
-                                    </a>
+                                                <a href="@Url.Action("Index", "Property")" class="btn btn-teal rounded-pill">
+                                                    <i class="bi bi-search"></i> Browse Properties
+                                                </a>
                                 </div>
                             </div>
                         </div>
