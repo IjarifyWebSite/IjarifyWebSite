@@ -13,8 +13,8 @@
 
     <!-- Page Title -->
     <div class="page-title">
-        <div class="heading">
-            @* <div class="container">
+       @* <div class="heading">
+             <div class="container">
                 <div class="row d-flex justify-content-center text-center">
                     <div class="col-lg-8">
                         <h1 class="heading-title">Properties</h1>
@@ -24,9 +24,9 @@
                         </p>
                     </div>
                 </div>
-            </div> *@
-        </div>
-        <nav class="breadcrumbs">
+            </div> 
+        </div> *@
+        <nav class="breadcrumbs mt-5">
             <div class="container">
                 <ol>
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
@@ -188,7 +188,7 @@
                                                 <div class="placeholder rounded-circle" style="width:40px;height:40px"></div>
                                                 <span class="placeholder col-4"></span>
                                             </div>
-                                            <span class="btn btn-primary disabled col-12 placeholder"></span>
+                                            <span class="btn btn-primary disabled col-12 placeholder btn-style mb-1">fjjf</span>
                                         </div>
                                     </div>
                                 </div>
@@ -434,6 +434,16 @@
 }
 
 <style>
+    .btn-style
+    {
+         font-size: 14px;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background-color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+  transition: all 0.3s ease;
+    }
     .property-rating {
         display: flex;
         align-items: center;
@@ -460,7 +470,6 @@
         color: #6c757d;
     }
 
-    /* ========== PRECISE CARD HEIGHT CONTROL ========== */
 
 .properties-grid .property-card {
     display: flex;
@@ -468,7 +477,6 @@
     height: 100%;
 }
 
-/* الصورة - ثابتة دايماً */
 .properties-grid .property-card .property-image {
     height: 220px;
     min-height: 220px;
@@ -483,7 +491,7 @@
     object-fit: cover;
 }
 
-/* المحتوى - يتمدد */
+
 .properties-grid .property-card .property-content {
     display: flex;
     flex-direction: column;
@@ -491,51 +499,50 @@
     padding: 20px;
 }
 
-/* السعر */
+
 .properties-grid .property-card .property-price {
     margin-bottom: 10px;
 }
 
-/* العنوان - سطرين max */
+
 .properties-grid .property-card .property-title {
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* ✅ max 2 lines */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 2.5em; /* ✅ حتى لو سطر واحد */
+    min-height: 2.5em;
     margin-bottom: 8px;
 }
 
-/* الموقع */
+
 .properties-grid .property-card .property-location {
     margin-bottom: 10px;
     min-height: 1.5em;
 }
 
-/* الريفيوز */
+
 .properties-grid .property-card .property-rating {
     margin-bottom: 12px;
-    min-height: 24px; /* ✅ حتى لو مفيش reviews */
+    min-height: 24px; 
 }
 
-/* المميزات */
+
 .properties-grid .property-card .property-features {
     margin-bottom: 12px;
     min-height: 30px;
 }
 
-/* الأجنت */
+
 .properties-grid .property-card .property-agent {
     margin-bottom: 15px;
     min-height: 50px;
 }
 
-/* الزرار - دايماً تحت */
+
 .properties-grid .property-card .property-content .btn {
-    margin-top: auto; /* ✅ push to bottom */
+    margin-top: auto; 
 }
 
-/* ========== SKELETON SAME HEIGHT ========== */
 .properties-grid .card.placeholder-glow {
     display: flex;
     flex-direction: column;
