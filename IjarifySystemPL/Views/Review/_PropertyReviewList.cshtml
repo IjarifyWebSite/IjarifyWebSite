@@ -3,6 +3,8 @@
 
 @{
     bool hasUserReviewed = Model != null && Model.Any(r => r.IsOwner);
+    var currentUserImage = ViewData["CurrentUserImage"]?.ToString() ?? "/Images\\profiles\\default_avatar.jpg";
+    var currentUserName = ViewData["CurrentUserName"]?.ToString() ?? "User";
 }
 
 <!-- Reviews Section -->
@@ -32,7 +34,7 @@
     @if (!hasUserReviewed)
     {
         <div class="add-review">
-            <img src="~/assets/img/real-estate/agent-1.webp" alt="User" class="user-avatar">
+            <img src="@currentUserImage" alt="@currentUserName" class="user-avatar">
             <form asp-controller="Review" asp-action="Create" method="post" class="review-form">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="PropertyId" value="@ViewData["TargetPropertyId"]" />
@@ -89,7 +91,7 @@
             @foreach (var review in Model)
             {
                 <div class="review-item" id="review-@review.ReviewId">
-                    <img src="@(string.IsNullOrEmpty(review.UserImage) ? "/assets/img/real-estate/default-agent.webp" : review.UserImage)"
+                    <img src="@(string.IsNullOrEmpty(review.UserImage) ? "/Images\\profiles\\default_avatar.jpg" : review.UserImage)"
                          alt="@review.UserName" class="user-avatar">
 
                     <div class="review-body">
@@ -341,6 +343,7 @@
     .btn-post:hover {
         box-shadow: 0 6px 16px rgba(44, 122, 123, 0.35);
         transform: translateY(-2px);
+        color:white;
     }
 
     .reviews-list {

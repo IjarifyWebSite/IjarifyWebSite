@@ -60,7 +60,7 @@ namespace IjarifySystemPL.Controllers
                 FullName = user.Name,
                 Email = user.Email,
                 Address = user.Address ?? "Cairo, Egypt",
-                ProfileImageUrl = user.ImageUrl ?? "/images/default-avatar.jpg",
+                ProfileImageUrl = user.ImageUrl ?? "/Images\\profiles\\default_avatar.jpg",
                 PhoneNumber = user.PhoneNumber,
                 WhatsApp = user.PhoneNumber,
                 Reviews = reviews,
@@ -112,7 +112,7 @@ namespace IjarifySystemPL.Controllers
                 Address = user.Address,
                 PhoneNumber = user.PhoneNumber,
                 WhatsApp = user.PhoneNumber,
-                ProfileImageUrl = user.ImageUrl ?? "/images/default-avatar.jpg"
+                ProfileImageUrl = user.ImageUrl ?? "/Images\\profiles\\default_avatar.jpg"
             };
 
             return View(model);
@@ -335,6 +335,7 @@ namespace IjarifySystemPL.Controllers
                     Email = newUser.Email,
                     Address = newUser.Address,
                     PhoneNumber = newUser.PhoneNumber,
+                    ImageUrl = "/Images\\profiles\\default_avatar.jpg",
                     CreatedAt = DateTime.Now
                 };
 
