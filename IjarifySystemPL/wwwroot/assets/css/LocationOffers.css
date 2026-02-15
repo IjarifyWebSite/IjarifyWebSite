@@ -24,7 +24,12 @@
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
+    transition: transform var(--transition);
 }
+
+    .profile-img:hover {
+        transform: scale(1.05);
+    }
 
 .super-area-badge {
     background-color: #e9ecef;
@@ -33,7 +38,12 @@
     border-radius: 12px;
     font-size: 0.8rem;
     margin-left: 10px;
+    transition: transform var(--transition);
 }
+
+    .super-area-badge:hover {
+        transform: translateY(-2px);
+    }
 
 .call-us-btn {
     background-color: #e9ecef;
@@ -44,10 +54,16 @@
     font-weight: 600;
     display: flex;
     align-items: center;
+    transition: transform var(--transition);
+    cursor: pointer;
 }
 
     .call-us-btn i {
         margin-right: 8px;
+    }
+
+    .call-us-btn:hover {
+        transform: translateY(-2px);
     }
 
 .offers-title {
@@ -128,7 +144,7 @@ body {
     flex-wrap: wrap;
     gap: 14px;
     margin-bottom: 20px;
-    margin-top:25px;
+    margin-top: 25px;
 }
 
     .offers-toolbar h4 {
@@ -150,6 +166,11 @@ body {
             padding: 3px 10px;
             border-radius: var(--radius-pill);
             letter-spacing: .4px;
+            transition: transform var(--transition);
+        }
+
+        .offers-toolbar h4:hover .count-chip {
+            transform: scale(1.08);
         }
 
 .btn-add-offer {
@@ -208,6 +229,7 @@ body {
         border-left: 2.5px solid var(--teal);
         border-radius: var(--radius-lg) 0 0 0;
     }
+
     .offer-card::after {
         content: '';
         position: absolute;
@@ -281,7 +303,7 @@ body {
     width: 90px;
     height: 90px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--teal-light), #c9eeee);
+    background: linear-gradient(135deg, #fff 0%, var(--teal-light) 100%);
     border: 3px solid var(--teal);
     display: flex;
     flex-direction: column;
@@ -289,21 +311,25 @@ body {
     justify-content: center;
     margin: 12px auto 14px;
     position: relative;
+    transition: transform var(--transition);
 }
 
-    .discount-ring::after {
-        content: '';
-        position: absolute;
-        inset: -6px;
-        border-radius: 50%;
-        border: 1.5px dashed var(--border);
-    }
+.offer-card:hover .discount-ring {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.discount-ring::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1.5px dashed var(--border);
+}
 
 .discount-percent {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
     font-weight: 800;
-    /*   var(--teal-dark) */
     color: #2c7a7b;
     line-height: 1;
 }
@@ -335,6 +361,7 @@ body {
         color: var(--teal);
         font-size: .72rem;
     }
+
 .project-name {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
@@ -405,8 +432,6 @@ body {
     border: 2px solid var(--teal);
     background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
     color: white;
-/*    color: var(--teal);
-    background: none;*/
     padding: 9px 28px;
     border-radius: var(--radius-pill);
     font-family: 'DM Sans', sans-serif;
@@ -414,19 +439,90 @@ body {
     font-weight: 700;
     cursor: pointer;
     letter-spacing: .3px;
-    transition: background var(--transition), color var(--transition), box-shadow var(--transition), transform var(--transition);
+    transition: all 0.4s ease;
     margin-top: auto;
     width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
 }
 
-    .get-offer-btn:hover {
-        /*        background: var(--teal);
-        color: #fff;
-        box-shadow: 0 4px 14px var(--teal-glow);
-        transform: translateY(-1px);*/
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
-        color: white;
+/* محتوى الزرار الأساسي */
+.btn-default-content {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.4s ease;
+    opacity: 1;
+}
+
+/* محتوى الزرار عند الـ Hover */
+.btn-hover-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px 0 16px;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.btn-hover-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+    .btn-hover-text .main-text {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        line-height: 1.2;
+    }
+
+    .btn-hover-text .sub-text {
+        font-size: 0.65rem;
+        font-weight: 400;
+        opacity: 0.9;
+    }
+
+.whatsapp-btn {
+    background: #25D366;
+    color: white;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+    .whatsapp-btn i {
+        font-size: 1.1rem;
+    }
+
+/* عند الـ Hover */
+.get-offer-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(44, 122, 123, 0.3);
+}
+
+    .get-offer-btn:hover .btn-default-content {
+        opacity: 0;
+    }
+
+    .get-offer-btn:hover .btn-hover-content {
+        opacity: 1;
     }
 
 .card-img-wrap {
@@ -544,7 +640,7 @@ body {
     animation: popIn .22s cubic-bezier(.34,1.56,.64,1);
 }
 
-@@keyframes popIn {
+@keyframes popIn {
     from {
         opacity: 0;
         transform: scale(.88);
@@ -624,11 +720,12 @@ body {
     .btn-confirm-del:hover {
         background: #c93e3e;
     }
+
 .offer-card-wrap {
     animation: fadeUp .5s ease both;
 }
 
-@@keyframes fadeUp {
+@keyframes fadeUp {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -666,13 +763,13 @@ body {
 
 .offer-card-wrap:nth-child(7) {
     animation-delay: .35s;
-
+}
 
 .offer-card-wrap:nth-child(8) {
     animation-delay: .40s;
 }
 
-@@media (max-width: 576px) {
+@media (max-width: 576px) {
     .page-hero {
         padding: 36px 0 28px;
     }
