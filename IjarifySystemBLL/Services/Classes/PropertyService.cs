@@ -181,7 +181,7 @@ namespace IjarifySystemBLL.Services.Classes
                 AgentId = property.UserId,
                 AgentName = property.User.Name,
                 AgentTitle = "Licensed Real Estate Agent",
-                //AgentPhone = property.User.PhoneNumber,
+                IsOwner = currentUserId.HasValue && currentUserId.Value == property.UserId,
                 AgentEmail = property.User.Email,
                 AgentAvatar = property.User.ImageUrl ?? "assets/img/real-estate/default-agent.webp",
                 CreatedAt = property.CreatedAt,

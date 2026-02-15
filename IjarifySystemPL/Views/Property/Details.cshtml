@@ -229,22 +229,24 @@
 
                         <!-- Favourite Button -->
                         <div class="favourite-action mt-3 mb-3">
-                            <form asp-controller="Favourite" asp-action="Toggle" method="post">
-                                <input type="hidden" name="propertyId" value="@Model.Id" />
-                                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                            <button type="button"
+                                    class="btn btn-outline-none w-100 btn-style"
+                                    id="favouriteBtn"
+                                    data-property-id="@Model.Id"
+                                    data-is-favourite="@Model.IsFavourite.ToString().ToLower()"
+                                    onclick="toggleFavourite(@Model.Id)">
                                 @if (Model.IsFavourite)
                                 {
-                                    <button type="submit" class="btn btn-outline-none w-100 btn-style" style="border-radius: 12px; padding: 10px 20px; font-weight: 600;">
-                                        <i class="bi bi-heart-fill" style="color: #e74c3c;"></i> Remove from Favourites
-                                    </button>
+                                    <i class="bi bi-heart-fill" style="color: #e74c3c;"></i>
+                                    <span>Remove from Favourites</span>
                                 }
                                 else
                                 {
-                                    <button type="submit" class="btn btn-outline-none w-100 btn-style" style="border-radius: 12px; padding: 10px 20px; font-weight: 600;">
-                                        <i class="bi bi-heart"></i> Add to Favourites
-                                    </button>
+                                    <i class="bi bi-heart"></i>
+                                    <span>Add to Favourites</span>
                                 }
-                            </form>
+                            </button>
+
                         </div>
 
                         <!-- Agent Info -->
@@ -297,17 +299,19 @@
                         </div>
 
                         <!-- Owner Actions -->
-                        <div class="owner-action-card mt-4 mb-4">
-                            <h5 class="mb-3 text-muted">Owner Actions</h5>
-                            <div class="d-grid gap-2">
-                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn action-btn">
-                                    <i class="bi bi-pencil me-2"></i> Edit Property
-                                </a>
-                                <button type="button" class="btn action-btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deletePropertyModal">
-                                    <i class="bi bi-trash me-2"></i> Delete Property
-                                </button>
+                        @if (Model.IsOwner){
+                            <div class="owner-action-card mt-4 mb-4">
+                                <h5 class="mb-3 text-muted">Owner Actions</h5>
+                                <div class="d-grid gap-2">
+                                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn action-btn">
+                                        <i class="bi bi-pencil me-2"></i> Edit Property
+                                    </a>
+                                    <button type="button" class="btn action-btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deletePropertyModal">
+                                        <i class="bi bi-trash me-2"></i> Delete Property
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        }
 
                         <!-- Social Share -->
                         <div class="social-share">
@@ -618,5 +622,36 @@
                 }
             });
         });
+
+        function toggleFavourite(propertyId) {
+            const btn = document.getElementById('favouriteBtn');
+            const icon = btn.querySelector('i');
+            const text = btn.querySelector('span');
+
+            btn.disabled = true;
+
+            $.ajax({
+                url: '@Url.Action("Toggle", "Favourite")',
+                type: 'POST',
+                data: { propertyId: propertyId },
+                success: function() {
+                    const isFavourite = btn.dataset.isFavourite === 'true';
+
+                    if (isFavourite) {
+                        icon.className = 'bi bi-heart';
+                        icon.style.color = '';
+                        text.textContent = 'Add to Favourites';
+                        btn.dataset.isFavourite = 'false';
+                    } else {
+                        icon.className = 'bi bi-heart-fill';
+                        icon.style.color = '#e74c3c';
+                        text.textContent = 'Remove from Favourites';
+                        btn.dataset.isFavourite = 'true';
+                    }
+
+                    btn.disabled = false;
+                }
+            });
+        }
     </script>
 }

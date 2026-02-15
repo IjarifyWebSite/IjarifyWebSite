@@ -48,6 +48,7 @@ namespace IjarifySystemBLL.ViewModels.PropertyViewModels
         public string AgentPhone { get; set; }
         public string AgentEmail { get; set; }
         public string AgentAvatar { get; set; }
+        public bool IsOwner { get; set; }
 
         // Additional Info
         public DateTime CreatedAt { get; set; }
