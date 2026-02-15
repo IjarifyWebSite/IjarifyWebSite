@@ -46,6 +46,17 @@ namespace IjarifySystemPL.Controllers
             int? userId = currentUser?.Id;
             var vmModel = await _propertyService.GetPropertyDetails(id , userId);
 
+            if (currentUser != null)
+            {
+                ViewData["CurrentUserImage"] = !string.IsNullOrEmpty(currentUser.ImageUrl)? currentUser.ImageUrl: "/Images\\profiles\\default_avatar.jpg";
+                ViewData["CurrentUserName"] = currentUser.Name;
+            }
+            else
+            {
+                ViewData["CurrentUserImage"] = "/Images\\profiles\\default_avatar.jpg";
+                ViewData["CurrentUserName"] = "Guest";
+            }
+
             return View("Details", vmModel);
         }
 
