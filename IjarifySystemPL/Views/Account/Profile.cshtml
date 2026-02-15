@@ -39,7 +39,16 @@
 
                 <div class="profile-content">
                     <div class="agent-avatar">
-                        <img src="@Model.ProfileImageUrl" alt="User" class="avatar-image">
+                        @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                        {
+                            <img src="@Model.ProfileImageUrl" alt="User" class="avatar-image">
+                        }
+                        else
+                        {
+                            <div class="avatar-image d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #38b2ac, #2c7a7b); font-size: 60px; color: white;">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                        }
                         <div class="status-indicator">
                             <i class="bi bi-circle-fill"></i>
                             <span>Active</span>
@@ -547,7 +556,7 @@
     .action-icon {
         width: 56px;
         height: 56px;
-        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
         border-radius: 14px;
         display: flex;
         align-items: center;
@@ -1110,7 +1119,7 @@
 </script>
 <style>
         .add-property-card {
-        background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+        background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
         border-radius: 20px;
         padding: 32px;
         display: flex;
