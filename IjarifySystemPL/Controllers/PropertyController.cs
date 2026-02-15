@@ -48,12 +48,12 @@ namespace IjarifySystemPL.Controllers
 
             if (currentUser != null)
             {
-                ViewData["CurrentUserImage"] = !string.IsNullOrEmpty(currentUser.ImageUrl)? currentUser.ImageUrl: "/Images\\profiles\\default_avatar.jpg";
+                ViewData["CurrentUserImage"] = !string.IsNullOrEmpty(currentUser.ImageUrl)? currentUser.ImageUrl: "/Images/profiles/default_avatar.jpg";
                 ViewData["CurrentUserName"] = currentUser.Name;
             }
             else
             {
-                ViewData["CurrentUserImage"] = "/Images\\profiles\\default_avatar.jpg";
+                ViewData["CurrentUserImage"] = "/Images/profiles/default_avatar.jpg";
                 ViewData["CurrentUserName"] = "Guest";
             }
 
