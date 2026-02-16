@@ -468,7 +468,7 @@ h6 {
 /*--------------------------------------------------------------
 # Global Footer
 --------------------------------------------------------------*/
-.footer {
+/*.footer {
   color: var(--default-color);
   background: var(--background-color);
   font-size: 14px;
@@ -781,6 +781,402 @@ input[type=email]::placeholder,
 textarea::placeholder {
   color: color-mix(in srgb, var(--default-color), transparent 70%);
 }
+*/
+/** {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+}*/
+
+/* Demo Content */
+/*.demo-section {
+    background: white;
+    padding: 60px 20px;
+    text-align: center;
+    color: #666;
+    flex: 1;
+}
+
+    .demo-section h1 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 2rem;
+    }
+
+    .demo-section p {
+        color: #999;
+        font-size: 1.1rem;
+    }*/
+
+/* ============= FOOTER STYLES ============= */
+
+/*.footer {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    padding-top: 50px;
+    padding-bottom: 20px;
+    margin-top: auto;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-content p {
+    color: #b0b0b0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+.logo {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sitename {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #007bff;
+    letter-spacing: 0.5px;
+}*/
+
+/* Footer Links */
+/*.footer-links h4,
+.footer-contact h4 {
+    color: #ffffff;
+    font-weight: 600;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .footer-links ul li {
+        margin-bottom: 12px;
+    }
+
+        .footer-links ul li a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s ease, padding-left 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding-left: 0;
+        }
+
+            .footer-links ul li a:hover {
+                color: #007bff;
+                padding-left: 5px;
+            }
+
+            .footer-links ul li a span {
+                font-size: 0.75rem;
+                color: #007bff;
+            }*/
+
+/* Newsletter Form */
+/*.newsletter-form {
+    margin-top: 30px;
+}
+
+    .newsletter-form h5 {
+        color: #ffffff;
+        margin-bottom: 15px;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+.input-group {
+    display: flex;
+    gap: 5px;
+}
+
+    .input-group input {
+        flex: 1;
+        border: 1px solid #444;
+        background-color: #2a2a2a;
+        color: #e0e0e0;
+        padding: 10px 15px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+        .input-group input::placeholder {
+            color: #808080;
+        }
+
+        .input-group input:focus {
+            background-color: #333;
+            border-color: #007bff;
+            color: #e0e0e0;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+.btn-subscribe {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+    .btn-subscribe:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-subscribe:active {
+        transform: translateY(0);
+    }*/
+
+/* Contact Items */
+/*.contact-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.contact-icon {
+    flex-shrink: 0;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 123, 255, 0.1);
+    border-radius: 6px;
+    color: #007bff;
+    font-size: 1.3rem;
+    border: 1px solid rgba(0, 123, 255, 0.2);
+}
+
+.contact-info {
+    flex: 1;
+}
+
+    .contact-info p {
+        margin: 0;
+        color: #b0b0b0;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .contact-info a {
+        color: #007bff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .contact-info a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }*/
+
+/* Social Links */
+/*.social-links {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+    .social-links a {
+        display: inline-flex;
+        width: 45px;
+        height: 45px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: rgba(0, 123, 255, 0.1);
+        color: #007bff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+        border: 1px solid rgba(0, 123, 255, 0.2);
+    }
+
+        .social-links a:hover {
+            background-color: #007bff;
+            color: #ffffff;
+            transform: translateY(-3px);
+            border-color: #007bff;
+        }*/
+
+/* Footer Bottom */
+/*.footer-bottom {
+    background-color: #0f0f0f;
+    padding: 25px 0;
+    margin-top: 40px;
+    border-top: 1px solid #2a2a2a;
+}
+
+    .footer-bottom .container {
+        padding: 0 20px;
+    }
+
+.footer-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.copyright {
+    color: #808080;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+    .copyright p {
+        margin: 0;
+    }
+
+    .copyright .sitename {
+        color: #007bff;
+        font-size: 1rem;
+    }
+
+.footer-bottom-links {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+    .footer-bottom-links a {
+        color: #808080;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+
+        .footer-bottom-links a:hover {
+            color: #007bff;
+        }*/
+
+/* Responsive Design */
+/*@media (max-width: 768px) {
+    .row {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+        .input-group input {
+            width: 100%;
+        }
+
+    .btn-subscribe {
+        width: 100%;
+    }
+
+    .footer-bottom-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-bottom-links {
+        justify-content: flex-start;
+    }
+
+    .demo-section h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .footer {
+        padding-top: 30px;
+        padding-bottom: 15px;
+    }
+
+    .footer-links h4,
+    .footer-contact h4 {
+        margin-bottom: 15px;
+        font-size: 1rem;
+    }
+
+    .footer-links ul li {
+        margin-bottom: 8px;
+    }
+
+        .footer-links ul li a {
+            font-size: 0.85rem;
+        }
+
+    .sitename {
+        font-size: 1.5rem;
+    }
+
+    .input-group input {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .btn-subscribe {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+
+    .social-links {
+        gap: 8px;
+    }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+}*/
+
+
 
 /*--------------------------------------------------------------
 # Preloader
@@ -9194,7 +9590,7 @@ section,
 
   .error-404 .error-actions {
     flex-direction: column;
-  }
+  
 
   .error-404 .error-actions .btn-home,
   .error-404 .error-actions .btn-help {
