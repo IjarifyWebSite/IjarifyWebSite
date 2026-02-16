@@ -28,7 +28,7 @@
     <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="~/assets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
-
+   
     <!-- Main CSS File -->
     <link href="~/assets/css/main.css" rel="stylesheet">
     @RenderSection("Styles", required: false)
@@ -158,109 +158,110 @@
         </main>
     </div>
 
-    <footer id="footer" class="footer position-relative">
 
-        <div class="container">
-            <div class="row gy-5">
+    @inject UserManager<IjarifySystemDAL.Entities.User> UserManager
 
-                <div class="col-lg-4">
+    <footer id="footer" style="background-color: #ffffff; color: var(--nav-dropdown-color); padding: 60px 0 20px;">
+        <div class="container" style="max-width: 1200px; padding: 0 20px;">
+            <div class="row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; margin-bottom: 50px;">
+
+                <!-- Logo & Newsletter -->
+                <div style="padding: 0;">
                     <div class="footer-content">
-                        <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center mb-4">
-                            <span class="sitename">Ijarify</span>
+                        <a asp-controller="Home" asp-action="Index" class="logo" style="text-decoration: none; color: inherit; display: flex; align-items: center; margin-bottom: 20px;">
+                            <span class="sitename" style="font-size: 2rem; font-weight: 800; color: var(--accent-color); letter-spacing: -0.5px;">Ijarify</span>
                         </a>
-                        <p class="mb-4" style="overflow:hidden">Your trusted partner in finding the perfect property.</p>
+                        <p style="color: var(--nav-dropdown-color); line-height: 1.8; font-size: 1rem; margin-bottom: 30px; opacity: 0.85;">Your trusted partner in finding the perfect property.</p>
 
-                        <div class="newsletter-form">
-                            <h5>Stay Updated</h5>
-                            <form action="forms/newsletter.php" method="post" class="php-email-form">
-                                <div class="input-group">
-                                    <input type="email" name="email" class="form-control" placeholder="Enter your email" required="">
-                                    <button type="submit" class="btn-subscribe">
-                                        <i class="bi bi-send"></i>
-                                    </button>
-                                </div>
-                                <div class="loading">Loading</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message">Thank you for subscribing!</div>
+                        <div class="newsletter-form" style="margin-top: 30px;">
+                            <h5 style="color: var(--nav-dropdown-color); margin-bottom: 15px; font-size: 1.05rem; font-weight: 600;">Stay Updated</h5>
+                            <form asp-controller="Newsletter" asp-action="Subscribe" method="post" style="display: flex; gap: 8px;">
+                                <input type="email" name="email" class="form-control" placeholder="Enter your email" required style="flex: 1; border: 2px solid var(--accent-color); background-color: #ffffff; color: var(--nav-dropdown-color); padding: 12px 16px; border-radius: 8px; font-size: 0.95rem; transition: all 0.3s ease;">
+                                <button type="submit" class="btn-subscribe" style="background-color: var(--accent-color); color: #ffffff; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 600; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(44, 122, 123, 0.2);">
+                                    <i class="bi bi-send"></i>
+                                </button>
                             </form>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-2 col-6">
+                <!-- Quick Links -->
+                <div style="padding: 0;">
                     <div class="footer-links">
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><a asp-controller="Home" asp-action="Index"><i class="bi bi-chevron-right"></i> Home</a></li>
-                            <li><a asp-controller="Home" asp-action="About"><i class="bi bi-chevron-right"></i> About Us</a></li>
-                            <li><a asp-controller="Property" asp-action="Index"><i class="bi bi-chevron-right"></i> Properties</a></li>
-                            <li><a asp-controller="Property" asp-action="Search"><i class="bi bi-chevron-right"></i> Search</a></li>
-                            <li><a asp-controller="Home" asp-action="Contact"><i class="bi bi-chevron-right"></i> Contact</a></li>
+                        <h4 style="color: var(--nav-dropdown-color); font-weight: 700; margin-bottom: 30px; font-size: 1.15rem;">Quick Links</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="margin-bottom: 14px;"><a asp-controller="Home" asp-action="Index" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> Home</a></li>
+                            <li style="margin-bottom: 14px;"><a asp-controller="Home" asp-action="About" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> About Us</a></li>
+                            <li style="margin-bottom: 14px;"><a asp-controller="Property" asp-action="Index" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> Properties</a></li>
+                            <li style="margin-bottom: 14px;"><a asp-controller="Property" asp-action="Search" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> Search</a></li>
+                            <li style="margin-bottom: 14px;"><a asp-controller="Home" asp-action="Contact" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> Contact</a></li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="col-lg-2 col-6">
+                <!-- For Users -->
+                <div style="padding: 0;">
                     <div class="footer-links">
-                        <h4>For Users</h4>
-                        <ul>
+                        <h4 style="color: var(--nav-dropdown-color); font-weight: 700; margin-bottom: 30px; font-size: 1.15rem;">For Users</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <li><a asp-controller="Account" asp-action="Profile"><i class="bi bi-chevron-right"></i> My Profile</a></li>
-                                <li><a asp-controller="Booking" asp-action="MyBookings"><i class="bi bi-chevron-right"></i> My Bookings</a></li>
-                                <li><a asp-controller="Favourite" asp-action="MyFavorites"><i class="bi bi-chevron-right"></i> Favorites</a></li>
+                                <li style="margin-bottom: 14px;"><a asp-controller="Account" asp-action="Profile" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> My Profile</a></li>
+                                <li style="margin-bottom: 14px;"><a asp-controller="Booking" asp-action="MyBookings" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> My Bookings</a></li>
+                                <li style="margin-bottom: 14px;"><a asp-controller="Favourite" asp-action="MyFavorites" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> Favorites</a></li>
                                 @if (User.IsInRole("Owner"))
                                 {
-                                    <li><a asp-controller="Property" asp-action="MyProperties"><i class="bi bi-chevron-right"></i> My Properties</a></li>
+                                    <li style="margin-bottom: 14px;"><a asp-controller="Property" asp-action="MyProperties" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> My Properties</a></li>
                                 }
                             }
                             else
                             {
-                                <li><a asp-controller="Account" asp-action="Login"><i class="bi bi-chevron-right"></i> Login</a></li>
-                                <li><a asp-controller="Account" asp-action="Register"><i class="bi bi-chevron-right"></i> Register</a></li>
-                                <li><a href="#"><i class="bi bi-chevron-right"></i> How It Works</a></li>
-                                <li><a href="#"><i class="bi bi-chevron-right"></i> FAQ</a></li>
+                                <li style="margin-bottom: 14px;"><a asp-controller="Account" asp-action="Login" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> Login</a></li>
+                                <li style="margin-bottom: 14px;"><a asp-controller="Account" asp-action="Register" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> Register</a></li>
+                                <li style="margin-bottom: 14px;"><a asp-controller="Home" asp-action="HowItWorks" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> How It Works</a></li>
+                                <li style="margin-bottom: 14px;"><a asp-controller="Home" asp-action="FAQ" style="color: var(--nav-dropdown-color); text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'"><i class="bi bi-chevron-right" style="font-size: 0.9rem; color: var(--accent-color); font-weight: 700;"></i> FAQ</a></li>
                             }
                         </ul>
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <!-- Contact -->
+                <div style="padding: 0;">
                     <div class="footer-contact">
-                        <h4>Get in Touch</h4>
-                        <div class="contact-item">
-                            <div class="contact-icon">
+                        <h4 style="color: var(--nav-dropdown-color); font-weight: 700; margin-bottom: 30px; font-size: 1.15rem;">Get in Touch</h4>
+
+                        <div style="display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start;">
+                            <div style="flex-shrink: 0; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background-color: rgba(44, 122, 123, 0.1); border-radius: 10px; color: var(--accent-color); font-size: 1.4rem;">
                                 <i class="bi bi-geo-alt"></i>
                             </div>
-                            <div class="contact-info">
-                                <p>123 Real Estate Avenue<br>Cairo, Egypt<br>Egypt</p>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; color: var(--nav-dropdown-color); font-size: 0.95rem; line-height: 1.7; font-weight: 500;">123 Real Estate Avenue<br>Cairo, Egypt</p>
                             </div>
                         </div>
 
-                        <div class="contact-item">
-                            <div class="contact-icon">
+                        <div style="display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start;">
+                            <div style="flex-shrink: 0; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background-color: rgba(44, 122, 123, 0.1); border-radius: 10px; color: var(--accent-color); font-size: 1.4rem;">
                                 <i class="bi bi-telephone"></i>
                             </div>
-                            <div class="contact-info">
-                                <p>+20 (2) 1234-5678</p>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; color: var(--nav-dropdown-color); font-size: 0.95rem; line-height: 1.7; font-weight: 500;"><a href="tel:+201234567890" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">+20 (2) 1234-5678</a></p>
                             </div>
                         </div>
 
-                        <div class="contact-item">
-                            <div class="contact-icon">
+                        <div style="display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start;">
+                            <div style="flex-shrink: 0; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background-color: rgba(44, 122, 123, 0.1); border-radius: 10px; color: var(--accent-color); font-size: 1.4rem;">
                                 <i class="bi bi-envelope"></i>
                             </div>
-                            <div class="contact-info">
-                                <p>info@ijarify.com</p>
+                            <div style="flex: 1;">
+                                <p style="margin: 0; color: var(--nav-dropdown-color); font-size: 0.95rem; line-height: 1.7; font-weight: 500;"><a href="mailto:info@ijarify.com" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">info@ijarify.com</a></p>
                             </div>
                         </div>
 
-                        <div class="social-links">
-                            <a href="#"><i class="bi bi-facebook"></i></a>
-                            <a href="#"><i class="bi bi-twitter-x"></i></a>
-                            <a href="#"><i class="bi bi-linkedin"></i></a>
-                            <a href="#"><i class="bi bi-instagram"></i></a>
-                            <a href="#"><i class="bi bi-youtube"></i></a>
+                        <div style="display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap;">
+                            <a href="https://facebook.com/ijarify" target="_blank" rel="noopener noreferrer" style="display: inline-flex; width: 48px; height: 48px; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(44, 122, 123, 0.1); color: var(--accent-color); text-decoration: none; transition: all 0.3s ease; font-size: 1.3rem; font-weight: 600;" onmouseover="this.style.backgroundColor='var(--accent-color)'; this.style.color='#ffffff'" onmouseout="this.style.backgroundColor='rgba(44, 122, 123, 0.1)'; this.style.color='var(--accent-color)'"><i class="bi bi-facebook"></i></a>
+                            <a href="https://twitter.com/ijarify" target="_blank" rel="noopener noreferrer" style="display: inline-flex; width: 48px; height: 48px; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(44, 122, 123, 0.1); color: var(--accent-color); text-decoration: none; transition: all 0.3s ease; font-size: 1.3rem; font-weight: 600;" onmouseover="this.style.backgroundColor='var(--accent-color)'; this.style.color='#ffffff'" onmouseout="this.style.backgroundColor='rgba(44, 122, 123, 0.1)'; this.style.color='var(--accent-color)'"><i class="bi bi-twitter-x"></i></a>
+                            <a href="https://linkedin.com/company/ijarify" target="_blank" rel="noopener noreferrer" style="display: inline-flex; width: 48px; height: 48px; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(44, 122, 123, 0.1); color: var(--accent-color); text-decoration: none; transition: all 0.3s ease; font-size: 1.3rem; font-weight: 600;" onmouseover="this.style.backgroundColor='var(--accent-color)'; this.style.color='#ffffff'" onmouseout="this.style.backgroundColor='rgba(44, 122, 123, 0.1)'; this.style.color='var(--accent-color)'"><i class="bi bi-linkedin"></i></a>
+                            <a href="https://instagram.com/ijarify" target="_blank" rel="noopener noreferrer" style="display: inline-flex; width: 48px; height: 48px; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(44, 122, 123, 0.1); color: var(--accent-color); text-decoration: none; transition: all 0.3s ease; font-size: 1.3rem; font-weight: 600;" onmouseover="this.style.backgroundColor='var(--accent-color)'; this.style.color='#ffffff'" onmouseout="this.style.backgroundColor='rgba(44, 122, 123, 0.1)'; this.style.color='var(--accent-color)'"><i class="bi bi-instagram"></i></a>
                         </div>
                     </div>
                 </div>
@@ -268,26 +269,27 @@
             </div>
         </div>
 
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6">
-                        <div class="copyright">
-                            <p>© <span>Copyright</span> <strong class="px-1 sitename">Ijarify</strong> <span>All Rights Reserved</span></p>
-                        </div>
+        <!-- Footer Bottom -->
+        <div class="footer-bottom" style="background-color: #f9f9f9; padding: 30px 0; margin-top: 50px; border-top: 1px solid #e0e0e0;">
+            <div class="container" style="max-width: 1200px; padding: 0 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; margin: 0;">
+                    <div style="color: var(--nav-dropdown-color); font-size: 0.95rem; margin: 0;">
+                        <p style="margin: 0; font-weight: 500;">© <span>Copyright</span> <strong style="color: var(--accent-color); padding: 0 5px; font-weight: 700;">Ijarify</strong> <span>All Rights Reserved</span></p>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="footer-bottom-links">
-                            <a href="#">Privacy Policy</a>
-                            <a href="#">Terms of Service</a>
-                            <a href="#">Cookie Policy</a>
-                        </div>
+                    <div style="display: flex; gap: 25px; flex-wrap: wrap;">
+                        <a href="#" style="color: var(--nav-dropdown-color); text-decoration: none; font-size: 0.95rem; transition: color 0.3s ease; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'">Privacy Policy</a>
+                        <a href="#" style="color: var(--nav-dropdown-color); text-decoration: none; font-size: 0.95rem; transition: color 0.3s ease; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'">Terms of Service</a>
+                        <a href="#" style="color: var(--nav-dropdown-color); text-decoration: none; font-size: 0.95rem; transition: color 0.3s ease; font-weight: 500;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--nav-dropdown-color)'">Cookie Policy</a>
                     </div>
                 </div>
             </div>
         </div>
 
     </footer>
+
+
+
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
